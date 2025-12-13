@@ -84,7 +84,7 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
           const isMajor = tickValue % 10 === 0; // Traços grossos
           
           return (
-            <polygon
+            <line
               key={i}
               x1="100" y1="100" // Centro do arco (base)
               x2="100" y2="10"  // Comprimento (
@@ -92,6 +92,7 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
               strokeWidth={isMajor ? 3 : 1}
               strokeDasharray="4 96" // Fazapenas a pontinha do traço aparecer
               strokeDashoffset="5"
+              z-index="10"
               transform={`rotate(${angle} 100 100)`} // Rotaciona em volta do centro
             />
           );
@@ -109,7 +110,10 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
         <polygon
           points="100, 20 96, 100 104, 100"
           fill={needleColor}
-          className="transition-transform duration-100 ease-out"
+          stroke={needleColor}
+          strokeWidth="1"
+          strokeLinejoin='round'
+          className="transition-transform duration-120 ease-out"
           transform={`rotate(${rotation} 100 100)`}
         />
         
