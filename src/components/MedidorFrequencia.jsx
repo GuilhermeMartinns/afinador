@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const MedidorFrequencia = ({ cents, note, frequency }) => {
+const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
   // cents varia de -50 (bemol) a +50 (sustenido). 0 é afinado.
   
   // limita o ponteiro para não sair do medidor e define um valor mínimo e máximo
@@ -36,6 +36,27 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
     needleColor = '#ff2a2a'
   }
 
+  //Tutor de afinação
+  let tutorText = "";
+
+  if (absCents < 3){
+    tutorText = "Perfeito!"
+  } 
+  else if (absCents<= 10){
+    if (cents > 0) {
+      tutorText= "Um pouco alto.\nAfrouxe devagar."
+    } else {
+      tutorText= "Um pouco baixo.\nAperte devagar."
+    }
+  }
+  else{
+    if (cents > 0){
+      tutorText="Muito alto!\nAfroxe a corda."
+    } else {
+      tutorText="Muito baixo!\nAperte a corda."
+    }
+  }
+
   return (
     <div className="relative w-64 h-32 flex justify-center items-end overflow-hidden">
       <h1
@@ -44,17 +65,18 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           text-6xl font-bold drop-shadow-lg
           transition-colors duration-200 ease-in-out
           transition-transform duration-200 ease-out
-          ${isInTune ? 'scale-110' : 'scale-100'}
+          ${isInTune ? 'scale-115' : 'scale-100'}
           `}
       >
             {note || '-'}
 
         </h1>
+        <div className="whitespace-pre-wrap text-center">
+        {tutorText}
+        </div>
       {/* SVG Container */}
       <svg viewBox="0 0 200 110" className="w-full h-full">
         
-        
-      
         
         {Array.from({ length: 11 }).map((_, i) => {
           const tickValue = i * 10 - 50; // -50, -40, -30 ...
@@ -93,7 +115,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           className="transition-transform duration-100 ease-out"
           transform={`rotate(${rotation} 100 100)`}
           style={{ 
-            filter: `drop-shadow(0 0 8px ${needleColor})` 
+            filter: `drop-shadow(0 0 0px ${needleColor})` 
           }}
         />
         
@@ -101,7 +123,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
         <circle cx="100" cy="100" r="5" fill="#fff" />
       </svg>
       
-      {/* Texto da Nota no Centro */}
+      {/* Texto da frequência no Centro */}
       <div className="absolute bottom-0 text-center translate-y-12">
         <span className="text-gray-400 text-sm">
           {/* Arredonda a frequencia para 1 casa decimal */}
