@@ -84,14 +84,14 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
           const isMajor = tickValue % 10 === 0; // Traços grossos
           
           return (
-            <line
+            <polygon
               key={i}
               x1="100" y1="100" // Centro do arco (base)
               x2="100" y2="10"  // Comprimento (
               stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(255,255,255,0.3)"}
               strokeWidth={isMajor ? 3 : 1}
               strokeDasharray="4 96" // Fazapenas a pontinha do traço aparecer
-              strokeDashoffset="0"
+              strokeDashoffset="5"
               transform={`rotate(${angle} 100 100)`} // Rotaciona em volta do centro
             />
           );
@@ -106,17 +106,11 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
         />
 
         {/* O Ponteiro(Needle ) */}
-        <line
-          x1="100" y1="100"
-          x2="100" y2="20"
-          stroke={needleColor}
-          strokeWidth="4"
-          strokeLinecap="round"
+        <polygon
+          points="100, 20 96, 100 104, 100"
+          fill={needleColor}
           className="transition-transform duration-100 ease-out"
           transform={`rotate(${rotation} 100 100)`}
-          style={{ 
-            filter: `drop-shadow(0 0 0px ${needleColor})` 
-          }}
         />
         
         {/* pivô do ponteiro */}
