@@ -72,7 +72,17 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
 
         </h1>
         <div className="whitespace-pre-wrap text-center">
-        {tutorText}
+          <p
+            style ={{ color: noteColor}}
+            className={`
+              drop-shadow-lg
+              transition-colors duration-200 ease-in-out
+              transition-transform duration-200 ease-out
+              ${isInTune ? 'scale-115' : 'scale-100'}
+              `}
+          >
+            {tutorText}
+          </p>
         </div>
       {/* SVG Container */}
       <svg viewBox="0 0 200 110" className="w-full h-full">
