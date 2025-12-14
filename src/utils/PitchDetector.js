@@ -40,4 +40,45 @@ export const autoCorrelate = (buffer, sampleRate) => {
             break;
         }
     }
-}
+
+    // buffer focado na onda principal (após o corte das partes vazias)
+    const buffer2 = buffer.slice(r1, r2);
+    const c = new Array(buffer2.length).fill(0);
+
+    //comparação da onda com ela mesma deslocada
+    for (let i = 0; i < buffer2.length; i++){
+        for (let j = 0; j < buffer2.length; j++){
+            c[i] = c[i] + buffer2[j] * buffer2[j + i];
+       }
+    }
+    
+    //Encontra o primeiro pico forte
+    let d = 0;
+    while (c[d] > c[d + 1]) d++;
+
+    let maxval = -1;
+    let maxpos = -1;
+
+    for (let i = d; i < buffer2.length; i++){
+        if (c[i] > maxval) {
+            maxval = c[i];
+            maxpos = i;
+        }
+    }
+
+    // interpolação de parábolas
+    // para aumentar a precisão do afinador
+    //sem a interpolação ele pode ficar variando entre 2 frequencias
+    let T0 = maxpos;
+    const x1 = c[T0 - 1];
+    const x2 = c[T0];
+    const x3 = c[T0 + 1];
+    const a = (x1 + x3 - 2 * x2) / 2;
+    const b = (x3 - x1) / 2;
+
+    if (a) T0 = T0 - b / (2 * a);
+
+    //Convertendo para herts
+    // frequencia = taxa de amostragem / período (f=1/T)
+    return sampleRate / T0;
+};
