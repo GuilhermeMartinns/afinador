@@ -2,6 +2,16 @@ import React, { useState, useEffect }from 'react';
 
 
 const MedidorFrequencia = ({ cents, note, frequency }) => {
+
+  // proteção contra erros
+  //verifica se a frequencia é um número finito válido
+  const isValid = Number.isFinite(frequency) && frequency > 0;
+
+  //se nao for válida, força o cents a ter o valor 0
+  const safeCents = isValid ? cents : 0;
+  const displayFrequency = isValid ? frequency.toFixed(1) : '...';
+
+
   // cents varia de -50 (bemol) a +50 (sustenido). 0 é afinado.
   
   // limita o ponteiro para não sair do medidor e define um valor mínimo e máximo
@@ -39,18 +49,20 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   //Tutor de afinação
   let tutorText = "";
 
-  if (absCents < 3){
+  if (!isValid) {
+    tutorText="Aguardando som..."
+  } else if (absCents < 3){
     tutorText = "Perfeito!"
   } 
   else if (absCents<= 10){
-    if (cents > 0) {
+    if (safeCents > 0) {
       tutorText= "Um pouco alto.\nAfrouxe devagar."
     } else {
       tutorText= "Um pouco baixo.\nAperte devagar."
     }
   }
   else{
-    if (cents > 0){
+    if (safeCents > 0){
       tutorText="Muito alto!\nAfroxe a corda."
     } else {
       tutorText="Muito baixo!\nAperte a corda."
@@ -72,7 +84,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
             {note || '-'}
 
         </h1>
-        <div className="whitespace-pre-wrap text-center">
+        <div className="absote top-0 w-full whitespace-pre-wrap text-center">
           <p
             style ={{ color: noteColor}}
             className={`
