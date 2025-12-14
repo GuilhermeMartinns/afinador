@@ -14,7 +14,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   // +50 cents = +90 graus (direita)
   const rotation = clampedCents * (90 / 50); 
 
-  let flatNote = false;
+  //let flatNote = false;
   
   // Verde se estiver próximo de 0 (afinado), Vermelho se estiver longe (desafinado)
   // 0 é o centro do medidor
@@ -59,14 +59,14 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
 
   return (
     <div className="relative w-64 h-32 flex justify-center items-end overflow-hidden">
-      <button className='sharpOrFlat' onClick>b</button>
+      
       <h1
         style ={{ color: noteColor }}
         className={`
           text-6xl font-bold drop-shadow-lg
           transition-colors duration-200 ease-in-out
           transition-transform duration-200 ease-out
-          ${isInTune ? 'scale-115' : 'scale-100'}
+          ${isInTune ? 'scale-125' : 'scale-100'}
           `}
       >
             {note || '-'}

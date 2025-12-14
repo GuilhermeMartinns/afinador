@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import './App.css'
 import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
@@ -11,11 +11,36 @@ function App() {
     frequency: 0
   })
 
-  
+  const [isFlatNote, setIsFlatNote] = useState(() => {
+    const savedPreference = localStorage.getItem('notePreference');
+    
+    if (savedPreference) {
+      return savedPreference === 'flat';
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('notePreference', isFlatNote ? 'flat' : 'sharp');
+    //Atualiza a nota exibida caso a preferência de bemol/sustenido mude
+    if(audioData.frequency > 0){
+      const data = getNoteDetails(audioData.frequency, isFlatNote);
+      setAudioData(prev => ({
+        ...prev,
+        noteName: data.noteName + data.octave,
+      }));
+    }
+  }, [isFlatNote, audioData.frequency]);
+        
+
+  const toogleNotePreference = () => {
+    setIsFlatNote(!isFlatNote);
+  };
+
   const handleSimulation = (e) => {
     const inputFreq  = Number(e.target.value);
 
-    const data = getNoteDetails(inputFreq);
+    const data = getNoteDetails(inputFreq, isFlatNote);
 
     setAudioData({
       noteName: data.noteName + data.octave,
@@ -24,6 +49,7 @@ function App() {
     });
   }
   
+  /*
   let isFlatNote = false;
 
   useEffect() {
@@ -46,11 +72,12 @@ function App() {
 
   updateNotePreference() {
     localStorage.setItem('notePreference', this.isFlatNote ? 'flat' : 'sharp');
-  }
+  }*/
 
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center gap-8">
+    <div className="h-screen w-screen flex flex-col items-center justify-center gap-8
+    bg-gray-900 text-white">
 
       <MedidorFrequencia 
         cents={audioData.cents} 
@@ -69,6 +96,19 @@ function App() {
           onChange={handleSimulation}
           className="w-64 accent-green-500 cursor-pointer"
         />
+    </div>
+    {/* Container do controle de nota bemol/sustenido */}
+    <div 
+      className="
+      flex flex-col items-center gap-4
+      rounded-xl shadow-lg p-4 bg-gray-800">
+        <span className='text-sm text-gray-300'>
+          {isFlatNote ? "Preferência: (♭)" : "Preferência: (♯)"}
+        </span>
+      <Switch
+        isOn={isFlatNote}
+        handleToggle={toogleNotePreference}
+      />
     </div>
     </div>
   )
