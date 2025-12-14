@@ -36,7 +36,7 @@ function App() {
       this.isFlatNote = prefersFlat;
     }
       this.updateNotePreference();
-  }
+  };
 
   toggleNotePreference() {
     this.isFlatNote = !this.isFlatNote;
