@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef} from "react";
-import { autoCorrelate } from "./PitchDetector";
+import { autoCorrelate } from "./PitchDetector.js";
 
 export const useAudio = () => {
     const [sourceData, setSourceData] = useState({

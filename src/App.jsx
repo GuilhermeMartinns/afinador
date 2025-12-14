@@ -6,17 +6,19 @@ import Switch from './components/Switch.jsx'
 import { useAudio } from './hooks/useAudio.js'
 
 
+
 function App() {
   
   //hook do microfone
   const { startMic, stopMic, frequency: micFrequency, isMicOn} = useAudio();
-  
+
   const [audioData, setAudioData] = useState({
     noteName: '-',
     cents: 0,
     frequency: 0
   })
 
+  //preferencia de bemol ou sustenido
   const [isFlatNote, setIsFlatNote] = useState(() => {
     const savedPreference = localStorage.getItem('notePreference');
     
@@ -43,6 +45,18 @@ function App() {
     setIsFlatNote(!isFlatNote);
   };
 
+  useEffect(() => {
+    if (micFrequency > 0){
+      const data = getNoteDetails(micFrequency, isFlatNote);
+
+      setAudioData({
+        noteName: data.noteName + data.octave,
+        cents: data.cents,
+        frequency: data.frequency
+      });
+    }
+  }, [micFrequency, isFlatNote]);
+  /*
   const handleSimulation = (e) => {
     const inputFreq  = Number(e.target.value);
 
@@ -53,9 +67,9 @@ function App() {
       cents: data.cents,
       frequency: data.frequency
     });
-  }
+  } 
   
-  /*
+  
   let isFlatNote = false;
 
   useEffect() {
