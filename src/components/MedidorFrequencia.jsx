@@ -158,11 +158,20 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
       </svg>
       
       {/* Texto da frequência no Centro */}
-      <div className="absolute bottom-0 text-center translate-y-12">
+      <div className="absolute bottom-2 text-center translate-y-12">
         <span className="text-gray-400 text-sm">
           {/* Arredonda a frequencia para 1 casa decimal */}
           {frequency ? frequency.toFixed(1) + ' Hz' : '0 Hz'}
         </span>
+      </div>
+      <div className="absolute bottom-2 text-center translate-y-12 no-underline">
+        <span> Developed by: 
+          <a 
+            href="https://github.com/GuilhermeMartinns" 
+            target="_blank"
+            class="no-underline"
+            > Guilherme Martins</a>
+          </span>
       </div>
     </div>
   );
