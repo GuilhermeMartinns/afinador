@@ -37,8 +37,8 @@ function App() {
         <input
           type="range"
           min="200"
-          max="600"
-          step="0.5"
+          max="250"
+          step="0.1"
           defaultValue="440"
           onChange={handleSimulation}
           className="w-64 accent-green-500 cursor-pointer"

@@ -88,8 +88,10 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
       <svg viewBox="0 0 200 110" className="w-full h-full">
         
         
-        {Array.from({ length: 11 }).map((_, i) => {
-          const tickValue = i * 10 - 50; // -50, -40, -30 ...
+        {Array.from({ length: 21 }).map((_, i) => {
+          const tickValue = i * 5 - 50; // -50, -40, -30 ...
+          const isMinor = (tickValue % 2 ) !==0
+          
           const angle = tickValue * (90 / 50); // Converte para graus
           
           const isCenter = tickValue === 0; // Ponto central
@@ -98,9 +100,9 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
             <line
               key={i}
               x1="100" y1="10" // Centro do arco (base)
-              x2="100" y2="19"  // Comprimento 
+              x2="100" y2={isMinor ? 15 : 18} // Comprimento 
               stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(148,148,148)"}
-              strokeWidth={isCenter ? 3 : 2}
+              strokeWidth={isCenter ? 3 : 2 && isMinor ? 1: 2}
               strokeLinecap="round"
               strokeDashoffset="5"
               z-index="10"
