@@ -164,12 +164,12 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           {frequency ? frequency.toFixed(1) + ' Hz' : '0 Hz'}
         </span>
       </div>
-      <div className="absolute bottom-2 text-center translate-y-12">
-        <span className="text-xs"> Developed by:  
+      <div className="fixed bottom-2 left-0 w-full text-center">
+        <span className="text-[10px] text-gray-400"> Developed by:  
           <a 
             href="https://github.com/GuilhermeMartinns" 
             target="_blank"
-            class="no-underline"
+            className="no-underline"
             >Guilherme Martins</a>
           </span>
       </div>
