@@ -3,8 +3,14 @@ import './App.css'
 import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
 import Switch from './components/Switch.jsx'
+import { useAudio } from './hooks/useAudio.js'
+
 
 function App() {
+  
+  //hook do microfone
+  const { startMic, stopMic, frequency: micFrequency, isMicOn} = useAudio();
+  
   const [audioData, setAudioData] = useState({
     noteName: '-',
     cents: 0,
