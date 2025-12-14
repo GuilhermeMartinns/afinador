@@ -10,6 +10,7 @@ function App() {
     frequency: 0
   })
 
+
   const handleSimulation = (e) => {
     const inputFreq  = Number(e.target.value);
 

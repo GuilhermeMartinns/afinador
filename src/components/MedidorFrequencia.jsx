@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
+const MedidorFrequencia = ({ cents, note, frequency }) => {
   // cents varia de -50 (bemol) a +50 (sustenido). 0 é afinado.
   
   // limita o ponteiro para não sair do medidor e define um valor mínimo e máximo
@@ -13,11 +13,11 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
   // 0 cents = 0 graus (centro)
   // +50 cents = +90 graus (direita)
   const rotation = clampedCents * (90 / 50); 
+
+  const flatNote = false;
   
   // Verde se estiver próximo de 0 (afinado), Vermelho se estiver longe (desafinado)
   // 0 é o centro do medidor
-  //const isInTune = Math.abs(cents) < 5; // Margem de erro de 5 centésimos
-  //const needleColor = isInTune ? '#00ff41' : '#ff2a2a';
 
   const absCents = Math.abs(cents);
   const isInTune = Math.abs(cents) < 5; // Margem de erro de 5 centésimos
@@ -59,6 +59,7 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
 
   return (
     <div className="relative w-64 h-32 flex justify-center items-end overflow-hidden">
+      <button className='sharpOrFlat'>b</button>
       <h1
         style ={{ color: noteColor }}
         className={`
