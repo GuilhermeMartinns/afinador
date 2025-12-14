@@ -87,7 +87,6 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
       {/* SVG Container */}
       <svg viewBox="0 0 200 110" className="w-full h-full">
         
-        
         {Array.from({ length: 21 }).map((_, i) => {
           const tickValue = i * 5 - 50; // -50, -40, -30 ...
           const isMinor = (tickValue % 2 ) !==0
@@ -100,9 +99,9 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
             <line
               key={i}
               x1="100" y1="10" // Centro do arco (base)
-              x2="100" y2={isMinor ? 15 : 18} // Comprimento 
+              x2="100" y2={isMinor ? 15 : 17} // Comprimento 
               stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(148,148,148)"}
-              strokeWidth={isCenter ? 3 : 2 && isMinor ? 1: 2}
+              strokeWidth={isCenter ? 2.2 : 2 && isMinor ? 1: 2}
               strokeLinecap="round"
               strokeDashoffset="5"
               z-index="10"
@@ -110,6 +109,16 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
             />
           );
         })}
+
+        {/* triangulo marcador de centro */}
+        <polygon
+        points="100, 3 97.5, 0 102.5, 0"
+        fill="rgba(148,148,148)"
+        stroke="rgba(148,148,148)"
+        strokeWidth="2"
+        strokeLinecap='round'
+        className="transition-transform duration-120 ease-out"
+        />
 
         {/* Arco de fundo */}
         <path 
@@ -132,6 +141,7 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
         
         {/* pivô do ponteiro */}
         <circle cx="100" cy="100" r="5" fill="#fff" />
+
       </svg>
       
       {/* Texto da frequência no Centro */}
