@@ -92,15 +92,16 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
           const tickValue = i * 10 - 50; // -50, -40, -30 ...
           const angle = tickValue * (90 / 50); // Converte para graus
           const isMajor = tickValue % 10 === 0; // Traços grossos
+          const isCenter = tickValue === 0; // Ponto central
           
           return (
             <line
               key={i}
-              x1="100" y1="100" // Centro do arco (base)
-              x2="100" y2="10"  // Comprimento (
+              x1="100" y1="10" // Centro do arco (base)
+              x2="100" y2="20"  // Comprimento (
               stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(255,255,255,0.3)"}
-              strokeWidth={isMajor ? 3 : 1}
-              strokeDasharray="4 96" // Fazapenas a pontinha do traço aparecer
+              strokeWidth={isMajor ? 3 : 2}
+             
               strokeDashoffset="5"
               z-index="10"
               transform={`rotate(${angle} 100 100)`} // Rotaciona em volta do centro
