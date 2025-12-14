@@ -98,10 +98,10 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
             <line
               key={i}
               x1="100" y1="10" // Centro do arco (base)
-              x2="100" y2="20"  // Comprimento (
-              stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(255,255,255,0.3)"}
-              strokeWidth={isMajor ? 3 : 2}
-              strokeLineCap="round"
+              x2="100" y2="19"  // Comprimento 
+              stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(148,148,148)"}
+              strokeWidth={isCenter ? 3 : 2}
+              strokeLinecap="round"
               strokeDashoffset="5"
               z-index="10"
               transform={`rotate(${angle} 100 100)`} // Rotaciona em volta do centro
@@ -113,7 +113,7 @@ const MedidorFrequencia = ({ cents, note, frequency, tunerTutor, tutor }) => {
         <path 
             d="M 10 100 A 90 90 0 0 1 190 100" 
             fill="none" 
-            stroke="rgba(255,255,255,0.1)" 
+            stroke="rgba(148,148,148)" 
             strokeWidth="2" 
         />
 
