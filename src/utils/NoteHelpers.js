@@ -1,5 +1,5 @@
 export const NOTE_NAMES =["C", "C#","D","D#","E","F","F#","G","G#","A","A#","B"];
-export const NOTE_NAMES_FLAT =["C", "Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
+export const NOTE_NAMES_FLAT =["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"];
 export const getNoteDetails = (frequency, isFlatNote = false) => {
     
     const A4 = 440;
