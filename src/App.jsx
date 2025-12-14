@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
+import Switch from './components/Switch.jsx'
 
 function App() {
   const [audioData, setAudioData] = useState({
@@ -10,7 +11,7 @@ function App() {
     frequency: 0
   })
 
-
+  
   const handleSimulation = (e) => {
     const inputFreq  = Number(e.target.value);
 
