@@ -9,4 +9,12 @@ export const autoCorrelate = (buffer, sampleRate) => {
         const val = buffer[i];
         sumOfSquares += val * val;
     }
+    
+    //root mean square mede o volume do sinal
+    //se o som for muito baixo ou silencio não tenta detectar a frequência
+    const rootMeanSquare = Math.sqrt(sumOfSquares / SIZE);
+
+    if (rootMeanSquare < 0.01){
+        return -1; //sinal muito fraco
+    }
 }
