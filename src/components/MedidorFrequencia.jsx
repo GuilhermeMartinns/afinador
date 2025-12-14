@@ -88,6 +88,17 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
       {/* SVG Container */}
       <svg viewBox="0 0 200 110" className="w-full h-full">
         
+        {/* marcador de área próxima de afinação */}
+        <polygon
+        points="100, 100 85, 11 115, 11"
+        fill="rgba(0,255,65,0.15)"
+        stroke="rgba(0,255,65,0.15)"
+        strokeWidth="0"
+        strokeLinecap='round'
+        className="transition-transform duration-180 ease-in-out"
+        opacity={isInTune ? 1: 0}
+        />
+
         {Array.from({ length: 21 }).map((_, i) => {
           const tickValue = i * 5 - 50; // -50, -40, -30 ...
           const isMinor = (tickValue % 2 ) !==0
@@ -97,6 +108,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           const isCenter = tickValue === 0; // Ponto central
           
           return (
+            
             <line
               key={i}
               x1="100" y1="10" // Centro do arco (base)
