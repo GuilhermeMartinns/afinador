@@ -16,7 +16,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   
   // limita o ponteiro para não sair do medidor e define um valor mínimo e máximo
   //clamping é usado para definir um limite
-  const clampedCents = Math.max(-50, Math.min(50, cents));
+  const clampedCents = Math.max(-50, Math.min(50, safeCents));
   
   // Converte cents em graus de rotação.
   // -50 cents = -90 graus (esquerda)
@@ -29,7 +29,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   // Verde se estiver próximo de 0 (afinado), Vermelho se estiver longe (desafinado)
   // 0 é o centro do medidor
 
-  const absCents = Math.abs(cents);
+  const absCents = Math.abs(safeCents);
   const isInTune = Math.abs(cents) < 5; // Margem de erro de 5 centésimos
   const noteColor = isInTune ? '#00ff41' : '#fff';
 
@@ -70,7 +70,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   }
 
   return (
-    <div className="relative w-64 h-32 flex justify-center items-end overflow-hidden">
+    <div className="relative w-64 h-64 flex flex-col items-center justify-start overflow-hidden pt-10">
       
       <h1
         style ={{ color: noteColor }}
@@ -176,7 +176,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           {frequency ? frequency.toFixed(1) + ' Hz' : '0 Hz'}
         </span>
       </div>
-      <div className="fixed bottom-2 left-0 w-full text-center">
+      <div className="fixed bottom-0 left-0 w-full text-center">
         <span className="text-[10px] text-gray-400"> Developed by:  
           <a 
             href="https://github.com/GuilhermeMartinns" 
