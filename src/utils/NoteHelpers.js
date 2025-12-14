@@ -1,6 +1,6 @@
 export const NOTE_NAMES =["C", "C#","D","D#","E","F","F#","G","G#","A","A#","B"];
 export const NOTE_NAMES_FLAT =["C", "Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
-export const getNoteDetails = (frequency) => {
+export const getNoteDetails = (frequency, isFlatNote = false) => {
     
     const A4 = 440;
     /* pow é potência. O primeiro parâmetro é a base, o segundo é o expoente.
@@ -87,7 +87,7 @@ export const getNoteDetails = (frequency) => {
     O noteName pega a posição do noteIndex no array NOTE_NAMES.
     */
     const noteIndex = midiNoteNumber % 12;
-    const noteName = NOTE_NAMES[noteIndex];
+    const noteName = isFlatNote ? NOTE_NAMES_FLAT[noteIndex] : NOTE_NAMES[noteIndex];
 
     /* A base de calcula da oitava é 12 semitons. cada 12 semitons é uma oitava.
     Para descobrir a oitava preciso dividir o midiNoteNumber por 12 para saber 
