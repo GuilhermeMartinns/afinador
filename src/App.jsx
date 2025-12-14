@@ -101,7 +101,8 @@ function App() {
     <div 
       className="
       flex flex-col items-center gap-4
-      rounded-xl shadow-lg p-4 bg-gray-800">
+      rounded-xl shadow-lg p-4 bg-gray-800
+      border-2 border-red-500 p-4">
         <span className='text-sm text-gray-300'>
           {isFlatNote ? "Preferência: (♭)" : "Preferência: (♯)"}
         </span>
