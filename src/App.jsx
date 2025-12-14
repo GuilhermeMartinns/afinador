@@ -109,6 +109,16 @@ function App() {
           handleToggle={toogleNotePreference}
         />
       </div>
+      {/* footer */}
+      <div className="fixed bottom-0 left-0 w-full text-center">
+        <span className="text-xs text-gray-500"> Desenvolvido por:  
+          <a 
+            href="https://github.com/GuilhermeMartinns" 
+            target="_blank"
+            className="text-gray-400 hover:text-blue-400 no-underline transition-colors"
+            >Guilherme Martins</a>
+          </span>
+      </div>
     </div>
   )
 }

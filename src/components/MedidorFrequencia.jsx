@@ -84,11 +84,11 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
             {note || '-'}
 
         </h1>
-        <div className="absote top-0 w-full whitespace-pre-wrap text-center">
+       <div className="absolute top-0 w-full whitespace-pre-wrap text-center z-10">
           <p
-            style ={{ color: noteColor}}
+            style ={{ color: isInTune ? '#00ff41' : '#fff'}}
             className={`
-              drop-shadow-lg
+              text-sm font-medium drop-shadow-lg
               transition-colors duration-200 ease-in-out
               transition-transform duration-200 ease-out
               ${isInTune ? 'scale-115' : 'scale-100'}
@@ -137,12 +137,12 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
 
         {/* triangulo marcador de centro */}
         <polygon
-        points="100, 3 97.5, 0 102.5, 0"
-        fill="rgba(148,148,148)"
-        stroke="rgba(148,148,148)"
-        strokeWidth="2"
-        strokeLinecap='round'
-        className="transition-transform duration-120 ease-out"
+          points="100, 3 97.5, 0 102.5, 0"
+          fill="rgba(148,148,148)"
+          stroke="rgba(148,148,148)"
+          strokeWidth="2"
+          strokeLinecap='round'
+          className="transition-transform duration-120 ease-out"
         />
 
         {/* Arco de fundo */}
@@ -175,15 +175,6 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           {/* Arredonda a frequencia para 1 casa decimal */}
           {frequency ? frequency.toFixed(1) + ' Hz' : '0 Hz'}
         </span>
-      </div>
-      <div className="fixed bottom-0 left-0 w-full text-center">
-        <span className="text-[10px] text-gray-400"> Developed by:  
-          <a 
-            href="https://github.com/GuilhermeMartinns" 
-            target="_blank"
-            className="no-underline"
-            >Guilherme Martins</a>
-          </span>
       </div>
     </div>
   );
