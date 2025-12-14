@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef} from "react";
-import { autoCorrelate } from "./PitchDetector.js";
+import { autoCorrelate } from "../utils/PitchDetector.js";
 
 export const useAudio = () => {
     const [sourceData, setSourceData] = useState({
@@ -43,7 +43,7 @@ export const useAudio = () => {
     const stopMic = () => {
         if (sourceRef.current) {
             cancelAnimationFrame(requestRef.current);
-            sourceRef.current.mediaStram.getTracks().forEach(track => track.stop());
+            sourceRef.current.mediaStream.getTracks().forEach(track => track.stop());
 
             if (audioContextRef.current){
                 audioContextRef.current.close();
@@ -57,7 +57,7 @@ export const useAudio = () => {
         if (!analyserRef.current) return;
 
         //array onde os dados da onda serão guardados
-        const buffer = new Floar32Array(analyserRef.current.fftSize);
+        const buffer = new Float32Array(analyserRef.current.fftSize);
 
         analyserRef.current.getFloatTimeDomainData(buffer);
 
