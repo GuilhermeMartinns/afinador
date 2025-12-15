@@ -63,9 +63,9 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   }
   else{
     if (safeCents > 0){
-      tutorText="Muito alto!\nAfroxe a corda."
+      tutorText="Quase perfeito!\nAfroxe a corda."
     } else {
-      tutorText="Muito baixo!\nAperte a corda."
+      tutorText="Quase perfeito!\nAperte a corda."
     }
   }
 
