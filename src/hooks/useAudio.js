@@ -12,6 +12,10 @@ export const useAudio = () => {
     const requestRef = useRef(null);
     const sourceRef= useRef(null); //guarda a referência do Stream do microfone
 
+    // novo buffer para guardar as últimas frequencias detectadas
+    const pitchBufferRef = useRef([]);
+    
+
     const startMic = async () => {
         try {
             // pede acesso ao microfone
@@ -49,6 +53,7 @@ export const useAudio = () => {
                 audioContextRef.current.close();
             }
 
+            pitchBufferRef.current = [];
             setSourceData({ frequency: 0, isMicOn: false});
             }
         };
@@ -64,8 +69,34 @@ export const useAudio = () => {
         const detectedPitch = autoCorrelate(buffer, audioContextRef.current.sampleRate);
 
         if (detectedPitch !== -1) {
-            setSourceData(prev => ({...prev, frequency: detectedPitch}));
+        
+        const pitchBuffer = pitchBufferRef.current;
+        
+        // Se a nova nota for muito diferente da última média (ex: mudou de corda),
+        // limpa o buffer para o ponteiro pular rápido em vez de ir devagar.
+        if (pitchBuffer.length > 0) {
+            const lastAvg = pitchBuffer.reduce((a, b) => a + b) / pitchBuffer.length;
+            if (Math.abs(detectedPitch - lastAvg) > 50) {
+                pitchBuffer.length = 0; // Reseta o buffer 
+            }
         }
+
+        // Adiciona a nova frequência no final da fila
+        pitchBuffer.push(detectedPitch);
+
+        // CONFIGURAÇÃO DE VELOCIDADE:
+        //quanto maior o número, mais lento o ponteiro se move
+        if (pitchBuffer.length > 12) {
+            pitchBuffer.shift(); 
+        }
+
+        // Calcula a média dos valores no buffer
+        const averagePitch = pitchBuffer.reduce((a, b) => a + b) / pitchBuffer.length;
+
+        
+        setSourceData(prev => ({ ...prev, frequency: averagePitch }));
+        }
+
         requestRef.current = requestAnimationFrame(updatePitch);
     };
 
