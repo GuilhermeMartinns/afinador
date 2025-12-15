@@ -107,7 +107,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
         stroke="rgba(0,255,65,0.15)"
         strokeWidth="0"
         strokeLinecap='round'
-        className="transition-transform duration-180 ease-in-out"
+        className="transition-transform duration-150 ease-in-out"
         opacity={isInTune ? 1: 0}
         />
 
@@ -160,7 +160,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           stroke={needleColor}
           strokeWidth="1"
           strokeLinejoin='round'
-          className="transition-transform duration-120 ease-out"
+          className="transition-transform duration-120 ease-in-out"
           transform={`rotate(${rotation} 100 100)`}
         />
         

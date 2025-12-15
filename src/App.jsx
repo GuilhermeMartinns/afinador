@@ -83,6 +83,13 @@ function App() {
       {/* Botão de Controle do Microfone*/}
       <button 
         onClick={toggleMic}
+        style={{ backgroundColor: '#22c55e',
+          border: "none",
+          borderRadius: "6px",
+          width: '120px',
+          height: '20px',
+          cursor: 'pointer',
+        }}
         className={`
           px-8 py-3 rounded-full font-bold text-lg shadow-lg transition-all transform hover:scale-105
           ${isMicOn 
@@ -90,7 +97,7 @@ function App() {
             : 'bg-green-500 hover:bg-green-600 text-white'}
         `}
       >
-        {isMicOn ? 'Parar' : 'Iniciar Afinador'}
+        {isMicOn ? 'Parar Afinador' : 'Iniciar Afinador'}
       </button>
       
   
@@ -99,9 +106,10 @@ function App() {
         className="
         flex flex-col items-center gap-4
         rounded-xl shadow-lg p-4 bg-gray-800
-        border border-gray-700" // Removi a borda vermelha de debug
+        border border-gray-700"
       >
-        <span className='text-sm text-gray-300'>
+        <span className='text-sm text-gray-300'
+          style ={{ fontSize: '12px'}}>
           {isFlatNote ? "Preferência: (♭)" : "Preferência: (♯)"}
         </span>
         <Switch
@@ -110,13 +118,18 @@ function App() {
         />
       </div>
       {/* footer */}
-      <div className="fixed bottom-0 left-0 w-full text-center">
+      <div 
+      className="fixed bottom-0 left-0 w-full text-center"
+      style ={{ 
+        fontSize : '12px',
+        marginTop: '20px',
+      }}>
         <span className="text-xs text-gray-500"> Desenvolvido por:  
           <a 
             href="https://github.com/GuilhermeMartinns" 
             target="_blank"
             className="text-gray-400 hover:text-blue-400 no-underline transition-colors"
-            >Guilherme Martins</a>
+            > Guilherme Martins</a>
           </span>
       </div>
     </div>
