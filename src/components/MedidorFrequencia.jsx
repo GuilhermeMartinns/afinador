@@ -47,58 +47,40 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   }
 
   //Tutor de afinação
-  let tutorText = "";
-
-  if (!isValid) {
-    tutorText="Aguardando som..."
-  } else if (absCents < 3){
-    tutorText = "Perfeito!"
-  } 
-  else if (absCents<= 10){
-    if (safeCents > 0) {
-      tutorText= "Um pouco alto.\nAfrouxe devagar."
-    } else {
-      tutorText= "Um pouco baixo.\nAperte devagar."
-    }
-  }
-  else{
-    if (safeCents > 0){
-      tutorText="Quase perfeito!\nAfroxe a corda."
-    } else {
-      tutorText="Quase perfeito!\nAperte a corda."
-    }
-  }
+  let tutorText = !isValid ? "Toque uma nota" : absCents < 3 ? "Perfeito!" : safeCents > 0 ? "Quase Perfeito.\nAfrouxe um pouco" : "Quase Perfeito.\nAperte um pouco";
 
   return (
-    <div className="relative w-64 h-64 flex flex-col items-center justify-start overflow-hidden pt-10">
+    <div className="relative flex flex-col items-center justify-center w-full max-w-[300px]">
       
+      {/* texto de ajuda do tutor */}
+      <div className={`text-sm font-medium tracking-wide mb-2 h-6 transition-colors duration-300 ${isInTune ? '#00ff41' : '#fff'}`}>
+        [{tutorText}]
+      </div>
+
+      {/* Nota */}
       <h1
         style ={{ color: noteColor }}
         className={`
-          text-6xl font-bold drop-shadow-lg
+          text-6xl font-black drop-shadow-lg mb-4
           transition-colors duration-200 ease-in-out
           transition-transform duration-200 ease-out
-          ${isInTune ? 'scale-125' : 'scale-100'}
+          ${isInTune ? 'scale-105' : 'scale-100'}
           `}
       >
             {note || '-'}
-
-        </h1>
-       <div className="absolute top-0 w-full whitespace-pre-wrap text-center z-10">
-          <p
-            style ={{ color: isInTune ? '#00ff41' : '#fff'}}
-            className={`
-              text-sm font-medium drop-shadow-lg
-              transition-colors duration-200 ease-in-out
-              transition-transform duration-200 ease-out
-              ${isInTune ? 'scale-115' : 'scale-100'}
-              `}
-          >
-            {tutorText}
-          </p>
-        </div>
+      </h1>
+       
       {/* SVG Container */}
-      <svg viewBox="0 0 200 110" className="w-full h-full">
+      <div className="w-full aspect-[2/1]">
+      <svg viewBox="0 0 200 110" className="w-full h-full overflow-visible">
+
+        {/* gradiente de definição css */}
+        <defs>
+          <linearGradient id="needleGradient" x1="0" x2="0" y="0" y2="1">
+            <stop offset="0%" stopColor={needleColor}/>
+            <stop offset="100%" stopColor="transparent"/>
+          </linearGradient>
+        </defs>
         
         {/* marcador de área próxima de afinação */}
         <polygon
@@ -153,7 +135,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
             strokeWidth="2" 
         />
 
-        {/* O Ponteiro(Needle ) */}
+        {/*  Ponteiro(Needle ) */}
         <polygon
           points="100, 20 96, 100 104, 100"
           fill={needleColor}
@@ -168,12 +150,13 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
         <circle cx="100" cy="100" r="5" fill="#fff" />
 
       </svg>
+      </div>
       
       {/* Texto da frequência no Centro */}
-      <div className="absolute bottom-2 text-center translate-y-12">
+      <div className="mt-2 font-mono text-gray-500 text-sm">
         <span className="text-gray-400 text-sm">
           {/* Arredonda a frequencia para 1 casa decimal */}
-          {frequency ? frequency.toFixed(1) + ' Hz' : '0 Hz'}
+          {displayFrequency}<span className="text-[10px]">Hz</span>
         </span>
       </div>
     </div>
