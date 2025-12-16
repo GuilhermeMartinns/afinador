@@ -12,8 +12,8 @@ const Switch = ({ isOn, handleToggle }) => {
       `}
     >
       {/* Texto interno (Sustenido/Bemol) no fundo */}
-      <span className="absolute left-2.5 text-[13px] font-black text-white/50 pointer-events-none">♯</span>
-      <span className="absolute right-2.5 text-[13px] font-black text-white/50 pointer-events-none">♭</span>
+      <span className="absolute left-3.5 text-[15px] font-black text-white/90 pointer-events-none">♯</span>
+      <span className="absolute right-3.5 text-[15px] font-black text-white/90 pointer-events-none">♭</span>
 
       {/* A Bolinha (Thumb) */}
       <span
@@ -25,7 +25,7 @@ const Switch = ({ isOn, handleToggle }) => {
         `}
       >
         {/* Texto dentro da bolinha */}
-        <span className={`text-sm font-black ${isOn ? 'text-green-600' : 'text-gray-700'}`}>
+        <span className={`text-lg font-black ${isOn ? 'text-green-600' : 'text-gray-700'}`}>
           {isOn ? '♭' : '♯'}
         </span>
       </span>
