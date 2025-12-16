@@ -44,7 +44,8 @@ function App() {
   }, [micFrequency, isFlatNote]);
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-6 overflow-hidden">
+    <div className="h-screen w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-4 overflow-hidden">
+     
       
       {/* Header */}
       <div className="mt-4 opacity-50 text-sm md:text-md tracking-widest uppercase text-center">
