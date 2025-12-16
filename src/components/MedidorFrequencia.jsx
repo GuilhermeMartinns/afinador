@@ -153,11 +153,12 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
         /> */}
 
         <g transform={`rotate(${rotation} 100 100)`} 
-          className="transition-transform duration-150 ease-linear">
+          className="transition-transform duration-150 ease-linear"
+          >
             {/* ponteiro */}
-            <path d="M 100 25 L 96.5 100 L 103.5 100 Z" fill={needleColor}/>
+            <path d="M 100 25 L 96.5 100 L 103.5 100 Z" fill={needleColor} stroke={needleColor} strokeWidth="0.7" strokeLinejoin='round'/>
             {/* pivô do ponteiro */}
-            <circle cx="100" cy="100" r="4" fill="white"/>
+            <circle cx="100" cy="100" r="4" fill="white" className='shadow-md'/>
           </g>
 
       </svg>
