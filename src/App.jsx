@@ -38,23 +38,23 @@ function App() {
         frequency: data.frequency
       });
     } else if (audioData.frequency > 0) {
-      // Atualiza visualmente se mudar a preferência mesmo sem som novo
       const data = getNoteDetails(audioData.frequency, isFlatNote);
       setAudioData(prev => ({ ...prev, noteName: data.noteName + data.octave }));
     }
   }, [micFrequency, isFlatNote]);
 
   return (
-    //  Fundo com degradê sutil
     <div className="min-h-screen w-full flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-6 overflow-hidden">
       
-      {/* Header  */}
-      <div className="mt-4 opacity-50 text-xs tracking-widest uppercase">
-        Afinador Cromático
+      {/* Header */}
+      <div className="mt-4 opacity-50 text-sm md:text-md tracking-widest uppercase text-center">
+        <div className="font-bold">Afinador Cromático</div>
+        <span className="text-xs">v.1.0.0 beta</span>
       </div>
 
       {/* Conteúdo Principal */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-12 w-full max-w-md px-4">
+    
+      <div className="flex-1 flex flex-col items-center justify-center gap-8 lg:gap-16 w-full max-w-xl lg:max-w-4xl px-4">
         
         <MedidorFrequencia 
           cents={audioData.cents} 
@@ -62,24 +62,27 @@ function App() {
           frequency={audioData.frequency}
         />
 
-        <div className="flex flex-col items-center gap-8 w-full">
+        {/* Container de Controles */}
+        {/* ALTERAÇÃO: flex-col no mobile, mas flex-row (lado a lado) no desktop */}
+        <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 w-full justify-center">
+            
             {/* Botão Principal */}
             <button 
                 onClick={toggleMic}
                 className={`
-                relative px-10 py-4 rounded-full font-bold text-xl tracking-wide transition-all duration-300
-                shadow-lg hover:scale-105 active:scale-95
+                relative px-8 py-3 rounded-full font-bold text-lg tracking-wide transition-all duration-300
+                shadow-xl hover:scale-105 active:scale-100 border-transparent whitespace-nowrap
                 ${isMicOn 
-                    ? 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/30 ring-2 ring-red-400/50' 
-                    : 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/30 ring-2 ring-green-400/50'}
+                    ? 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/30 ring-4 ring-red-400/20' 
+                    : 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/30 ring-4 ring-green-400/20'}
                 `}
             >
-                {isMicOn ? 'Parar' : 'Captar Áudio'}
+                {isMicOn ? 'Parar Afinador' : 'Iniciar Afinador'}
             </button>
 
             {/* Configurações */}
-            <div className="flex items-center gap-4 bg-gray-800/60 backdrop-blur-md px-6 py-3 rounded-2xl border border-gray-700/50">
-                <span className='text-xs font-semibold text-gray-400 uppercase tracking-wider'>
+            <div className="flex items-center gap-4 bg-gray-800/60 backdrop-blur-md px-6 py-3 rounded-2xl border border-gray-700/50 hover:bg-gray-800/80 transition-colors">
+                <span className='text-xs md:text-sm font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap'>
                     Notação
                 </span>
                 <Switch
@@ -90,10 +93,10 @@ function App() {
         </div>
       </div>
 
-      {/* Footer Fixo no fluxo para não cobrir conteúdo em telas pequenas */}
-      <footer className="mb-2 text-center">
-        <span className="text-[10px] text-gray-600">
-          Desenvolvido por <a href="https://github.com/GuilhermeMartinns" target="_blank" className="hover:text-green-400 transition-colors">Guilherme Martins</a>
+      {/* Footer */}
+      <footer className="mb-2 text-center opacity-60 hover:opacity-100 transition-opacity">
+        <span className="text-[10px] md:text-xs text-gray-500">
+          Desenvolvido por <a href="https://github.com/GuilhermeMartinns" target="_blank" className="hover:text-green-400 transition-colors border-b border-transparent hover:border-green-400 pb-0.5">Guilherme Martins</a>
         </span>
       </footer>
     </div>

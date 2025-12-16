@@ -47,31 +47,37 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   }
 
   //Tutor de afinação
-  let tutorText = !isValid ? "Toque uma nota" : absCents < 3 ? "Perfeito!" : safeCents > 0 ? "Quase Perfeito.\nAfrouxe um pouco" : "Quase Perfeito.\nAperte um pouco";
+  let tutorText;
+  if (!isValid) tutorText = "Toque uma nota";
+  else if (absCents < 3) tutorText = "PERFEITO!"; 
+  else if (safeCents > 0) tutorText = "Afrouxe um pouco"; 
+  else tutorText = "Aperte um pouco";
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full max-w-[300px]">
+    <div className="relative flex flex-col items-center justify-center w-full max-w-sm md:max-w-lg lg:max-w-2xl transition-all duration-500">
       
       {/* texto de ajuda do tutor */}
-      <div className={`text-sm font-medium tracking-wide mb-2 h-6 transition-colors duration-300 ${isInTune ? '#00ff41' : '#fff'}`}>
-        [{tutorText}]
+      <div className={`text-sm lg:text-lg font-semibold tracking-wide h-8 mb-2 flex items-center transition-colors duration-300 ${isInTune ? 'text-[#00ff41]' : 'text-gray-300'}`}>
+        {isValid && <span>{safeCents > 0 ? '▼' : '▲'}</span>} 
+        <span className="mx-2 uppercase">{tutorText}</span>
+        {isValid && <span>{safeCents > 0 ? '▼' : '▲'}</span>}
       </div>
 
       {/* Nota */}
       <h1
         style ={{ color: noteColor }}
         className={`
-          text-6xl font-black drop-shadow-lg mb-4
+          text-7xl lg:text-9xl font-black drop-shadow-2xl mb-6
           transition-colors duration-200 ease-in-out
           transition-transform duration-200 ease-out
-          ${isInTune ? 'scale-105' : 'scale-100'}
+          ${isInTune ? 'scale-110 drop-shadow-[0_0_30px_rgba(0,255,65,0.6)]' : 'scale-100'}
           `}
       >
             {note || '-'}
       </h1>
        
       {/* SVG Container */}
-      <div className="w-full aspect-[2/1]">
+      <div className="w-full aspect-[2/1] mb-4 drop-shadow-lg">
       <svg viewBox="0 0 200 110" className="w-full h-full overflow-visible">
 
         {/* gradiente de definição css */}
@@ -83,31 +89,19 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
         </defs>
         
         {/* marcador de área próxima de afinação */}
-        <polygon
-        points="100, 100 85, 11 115, 11"
-        fill="rgba(0,255,65,0.15)"
-        stroke="rgba(0,255,65,0.15)"
-        strokeWidth="0"
-        strokeLinecap='round'
-        className="transition-transform duration-150 ease-in-out"
-        opacity={isInTune ? 1: 0}
+        <path
+            d="M 100 100 L 85 11 A 90 90 0 0 1 115 11 Z"
+            fill="rgba(0,255,65,0.1)"
+            className="transition-opacity duration-300"
+            opacity={isInTune ? 1 : 0.1} // Deixa visível mas fraco quando desafinado para guiar o usuário
         />
 
         {Array.from({ length: 21 }).map((_, i) => {
           const tickValue = i * 5 - 50; // -50, -40, -30 ...
-          const isMinor = (tickValue % 2 ) !==0
-          
           const angle = tickValue * (90 / 50); // Converte para graus
-          
           const isCenter = tickValue === 0; // Ponto central
           const isMajor = i % 2 === 0;
-          
-
-          let tickLenght = 15;
-          if (isCenter) tickLenght = 20;
-          else if (isMajor) tickLenght = 20;
          
-          
           return (
             
             <line
@@ -138,19 +132,8 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
             d="M 10 100 A 90 90 0 0 1 190 100" 
             fill="none" 
             stroke="rgba(148,148,148)" 
-            strokeWidth="2" 
-            
+            strokeWidth="2"    
         />
-
-        {/*  Ponteiro(Needle ) 
-          points="100, 20 96, 100 104, 100"
-          fill={needleColor}
-          stroke={needleColor}
-          strokeWidth="1"
-          strokeLinejoin='round'
-          className="transition-transform duration-120 ease-in-out"
-          transform={`rotate(${rotation} 100 100)`}
-        /> */}
 
         <g transform={`rotate(${rotation} 100 100)`} 
           className="transition-transform duration-150 ease-linear"
@@ -165,10 +148,10 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
       </div>
       
       {/* Texto da frequência no Centro */}
-      <div className="mt-2 font-mono text-gray-500 text-sm">
-        <span className="text-gray-400 text-sm">
+      <div className="font-mono text-gray-400 text-lg lg:text-xl font-bold tracking-wider">
+        <span className="text-gray-300">
           {/* Arredonda a frequencia para 1 casa decimal */}
-          {displayFrequency}<span className="text-[10px]">Hz</span>
+          {displayFrequency}<span className="text-sm lg:text-base text-gray-500 ml-1">Hz</span>
         </span>
       </div>
     </div>
