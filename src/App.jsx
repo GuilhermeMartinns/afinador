@@ -47,15 +47,15 @@ function App() {
     <div className="h-screen w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-4 overflow-hidden">
      
       
-      {/* Header */}
-      <div className="mt-4 opacity-50 text-sm md:text-md tracking-widest uppercase text-center">
-        <div className="font-bold">Afinador Cromático</div>
-        <span className="text-xs">v.1.0.0 beta</span>
+      {/* Header  */}
+      <div className="flex flex-col items-center opacity-50 shrink-0">
+        <div className="text-sm md:text-base font-bold tracking-widest uppercase">Afinador Cromático</div>
+        <span className="text-[10px]">v.1.0.0 beta</span>
       </div>
 
       {/* Conteúdo Principal */}
     
-      <div className="flex-1 flex flex-col items-center justify-center gap-8 lg:gap-16 w-full max-w-xl lg:max-w-4xl px-4">
+      <div className="flex-1 flex flex-col items-center justify-evenly w-full max-w-xl lg:max-w-2xl px-4 h-full">
         
         <MedidorFrequencia 
           cents={audioData.cents} 
