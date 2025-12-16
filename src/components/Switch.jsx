@@ -2,73 +2,33 @@ import React from "react";
 
 const Switch = ({ isOn, handleToggle }) => {
   return (
-    <div className="switch-container"
-        style={{
-            position: 'absolute',
-            top: '15%',
-            right:'10%'
-        }}>
-        <div
-        onClick={handleToggle}
-        style={{
-            width: '38px',           
-            height: '20px',         
-            backgroundColor: isOn ? '#22c55e' : '#4b5563', 
-            borderRadius: '9999px',  
-            position: 'relative',    
-            cursor: 'pointer',
-            transition: 'background-color 0.3s',
-            display: 'flex',         
-            flexShrink: 0,            
-            alignItems: 'center',
-            justifyContent:'space-between',
-            boxSizing: 'border-box'
-        }}
-        >
-            {/*Icone de fundo Sustenido */}
-            <span style={{
-                color: 'white',
-                fontWeight: 'bolder',
-                fontSize: '11px',
-                opacity: isOn ? 1 : 0,
-                transition: 'opacity 0.3s',
-                marginLeft: '8px'
-            }}>♯</span>
+    <div
+      onClick={handleToggle}
+      className={`
+        relative inline-flex h-8 w-20 items-center rounded-full cursor-pointer
+        transition-colors duration-300 ease-in-out border-2 border-transparent
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 focus-visible:ring-green-500
+        ${isOn ? 'bg-green-600' : 'bg-gray-700'}
+      `}
+    >
+      {/* Texto interno (Sustenido/Bemol) no fundo */}
+      <span className="absolute left-2 text-[10px] font-bold text-white/50 pointer-events-none">♯</span>
+      <span className="absolute right-2 text-[10px] font-bold text-white/50 pointer-events-none">♭</span>
 
-            {/* Icone de fundo Bemol */}
-            <span style={{
-                color: 'white',
-                fontWeight: 900,
-                fontSize: '11px',
-                opacity: isOn ? 0 : 1,
-                transition: 'opacity 0.3s',
-                marginRight: '8px'
-            }}>♭</span>
-        {/* BOLINHA */}
-        <div
-            style={{
-            width: '15px',         
-            height: '15px',        
-            backgroundColor: 'white',
-            borderRadius: '50%',   
-            position: 'absolute',  
-            top: '2px',           
-            left: '3px',           
-            transition: 'transform 0.3s',
-            transform: isOn ? 'translateX(18px)' : 'translateX(0)',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: isOn ? '#22c55e' : '#4b5563',
-            fontWeight: 'bolder',
-            fontSize: '12px',
-            zIndex: 10
-            }}
-        >
-            {isOn? '♭' : '♯'}
-            </div>
-        </div>
+      {/* A Bolinha (Thumb) */}
+      <span
+        className={`
+          flex items-center justify-center
+          h-6 w-6 rounded-full bg-white shadow-md transform ring-0 
+          transition-transform duration-300 ease-out
+          ${isOn ? 'translate-x-12' : 'translate-x-1'}
+        `}
+      >
+        {/* Texto dentro da bolinha */}
+        <span className={`text-xs font-bold ${isOn ? 'text-green-600' : 'text-gray-700'}`}>
+          {isOn ? '♭' : '♯'}
+        </span>
+      </span>
     </div>
   );
 };
