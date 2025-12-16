@@ -100,18 +100,24 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           const angle = tickValue * (90 / 50); // Converte para graus
           
           const isCenter = tickValue === 0; // Ponto central
+          const isMajor = i % 2 === 0;
+          
+
+          let tickLenght = 15;
+          if (isCenter) tickLenght = 20;
+          else if (isMajor) tickLenght = 20;
+         
           
           return (
             
             <line
               key={i}
               x1="100" y1="10" // Centro do arco (base)
-              x2="100" y2={isMinor ? 15 : 17} // Comprimento 
+              x2="100" y2={10 + (isCenter ? 9: (isMajor ? 9 : 6))}
               stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(148,148,148)"}
-              strokeWidth={isCenter ? 2.2 : 2 && isMinor ? 1: 2}
+              strokeWidth={isCenter ? 2.1 : (isMajor ? 1.7 : 1)}
               strokeLinecap="round"
               strokeDashoffset="5"
-              z-index="10"
               transform={`rotate(${angle} 100 100)`} // Rotaciona em volta do centro
             />
           );
@@ -122,7 +128,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           points="100, 3 97.5, 0 102.5, 0"
           fill="rgba(148,148,148)"
           stroke="rgba(148,148,148)"
-          strokeWidth="2"
+          strokeWidth="1"
           strokeLinecap='round'
           className="transition-transform duration-120 ease-out"
         />
@@ -133,10 +139,10 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
             fill="none" 
             stroke="rgba(148,148,148)" 
             strokeWidth="2" 
+            
         />
 
-        {/*  Ponteiro(Needle ) */}
-        <polygon
+        {/*  Ponteiro(Needle ) 
           points="100, 20 96, 100 104, 100"
           fill={needleColor}
           stroke={needleColor}
@@ -144,10 +150,15 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
           strokeLinejoin='round'
           className="transition-transform duration-120 ease-in-out"
           transform={`rotate(${rotation} 100 100)`}
-        />
-        
-        {/* pivô do ponteiro */}
-        <circle cx="100" cy="100" r="5" fill="#fff" />
+        /> */}
+
+        <g transform={`rotate(${rotation} 100 100)`} 
+          className="transition-transform duration-150 ease-linear">
+            {/* ponteiro */}
+            <path d="M 100 25 L 96.5 100 L 103.5 100 Z" fill={needleColor}/>
+            {/* pivô do ponteiro */}
+            <circle cx="100" cy="100" r="4" fill="white"/>
+          </g>
 
       </svg>
       </div>
