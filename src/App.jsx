@@ -74,8 +74,8 @@ function App() {
                 relative px-8 py-3 rounded-full font-bold text-lg tracking-wide transition-all duration-300
                 shadow-xl hover:scale-105 active:scale-100 border-transparent whitespace-nowrap
                 ${isMicOn 
-                    ? 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/30 ring-red-400/20' 
-                    : 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/30  ring-green-400/20'}
+                    ? 'bg-red-500 hover:bg-red-600 text-white shadow-red-500/10 ring-red-400/20' 
+                    : 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/10  ring-green-400/20'}
                 `}
             >
                 {isMicOn ? 'Parar Afinador' : 'Iniciar Afinador'}
