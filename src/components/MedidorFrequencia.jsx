@@ -31,12 +31,12 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
 
   const absCents = Math.abs(safeCents);
   const isInTune = Math.abs(cents) < 5; // Margem de erro de 5 centésimos
-  const noteColor = isInTune ? '#00ff41' : '#fff';
+  const noteColor = isInTune ? '#27ca55' : '#fff';
 
   let needleColor = '#fff'
 
   if (absCents < 5){ 
-    needleColor ='#00ff41'
+    needleColor ='#27ca55'
   } else if (absCents <= 20){
     needleColor = '#ffff00'
   } else if (absCents <= 35){
@@ -108,7 +108,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
               key={i}
               x1="100" y1="10" // Centro do arco (base)
               x2="100" y2={10 + (isCenter ? 9: (isMajor ? 9 : 6))}
-              stroke={Math.abs(tickValue) < 5 ? "#00ff41" : "rgba(148,148,148)"}
+              stroke={Math.abs(tickValue) < 5 ? "#27ca55" : "rgba(148,148,148)"}
               strokeWidth={isCenter ? 2.1 : (isMajor ? 1.7 : 1)}
               strokeLinecap="round"
               strokeDashoffset="5"

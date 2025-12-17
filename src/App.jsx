@@ -95,8 +95,8 @@ function App() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center opacity-60 hover:opacity-100 transition-opacity shrink-0 pb-2">
-        <span className="text-[12px] text-gray-500">
+      <footer className="text-center opacity-60 hover:opacity-100 transition-opacity shrink-0 pb-4">
+        <span className="text-[12px] text-gray-500 z-10">
           Desenvolvido por <a href="https://github.com/GuilhermeMartinns" target="_blank" className="hover:text-green-400 transition-colors">Guilherme Martins</a>
         </span>
       </footer>
