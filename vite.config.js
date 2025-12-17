@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa' // <-- Importe aqui
+import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'icons/*.png'], // Os arquivos que devem ser cacheados
+      includeAssets: ['Afinador.svg', 'icons/*.png'], 
       manifest: {
         name: 'Afinador Cromático',
         short_name: 'Afinador',
@@ -24,13 +24,19 @@ export default defineConfig({
             src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
+          },
+          {
+            src: 'icons/icon.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'any maskable'
           }
         ]
       }
     })
   ],
   server: {
-    host: true, // Para acesso via IP
+    host: true,
     port: 5173,
   }
 })
