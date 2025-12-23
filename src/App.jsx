@@ -44,7 +44,7 @@ function App() {
   }, [micFrequency, isFlatNote]);
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-4 overflow-hidden">
+    <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-4 overflow-hidden">
      
       
       {/* Header  */}
@@ -95,9 +95,14 @@ function App() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center opacity-60 hover:opacity-100 transition-opacity shrink-0 pb-4">
-        <span className="text-[12px] text-gray-500 z-10">
-          Desenvolvido por <a href="https://github.com/GuilhermeMartinns" target="_blank" className="hover:text-green-400 transition-colors">Guilherme Martins</a>
+      <footer className="text-center opacity-60 hover:opacity-100 transition-opacity shrink-0 pb-4 mb-2 relative z-20 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+        <span className="text-[12px] text-gray-500 block px-4">
+          Desenvolvido por{' '}
+          <a 
+          href="https://github.com/GuilhermeMartinns" 
+          target="_blank" className="hover:text-green-400 transition-colors"
+          >
+            Guilherme Martins</a>
         </span>
       </footer>
     </div>
