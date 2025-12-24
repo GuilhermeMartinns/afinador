@@ -23,7 +23,7 @@ export const autoCorrelate = (buffer, sampleRate) => {
     // então tenta cortar mais próximo do repouso (perto de 0)
     let r1 = 0;
     let r2 = SIZE -1;
-    const threshold = 0.3;
+    const threshold = 0.33;
 
     // corta o inicio vazio
     for (let i = 0; i < SIZE / 2; i++) {
