@@ -1,4 +1,5 @@
-import { useSmoothValue } from './hooks/useSmoothValue.js';
+import React from 'react';
+import { useSmoothValue } from '../hooks/useSmoothValue.js';
 
 
 const MedidorFrequencia = ({ cents, note, frequency }) => {
@@ -19,14 +20,14 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
   
   // limita o ponteiro para não sair do medidor e define um valor mínimo e máximo
   //clamping é usado para definir um limite
-  const clampedSmooth = Math.max(-50, Math.min(50, smoothCents));
+  const clampedCents = Math.max(-50, Math.min(50, smoothCents));
   
   // Converte cents em graus de rotação.
   // -50 cents = -90 graus (esquerda)
   // 0 cents = 0 graus (centro)
   // +50 cents = +90 graus (direita)
   //agora faz a rotação baseada no valor suavizado
-  const rotation = clampedSmooth * (90 / 50); 
+  const rotation = clampedCents * (90 / 50); 
 
   //let flatNote = false;
   
