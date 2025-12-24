@@ -116,7 +116,6 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
               stroke={Math.abs(tickValue) < 5 ? "#27ca55" : "rgba(148,148,148)"}
               strokeWidth={isCenter ? 2.1 : (isMajor ? 1.7 : 1)}
               strokeLinecap="round"
-              strokeDashoffset="5"
               transform={`rotate(${angle} 100 100)`} // Rotaciona em volta do centro
             />
           );
@@ -140,9 +139,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
             strokeWidth="2"    
         />
 
-        <g transform={`rotate(${rotation} 100 100)`} 
-          className="transition-transform duration-150 ease-linear"
-          >
+        <g transform={`rotate(${rotation} 100 100)`}>
             {/* ponteiro */}
             <path d="M 100 25 L 96.5 100 L 103.5 100 Z" fill={needleColor} stroke={needleColor} strokeWidth="0.7" strokeLinejoin='round'/>
             {/* pivô do ponteiro */}
