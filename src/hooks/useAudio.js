@@ -27,7 +27,7 @@ export const useAudio = () => {
 
             //cria o analisador
             const analyser = audioContext.createAnalyser();
-            analyser.fftSize = 2048;
+            analyser.fftSize = 4096; //Quanto maior mais preciso, porém aumenta o tempo de processamento
             analyserRef.current = analyser;
 
             // conecta o microfone ao analisador
