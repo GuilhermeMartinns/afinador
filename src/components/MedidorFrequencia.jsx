@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { useSmoothValue } from './hooks/useSmoothValue.js';
 
 
