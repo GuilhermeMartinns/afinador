@@ -29,7 +29,7 @@ export const useAudio = () => {
             };
 
             // pede acesso ao microfone
-            const stream = await navigator.mediaDevices.getUserMedia({ audio : true});
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
             // cria o contexto de áudio
             const audioContext = new (window.AudioContext || window.webkitAudioContext) ();
