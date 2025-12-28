@@ -14,10 +14,20 @@ export const useAudio = () => {
 
     // novo buffer para guardar as últimas frequencias detectadas
     const pitchBufferRef = useRef([]);
-    
 
     const startMic = async () => {
         try {
+
+            //desativa configurações de aúdio padrão
+            const constraints = {
+                audio: {
+                    echoCancellation: false,
+                    autoGainControl: false,
+                    noiseSupression: false,
+                    latency: 0
+                }
+            };
+
             // pede acesso ao microfone
             const stream = await navigator.mediaDevices.getUserMedia({ audio : true});
 
@@ -92,7 +102,6 @@ export const useAudio = () => {
 
         // Calcula a média dos valores no buffer
         const averagePitch = pitchBuffer.reduce((a, b) => a + b) / pitchBuffer.length;
-
         
         setSourceData(prev => ({ ...prev, frequency: averagePitch }));
         }
