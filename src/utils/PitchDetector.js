@@ -15,7 +15,7 @@ export const autoCorrelate = (buffer, sampleRate) => {
     const rootMeanSquare = Math.sqrt(sumOfSquares / SIZE);
     
     //Noise gate
-    if (rootMeanSquare < 0.015) {
+    if (rootMeanSquare < 0.01) {
         return -1; // Silêncio
     }
 
