@@ -10,22 +10,25 @@ export const autoCorrelate = (buffer, sampleRate) => {
         sumOfSquares += val * val;
     }
     
-    //root mean square mede o volume do sinal
+     //root mean square mede o volume do sinal
     //se o som for muito baixo ou silencio não tenta detectar a frequência
     const rootMeanSquare = Math.sqrt(sumOfSquares / SIZE);
-    // funciona como um noise gate
+    
+    //Noise gate
     if (rootMeanSquare < 0.015) {
         return -1; // Silêncio
     }
 
-    // corta o ínicio e o fim do buffer para aumentar a precisão da detecção
+     // corta o ínicio e o fim do buffer para aumentar a precisão da detecção
     // pois se cortar no meio do pico ou no meio de um vale pode gerar erros de calculo
     // então tenta cortar mais próximo do repouso (perto de 0)
     let r1 = 0;
-    let r2 = SIZE -1;
-    const threshold = 0.1;
+    let r2 = SIZE - 1;
+    
+    // Threshold para achar o começo real da onda
+    const threshold = 0.10;
 
-    // corta o inicio vazio
+    // CORREÇÃO 2: Procura onde o som fica MAIOR que o threshold
     for (let i = 0; i < SIZE / 2; i++) {
         if (Math.abs(buffer[i]) > threshold) { 
             r1 = i;
@@ -33,19 +36,11 @@ export const autoCorrelate = (buffer, sampleRate) => {
         }
     }
 
-    // corta o final vazio
     // Procura o fim real da onda (de trás pra frente)
     for (let i = 1; i < SIZE / 2; i++) {
         if (Math.abs(buffer[SIZE - i]) > threshold) {
             r2 = SIZE - i;
             break;
-        }
-    }
-
-    //comparação da onda com ela mesma deslocada
-    for (let i = 0; i < buffer2.length; i++) {
-        for (let j = 0; j < buffer2.length - i; j++) {
-        c[i] = c[i] + buffer2[j] * buffer2[j + i];
         }
     }
 
@@ -61,10 +56,9 @@ export const autoCorrelate = (buffer, sampleRate) => {
         }
     }
     
-    //Encontra o primeiro pico forte
     let d = 0;
     // Avança enquanto o valor estiver descendo, mas com proteção para não estourar o array
-     while (c[d] > c[d + 1] && d < buffer2.length - 1) {
+    while (c[d] > c[d + 1] && d < buffer2.length - 1) {
         d++;
     }
 
@@ -78,8 +72,8 @@ export const autoCorrelate = (buffer, sampleRate) => {
 
     for (let i = d; i < buffer2.length; i++) {
         if (c[i] > maxval) {
-        maxval = c[i];
-        maxpos = i;
+            maxval = c[i];
+            maxpos = i;
         }
     }
 
@@ -88,7 +82,7 @@ export const autoCorrelate = (buffer, sampleRate) => {
     //sem a interpolação ele pode ficar variando entre 2 frequencias
     let T0 = maxpos;
     //proteção para o T0 nao for válido ou igual a 0 
-    if (T0 < 1 ){
+    if (T0 < 1 ) {
         return -1;
     }
 
