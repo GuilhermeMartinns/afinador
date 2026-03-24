@@ -42,14 +42,22 @@ export const autoCorrelate = (buffer, sampleRate) => {
         }
     }
 
-    // buffer focado na onda principal (após o corte das partes vazias)
-    const buffer2 = buffer.slice(r1, r2);
-    const c = new Array(buffer2.length).fill(0);
-
     //comparação da onda com ela mesma deslocada
     for (let i = 0; i < buffer2.length; i++) {
         for (let j = 0; j < buffer2.length - i; j++) {
         c[i] = c[i] + buffer2[j] * buffer2[j + i];
+        }
+    }
+
+    // Se a onda foi muito fraca e não passou do threshold, ignora
+    if (r2 <= r1) return -1;
+
+    const buffer2 = buffer.slice(r1, r2);
+    const c = new Array(buffer2.length).fill(0);
+
+    for (let i = 0; i < buffer2.length; i++) {
+        for (let j = 0; j < buffer2.length - i; j++) {
+            c[i] = c[i] + buffer2[j] * buffer2[j + i];
         }
     }
     
