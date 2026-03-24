@@ -50,7 +50,7 @@ function App() {
       {/* Header  */}
       <div className="flex flex-col items-center opacity-50 shrink-0">
         <div className="text-sm md:text-base font-bold tracking-widest uppercase">Afinador Cromático</div>
-        <span className="text-[10px]">v.1.0.0 beta</span>
+        <span className="text-[10px]">v.1.0.1 beta</span>
       </div>
 
       {/* Conteúdo Principal */}
