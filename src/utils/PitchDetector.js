@@ -14,7 +14,7 @@ export const autoCorrelate = (buffer, sampleRate) => {
     //se o som for muito baixo ou silencio não tenta detectar a frequência
     const rootMeanSquare = Math.sqrt(sumOfSquares / SIZE);
     // funciona como um noise gate
-    if (rootMeanSquare < 0.11) {
+    if (rootMeanSquare < 0.015) {
         return -1; // Silêncio
     }
 
@@ -23,21 +23,22 @@ export const autoCorrelate = (buffer, sampleRate) => {
     // então tenta cortar mais próximo do repouso (perto de 0)
     let r1 = 0;
     let r2 = SIZE -1;
-    const threshold = 0.15;
+    const threshold = 0.1;
 
     // corta o inicio vazio
     for (let i = 0; i < SIZE / 2; i++) {
-        if (Math.abs(buffer[i]) < threshold) {
-        r1 = i;
-        break;
+        if (Math.abs(buffer[i]) > threshold) { 
+            r1 = i;
+            break;
         }
     }
 
     // corta o final vazio
+    // Procura o fim real da onda (de trás pra frente)
     for (let i = 1; i < SIZE / 2; i++) {
-        if (Math.abs(buffer[SIZE - i]) < threshold) {
-        r2 = SIZE - i;
-        break;
+        if (Math.abs(buffer[SIZE - i]) > threshold) {
+            r2 = SIZE - i;
+            break;
         }
     }
 
