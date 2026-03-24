@@ -78,6 +78,8 @@ export const useAudio = () => {
 
         const detectedPitch = autoCorrelate(buffer, audioContextRef.current.sampleRate);
 
+        console.log("Pitch detectado:", detectedPitch);
+
         if (detectedPitch !== -1) {
         
             const pitchBuffer = pitchBufferRef.current;
@@ -97,7 +99,7 @@ export const useAudio = () => {
 
             // CONFIGURAÇÃO DE VELOCIDADE:
             //quanto maior o número, mais lento o ponteiro se move
-            if (pitchBuffer.length > 7.5) {
+            if (pitchBuffer.length > 7) {
                 pitchBuffer.shift(); 
             }
 
