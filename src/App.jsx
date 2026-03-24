@@ -95,7 +95,7 @@ function App() {
       </div>
 
       {/* Footer */}
-      <footer className="text-center opacity-60 hover:opacity-100 transition-opacity shrink-0 pb-4 mb-2 relative z-20 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+      <footer className="text-center opacity-60 hover:opacity-100 transition-opacity shrink-0 mb-2 relative z-20 pb-[calc(1rem+env(safe-area-inset-bottom))]">
         <span className="text-[12px] text-gray-500 block px-4">
           Desenvolvido por{' '}
           <a 

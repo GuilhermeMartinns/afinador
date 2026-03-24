@@ -74,7 +74,7 @@ const MedidorFrequencia = ({ cents, note, frequency }) => {
         className={`
           text-7xl lg:text-9xl font-black drop-shadow-2xl mb-6
           transition-colors duration-200 ease-in-out
-          transition-transform duration-200 ease-out
+          
           ${isInTune ? 'scale-110 drop-shadow-[0_0_30px_rgba(0,255,65,0.6)]' : 'scale-100'}
           `}
       >
