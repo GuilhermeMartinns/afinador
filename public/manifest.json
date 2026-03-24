@@ -1,7 +1,7 @@
 {
     "name": "Afinador",
     "short_name": "Afinador",
-    "description": "Seu Afinador cromático simples, prático e rápido.",
+    "description": "Afinador cromático simples, prático e rápido.",
     "start-url": ".",
     "display": "standalone",
     "background-color": "#000000",
