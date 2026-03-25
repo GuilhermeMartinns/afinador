@@ -96,7 +96,7 @@ function App() {
 
             {/* Container de Controles */}
             
-            <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 w-full justify-center">
+            <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-12 w-full justify-center">
                 
                 {/* Botão Principal */}
                 <button 
