@@ -82,7 +82,9 @@ const Pads = () => {
         //cria um novo reprodutor de audio apontando para a pasta public/pads
         const newAudio = new Audio(`/pads/${pad.file}`);
         newAudio.loop = true;
-        newAudio.play().catch(err => console.error("Erro ao tocar áudio: ", err));
+        
+        //começa o fade in do novo pad
+        fadeAudio(newAudio, 'in');
 
         //guarda a referência do áudio atual e o ID do pad ativo
         audioRef.current = newAudio;
