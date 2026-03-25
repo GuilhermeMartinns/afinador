@@ -6,14 +6,14 @@ import Switch from './components/Switch.jsx'
 import { useAudio } from './hooks/useAudio.js'
 //import Pads from './components/Pads.jsx'
 import { useWakeLock } from './hooks/useWakeLock.js'
+import { useMIDI } from './hooks/useMIDI.js'
 
 const Pads = lazy(() => import('./components/Pads.jsx'));
+const Sintetizador = lazy(() => import('./components/Sintetizador.jsx'));
 
 function App() {
   //Cria o estado para controlar qual aba está ativa (afinador ou pads)
   const [abaAtiva, setAbaAtiva] = useState('afinador');
-
-  const { activeNotes, midiError } = useMIDI();
 
   useWakeLock(); //ativa o Wake Lock para manter a tela ligada enquanto o app estiver aberto
 
@@ -84,6 +84,16 @@ function App() {
       >
         Pads
       </button>
+      <button
+        onClick={() => setAbaAtiva('sintetizador')}
+        className={`px-6 py-1 rounded-full font-semibold transition-all duration-300 ${
+          abaAtiva === 'sintetizador'
+            ? 'bg-[#27ca55] text-black shadow-lg shadow-[0_0_15px_rgba(39,202,85,0.4)]'
+            : 'bg-gray-800 text-gray-400 hover:text-white'
+        }`}
+      >
+        Sintetizador
+      </button>
       </header>
 
       {/* Conteúdo Principal */}
@@ -139,6 +149,19 @@ function App() {
           }>
             <div className="w-full flex flex-col items-center">
               <Pads />
+            </div>
+          </Suspense>
+        )}
+
+        {abaAtiva === 'sintetizador' && (
+          <Suspense fallback={
+            <div className="flex flex-col items-center justify-center mt-20">
+                   <div className="w-10 h-10 border-4 border-[#27ca55] border-t-transparent rounded-full animate-spin"></div>
+                   <p className="mt-4 text-gray-400 font-mono animate-pulse">Carregando sintetizador...</p>
+               </div>
+          }>
+            <div className="w-full flex flex-col items-center">
+              <Sintetizador />
             </div>
           </Suspense>
         )}
