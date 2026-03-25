@@ -114,6 +114,27 @@ const Pads = () => {
 
 
     const handlePadClick = (pad) => {
+        //inicia a web audio API
+        if (!audioCtxRef.current) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtxRef.current = new AudioContext();
+
+            //ciando o pedal de filtro
+            filterNodeRef.current = audioCtxRef.current.createBiquadFilter();
+            filterNodeRef.current.type = 'lowpass';
+
+            //liga o pedal de filtro na saída de áudio
+            filterNodeRef.current.connect(audioCtxRef.current.destination);
+
+            //força a primeira configuração baseada no slider
+            const freq = 300 * Math.pow(20000 / 300, filterValue / 100);
+            filterNodeRef.current.frequency.value = freq;
+        }
+
+        if (audioCtxRef.current.state === 'suspended'){
+            audioCtxRef.current.resume();
+        }
+
         //se já tiver um áudio tocando, pausa o som
         if (activePad === pad.id) {
             fadeAudio(audioRef.current, 'out');
@@ -130,6 +151,13 @@ const Pads = () => {
         //cria um novo reprodutor de audio apontando para a pasta public/pads
         const newAudio = new Audio(`/pads/${pad.file}`);
         newAudio.loop = true;
+
+        //permite que o áudio seja controlado pela Web Audio API
+        newAudio.crossOrigin = "anonymous";
+
+        //conecta o áudio no filtro
+        const source = audioCtxRef.current.createMediaElementSource(newAudio);
+        source.connect(filterNodeRef.current);
         
         //começa o fade in do novo pad
         fadeAudio(newAudio, 'in');
