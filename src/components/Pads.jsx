@@ -232,18 +232,16 @@ const Pads = () => {
                 Pads
             </h2>*/}
 
-            {/* SEÇÃO DO MIXER*/}
-            <div className="w-full max-w-md mb-10 bg-gray-800/40 p-6 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
+            {/* SEÇÃO DO MIXER (Sliders Verticais mais compactos) */}
+            <div className="w-full max-w-md mb-10 bg-gray-800/40 p-4 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
                 
-                {/* 1. SLIDER: MASTER VOLUME */}
-                <div className="flex flex-col items-center gap-4">
-                    {/* Display do valor */}
-                    <span className="text-[#27ca55] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
+                {/* SLIDER 1: MASTER VOLUME */}
+                <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
+                    <span className="text-[#27ca55] font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
                         {Math.round(masterVolume * 100)}%
                     </span>
                     
-                    {/* Caixa que "segura" o slider rotacionado */}
-                    <div className="relative w-8 h-40 flex items-center justify-center">
+                    <div className="relative w-8 h-24 flex items-center justify-center">
                         <input
                             type="range"
                             min="0"
@@ -251,21 +249,19 @@ const Pads = () => {
                             step="0.01"
                             value={masterVolume}
                             onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
-                            // O truque: w-40 (largura) gira e vira a altura, -rotate-90 deixa em pé
-                            className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55] -rotate-90"
+                            className="absolute w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55] -rotate-90"
                         />
                     </div>
-                    
-                    {/* Rótulo */}
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Vol</span>
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-[10px]">Vol</span>
                 </div>
 
-                {/* Slider de filtro */}
-                <div className="flex flex-col items-center gap-4 transition-all hover:scale-105">
-                    <span className="text-[#3498db] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+                {/* SLIDER 2: FILTRO TONE */}
+                <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
+                    <span className="text-[#3498db] font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
                         {filterValue}%
                     </span>
-                    <div className="relative w-8 h-40 flex items-center justify-center">
+                    
+                    <div className="relative w-8 h-24 flex items-center justify-center">
                         <input
                             type="range"
                             min="0"
@@ -273,18 +269,19 @@ const Pads = () => {
                             step="1"
                             value={filterValue}
                             onChange={(e) => setFilterValue(parseInt(e.target.value))}
-                            className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#3498db] -rotate-90"
+                            className="absolute w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#3498db] -rotate-90"
                         />
                     </div>
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Filtro</span>
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-[10px]">Filtro</span>
                 </div>
 
-                {/* SLIDER  REVERB */}
-                <div className="flex flex-col items-center gap-4 transition-all hover:scale-105">
-                    <span className="text-[#9b59b6] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+                {/* SLIDER 3: REVERB */}
+                <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
+                    <span className="text-[#9b59b6] font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
                         {reverbValue}%
                     </span>
-                    <div className="relative w-8 h-40 flex items-center justify-center">
+                    
+                    <div className="relative w-8 h-24 flex items-center justify-center">
                         <input
                             type="range"
                             min="0"
@@ -292,10 +289,10 @@ const Pads = () => {
                             step="1"
                             value={reverbValue}
                             onChange={(e) => setReverbValue(parseInt(e.target.value))}
-                            className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#9b59b6] -rotate-90"
+                            className="absolute w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#9b59b6] -rotate-90"
                         />
                     </div>
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Reverb</span>
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-[10px]">Reverb</span>
                 </div>
 
             </div>

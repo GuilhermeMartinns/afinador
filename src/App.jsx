@@ -54,7 +54,7 @@ function App() {
     <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-4 overflow-hidden">
      {/* Header  */}
       <div className="flex flex-col items-center opacity-50 shrink-0">
-        <span className="text-[10px]">v.1.0.2 beta</span>
+        <span className="text-[10px]">v.1.0.3 beta</span>
       </div>
       
      {/* Botões de navegação entre abas */ }
