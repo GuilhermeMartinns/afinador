@@ -1,11 +1,13 @@
-import { use, useEffect, useState } from 'react'
+import { use, useEffect, useState, lazy, Suspense } from 'react'
 import './App.css'
 import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
 import Switch from './components/Switch.jsx'
 import { useAudio } from './hooks/useAudio.js'
-import Pads from './components/Pads.jsx'
+//import Pads from './components/Pads.jsx'
 import { useWakeLock } from './hooks/useWakeLock.js'
+
+const Pads = lazy(() => import('./components/Pads.jsx'));
 
 function App() {
   //Cria o estado para controlar qual aba está ativa (afinador ou pads)
@@ -127,9 +129,16 @@ function App() {
         )}
 
         {abaAtiva === 'pads' && (
-          <div className="w-full flex flex-col items-center">
-            <Pads />
-          </div>
+          <Suspense fallback={
+            <div className="flex flex-col items-center justify-center mt-20">
+                   <div className="w-10 h-10 border-4 border-[#27ca55] border-t-transparent rounded-full animate-spin"></div>
+                   <p className="mt-4 text-gray-400 font-mono animate-pulse">Carregando PADS...</p>
+               </div>
+          }>
+            <div className="w-full flex flex-col items-center">
+              <Pads />
+            </div>
+          </Suspense>
         )}
       </main>
 
