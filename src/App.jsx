@@ -78,7 +78,7 @@ function App() {
 
   // Função para forçar o navegador a atualizar a página e buscar os arquivos mais recentes do servidor, ignorando o cache
   const handleUpdate = () => {
-      // O 'true' força o navegador a ignorar a cache e ir buscar os ficheiros novos ao servidor
+      // O 'true' força o navegador a ignorar a cache e ir buscar os arquivos novos ao servidor
       window.location.reload(true); 
   };
 
