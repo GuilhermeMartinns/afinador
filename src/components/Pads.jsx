@@ -27,6 +27,15 @@ const Pads = () => {
     const [masterVolume, setMasterVolume] = useState(0.6);
     const masterVolumeRef = useRef(0.6);
 
+    //Filtro  "cutoff"
+    const [filterValue, setFilterValue] = useState(100);
+
+    //referencia
+    const audioCtxRef = useRef(null);
+
+    //"pedal" de filtro
+    const filterNodeRef = useRef(null);
+
     useEffect(() => {
         masterVolumeRef.current = masterVolume;
         //atualiza o volume do áudio atual se tiver um tocando
@@ -34,6 +43,21 @@ const Pads = () => {
             audioRef.current.volume = masterVolume;
         }
     }, [masterVolume]);
+
+    // filtro passa-baixo simples usando Web Audio API
+    useEffect(() => {
+        if (filterNodeRef.current && audioCtxRef.current) {
+
+            const minFreq = 300;
+            const maxFreq = 20000;
+
+            //curva exponencial para o controle de frequência (para soar mais natural)
+            const freq = minFreq * Math.pow(maxFreq / minFreq, filterValue / 100);
+
+            //aplica a mudança do cutoff suavemente
+            filterNodeRef.current.frequency.setTargetAtTime(freq, audioCtxRef.current.currentTime, 0.01);
+        }
+    }, [filterValue]);
 
     //tempo de transição do fade
     const FADE_DURATION = 2500;
