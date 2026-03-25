@@ -13,6 +13,8 @@ function App() {
   //Cria o estado para controlar qual aba está ativa (afinador ou pads)
   const [abaAtiva, setAbaAtiva] = useState('afinador');
 
+  const { activeNotes, midiError } = useMIDI();
+
   useWakeLock(); //ativa o Wake Lock para manter a tela ligada enquanto o app estiver aberto
 
   const { startMic, stopMic, frequency: micFrequency, isMicOn} = useAudio();
