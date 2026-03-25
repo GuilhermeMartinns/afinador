@@ -130,10 +130,10 @@ const Pads = () => {
                 Pads
             </h2>*/}
 
-            {/*seção de mixers*/}
+            {/* SEÇÃO DO MIXER*/}
             <div className="w-full max-w-md mb-10 bg-gray-800/40 p-6 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
                 
-                {/* Slider de volume */ }
+                {/* 1. SLIDER: MASTER VOLUME */}
                 <div className="flex flex-col items-center gap-4">
                     {/* Display do valor */}
                     <span className="text-[#27ca55] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
@@ -149,13 +149,37 @@ const Pads = () => {
                             step="0.01"
                             value={masterVolume}
                             onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
-    
+                            // O truque: w-40 (largura) gira e vira a altura, -rotate-90 deixa em pé
                             className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55] -rotate-90"
                         />
                     </div>
-
+                    
                     {/* Rótulo */}
                     <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Vol</span>
+                </div>
+
+                {/* ESPAÇO PARA FILTRO */}
+                <div className="flex flex-col items-center gap-4 opacity-30 grayscale pointer-events-none">
+                    <span className="text-white font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
+                        --
+                    </span>
+                    <div className="relative w-8 h-40 flex items-center justify-center">
+                        <div className="absolute w-40 h-2 bg-gray-700 rounded-lg -rotate-90"></div>
+                    </div>
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Filtro</span>
+                </div>
+
+                {/* 3. ESPAÇO PARA REVERB */}
+                <div className="flex flex-col items-center gap-4 opacity-30 grayscale pointer-events-none">
+                    <span className="text-white font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
+                        --
+                    </span>
+                    <div className="relative w-8 h-40 flex items-center justify-center">
+                        <div className="absolute w-40 h-2 bg-gray-700 rounded-lg -rotate-90"></div>
+                    </div>
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Reverb</span>
+                </div>
+
             </div>
 
             {/*Grid de pads (3 colunas no celular, 4 no PC) */}
