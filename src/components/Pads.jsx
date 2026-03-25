@@ -15,6 +15,26 @@ const PADS = [
     { id: 'B', label: 'B', file: 'pad-B.mp3' },
 ];
 
+//sala virtual para reverb (impulse response)
+
+const createReverbIR = (audioCtx) => {
+    const sampleRate = audioCtx.sampleRate;
+    const length = sampleRate * 3;
+    const impulse = audioCtx.createBuffer(2, length, sampleRate);
+    const left = impulse.getChannelData(0);
+    const right = impulse.getChannelData(1);
+
+    for (let i = 0; i < length; i++) {
+        //decaimento exponencial
+        const decay = Math.exp(-i / (sampleRate * 1.0));
+
+        //preenche com ruído branco decrescente
+        left[i] = (Math.random() * 2 - 1) * decay;
+        right[i] = (Math.random() * 2 - 1) * decay;
+    }
+    return impulse;
+};
+
 const Pads = () => {
     
     //estado para saber qual pad está tocando no momento (guarda o ID)
@@ -228,7 +248,7 @@ const Pads = () => {
                     </div>
                     <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Filtro</span>
                 </div>
-                
+
                 {/* 3. ESPAÇO PARA REVERB */}
                 <div className="flex flex-col items-center gap-4 opacity-30 grayscale pointer-events-none">
                     <span className="text-white font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
