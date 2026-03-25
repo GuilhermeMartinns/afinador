@@ -23,6 +23,48 @@ const Pads = () => {
     //referência para guardar o objeto de áudio atual sem causar "re-renders" desnecessários
     const audioRef = useRef(null);
 
+    //tempo de transição do fade
+    const FADE_DURATION = 2000;
+
+    //função de fade in/out
+    const fadeAudio = (audioElement, direction) => {
+        if (!audioElement) return;
+    }
+
+    //limpa qualquer animação de fade anterior
+    clearInterval(audioElement.fadeInterval);
+
+    const steps = 40; //quantidade de "degraus" do volume
+    const stepTime = FADE_DURATION / steps; //tempo entre cada degrau
+    const volumeStep = 1.0 / steps;
+
+    if (direction === 'in') {
+        audioElement.volume = 0;
+        audioElement.play().catch(e => console.error("Erro ao tocar áudio: ", e));
+
+        audioElement.fadeInterval = setInterval(() => {
+            if (audioElement.volume < 1 - volumeStep) {
+                audioElement.volume += volumeStep;
+            } else {
+                audioElement.volume = 1;
+                clearInterval(audioElement.fadeInterval);
+            }
+        }, stepTime);
+
+    } else if (direction === 'out') {
+        audioElement.fadeInterval = setInterval(() => {
+            if (audioElement.volume > volumeStep) {
+                audioElement.volume -= volumeStep;
+            } else {
+                audio.volume = 0;
+                audioElement.pause();
+                clearInterval(audioElement.fadeInterval);
+            }
+        }, stepTime);
+    }
+};
+
+
     const handlePadClick = (pad) => {
         //se já tiver um áudio tocando, pausa o som
         if (activePad === pad.id) {
