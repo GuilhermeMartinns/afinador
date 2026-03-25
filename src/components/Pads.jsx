@@ -47,7 +47,7 @@ const Pads = () => {
 
         audioElement.isFading = true; //flag para indicar que o áudio está em processo de fade
 
-        const steps = 50; //quantidade de "degraus" do volume
+        const steps = 60; //quantidade de "degraus" do volume
         const stepTime = FADE_DURATION / steps; //tempo entre cada degrau
         //const volumeStep = 1.0 / steps;
         const targetVolume = masterVolumeRef.current;
