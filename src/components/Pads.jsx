@@ -24,7 +24,7 @@ const Pads = () => {
     const audioRef = useRef(null);
 
     //tempo de transição do fade
-    const FADE_DURATION = 2000;
+    const FADE_DURATION = 2500;
 
     //função de fade in/out
     const fadeAudio = (audioElement, direction) => {
@@ -33,7 +33,7 @@ const Pads = () => {
         //limpa qualquer animação de fade anterior
         clearInterval(audioElement.fadeInterval);
 
-        const steps = 40; //quantidade de "degraus" do volume
+        const steps = 50; //quantidade de "degraus" do volume
         const stepTime = FADE_DURATION / steps; //tempo entre cada degrau
         const volumeStep = 1.0 / steps;
 
