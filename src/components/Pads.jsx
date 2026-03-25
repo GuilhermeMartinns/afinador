@@ -68,14 +68,15 @@ const Pads = () => {
     const handlePadClick = (pad) => {
         //se já tiver um áudio tocando, pausa o som
         if (activePad === pad.id) {
-            audioRef.current.pause();
+            fadeAudio(audioRef.current, 'out');
             setActivePad(null);
+            audioRef.current = null;
             return;
         }
 
         //se tiver outro áudio tocando, pausa ele antes de tocar o novo
         if (audioRef.current) {
-            audioRef.current.pause();
+            fadeAudio(audioRef.current, 'out');
         }
 
         //cria um novo reprodutor de audio apontando para a pasta public/pads
