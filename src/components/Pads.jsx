@@ -227,7 +227,7 @@ const Pads = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-4xl flex flex-col items-center px-4 py-8">
+        <div className="w-full max-w-4xl flex flex-col items-center px-4 py-1">
             {/*<h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-wider">
                 Pads
             </h2>*/}
@@ -316,15 +316,12 @@ const Pads = () => {
                         >
                             {pad.label}
 
-                            {/* Efeito de onda ao tocar */ } 
+                            {/* Efeito pulsar ao tocar */ } 
                             {isActive && (
                                 <span className="absolute inset-0 rounded-2xl bg-[#27ca55] opacity-50 animate-ping"></span>
                             )}
 
-                            {/*indicador visual de que es´ta sendo tocado 
-                            {isActive && (
-                                <span className="absolute bottom-4 w-2 h-2 rounded-full bg-black animate-pulse"/>
-                            )}*/}
+                        
                         </button>
                     );
                 })}

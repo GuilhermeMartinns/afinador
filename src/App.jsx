@@ -51,17 +51,17 @@ function App() {
   }, [micFrequency, isFlatNote]);
 
   return (
-    <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-4 overflow-hidden">
+    <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden">
      {/* Header  */}
       <div className="flex flex-col items-center opacity-50 shrink-0">
-        <span className="text-[10px]">v.1.0.3 beta</span>
+        <span className="text-[9px]">v.1.0.3 beta</span>
       </div>
       
      {/* Botões de navegação entre abas */ }
      <header className="w-full flex justify-center gap-4 p-4 shrink-0 relative z-20">
      <button
         onClick={() => setAbaAtiva('afinador')}
-        className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+        className={`px-6 py-1 rounded-full font-semibold transition-all duration-300 ${
           abaAtiva === 'afinador'
             ? 'bg-[#27ca55] text-black shadow-lg shadow-[0_0_15px_rgba(39,202,85,0.4)]'
             : 'bg-gray-800 text-gray-400 hover:text-white'
@@ -72,7 +72,7 @@ function App() {
 
     <button
         onClick={() => setAbaAtiva('pads')}
-        className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+        className={`px-6 py-1 rounded-full font-semibold transition-all duration-300 ${
           abaAtiva === 'pads'
             ? 'bg-[#27ca55] text-black shadow-lg shadow-[0_0_15px_rgba(39,202,85,0.4)]'
             : 'bg-gray-800 text-gray-400 hover:text-white'
