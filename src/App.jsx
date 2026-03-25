@@ -76,6 +76,12 @@ function App() {
     setIsMenuOpen(false); // Fecha o menu depois de clicar
   };
 
+  // Função para forçar o navegador a atualizar a página e buscar os arquivos mais recentes do servidor, ignorando o cache
+  const handleUpdate = () => {
+      // O 'true' força o navegador a ignorar a cache e ir buscar os ficheiros novos ao servidor
+      window.location.reload(true); 
+  };
+
   return (
     <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden">
      {/* Header  */}

@@ -233,7 +233,7 @@ const Pads = () => {
             </h2>*/}
 
             {/* SEÇÃO DO MIXER (Sliders Verticais mais compactos) */}
-            <div className="w-full max-w-md mb-10 bg-gray-800/40 p-4 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
+            <div className="w-full max-w-md mb-5 bg-gray-800/40 p-4 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
                 
                 {/* SLIDER 1: MASTER VOLUME */}
                 <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
