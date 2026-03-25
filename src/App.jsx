@@ -4,6 +4,7 @@ import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
 import Switch from './components/Switch.jsx'
 import { useAudio } from './hooks/useAudio.js'
+import Pads from './components/Pads.jsx'
 
 function App() {
   //Cria o estado para controlar qual aba está ativa (afinador ou pads)
@@ -127,6 +128,8 @@ function App() {
         {abaAtiva === 'pads' && (
           <div className="w-full flex flex-col items-center">
             <h2 className="text-2xl font-bold text-gray-400">Pads em construção...</h2>
+          
+            <Pads />
           </div>
         )}
       </main>
