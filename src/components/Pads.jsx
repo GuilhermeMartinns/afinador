@@ -130,24 +130,32 @@ const Pads = () => {
                 Pads
             </h2>*/}
 
-            {/* Slider de volume */ }
-            <div className="w-full max-w-sm mb-10 bg-gray-800/40 p-5 rounded-2xl shadow-inner border-gray-700/50">
-                <div className="flex justify-between items-center mb-3">
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-sm">Volume</span>
-                    <span className="text-[#27ca55] font-bold font-mono bg-gray-900/50 px-2 py-1 rounded">
+            {/*seção de mixers*/}
+            <div className="w-full max-w-md mb-10 bg-gray-800/40 p-6 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
+                
+                {/* Slider de volume */ }
+                <div className="flex flex-col items-center gap-4">
+                    {/* Display do valor */}
+                    <span className="text-[#27ca55] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
                         {Math.round(masterVolume * 100)}%
                     </span>
-                </div>
-                <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={masterVolume}
-                    onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
-                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55]"
-            
-                />
+                    
+                    {/* Caixa que "segura" o slider rotacionado */}
+                    <div className="relative w-8 h-40 flex items-center justify-center">
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value={masterVolume}
+                            onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
+    
+                            className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55] -rotate-90"
+                        />
+                    </div>
+
+                    {/* Rótulo */}
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Vol</span>
             </div>
 
             {/*Grid de pads (3 colunas no celular, 4 no PC) */}
