@@ -28,41 +28,40 @@ const Pads = () => {
 
     //função de fade in/out
     const fadeAudio = (audioElement, direction) => {
-        if (!audioElement) return;
-    }
+        if (!audioElement) return; // A função CONTINUA depois daqui!
 
-    //limpa qualquer animação de fade anterior
-    clearInterval(audioElement.fadeInterval);
+        //limpa qualquer animação de fade anterior
+        clearInterval(audioElement.fadeInterval);
 
-    const steps = 40; //quantidade de "degraus" do volume
-    const stepTime = FADE_DURATION / steps; //tempo entre cada degrau
-    const volumeStep = 1.0 / steps;
+        const steps = 40; //quantidade de "degraus" do volume
+        const stepTime = FADE_DURATION / steps; //tempo entre cada degrau
+        const volumeStep = 1.0 / steps;
 
-    if (direction === 'in') {
-        audioElement.volume = 0;
-        audioElement.play().catch(e => console.error("Erro ao tocar áudio: ", e));
+        if (direction === 'in') {
+            audioElement.volume = 0;
+            audioElement.play().catch(e => console.error("Erro ao tocar áudio: ", e));
 
-        audioElement.fadeInterval = setInterval(() => {
-            if (audioElement.volume < 1 - volumeStep) {
-                audioElement.volume += volumeStep;
-            } else {
-                audioElement.volume = 1;
-                clearInterval(audioElement.fadeInterval);
-            }
-        }, stepTime);
+            audioElement.fadeInterval = setInterval(() => {
+                if (audioElement.volume < 1 - volumeStep) {
+                    audioElement.volume += volumeStep;
+                } else {
+                    audioElement.volume = 1;
+                    clearInterval(audioElement.fadeInterval);
+                }
+            }, stepTime);
 
-    } else if (direction === 'out') {
-        audioElement.fadeInterval = setInterval(() => {
-            if (audioElement.volume > volumeStep) {
-                audioElement.volume -= volumeStep;
-            } else {
-                audio.volume = 0;
-                audioElement.pause();
-                clearInterval(audioElement.fadeInterval);
-            }
-        }, stepTime);
-    }
-};
+        } else if (direction === 'out') {
+            audioElement.fadeInterval = setInterval(() => {
+                if (audioElement.volume > volumeStep) {
+                    audioElement.volume -= volumeStep;
+                } else {
+                    audioElement.volume = 0;
+                    audioElement.pause();
+                    clearInterval(audioElement.fadeInterval);
+                }
+            }, stepTime);
+        }
+    };
 
 
     const handlePadClick = (pad) => {
