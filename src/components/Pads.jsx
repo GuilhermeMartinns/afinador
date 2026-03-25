@@ -210,17 +210,25 @@ const Pads = () => {
                     <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Vol</span>
                 </div>
 
-                {/* ESPAÇO PARA FILTRO */}
-                <div className="flex flex-col items-center gap-4 opacity-30 grayscale pointer-events-none">
-                    <span className="text-white font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
-                        --
+                {/* Slider de filtro */}
+                <div className="flex flex-col items-center gap-4 transition-all hover:scale-105">
+                    <span className="text-[#3498db] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+                        {filterValue}%
                     </span>
                     <div className="relative w-8 h-40 flex items-center justify-center">
-                        <div className="absolute w-40 h-2 bg-gray-700 rounded-lg -rotate-90"></div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={filterValue}
+                            onChange={(e) => setFilterValue(parseInt(e.target.value))}
+                            className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#3498db] -rotate-90"
+                        />
                     </div>
                     <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Filtro</span>
                 </div>
-
+                
                 {/* 3. ESPAÇO PARA REVERB */}
                 <div className="flex flex-col items-center gap-4 opacity-30 grayscale pointer-events-none">
                     <span className="text-white font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
