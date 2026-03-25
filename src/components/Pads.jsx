@@ -95,7 +95,7 @@ const Pads = () => {
     useEffect(() => {
         return () => {
             if (audioRef.current) {
-                audioRef.current.pause();
+                fadeAudio(audioRef.current, 'out');
             }
         };
     }, []);
