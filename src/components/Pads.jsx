@@ -130,6 +130,26 @@ const Pads = () => {
                 Pads
             </h2>
 
+            {/* Slider de volume */ }
+            <div className="w-full max-w-sm mb-10 bg-gray-800/40 p-5 rounded-2xl shadow-inner border-gray-700/50">
+                <div className="flex justify-between items-center mb-3">
+                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-sm">Volume</span>
+                    <span className="text-[#27ca55] font-bold font-mono bg-gray-900/50 px-2 py-1 rounded">
+                        {Math.round(masterVolume * 100)}%
+                    </span>
+                </div>
+                <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={masterVolume}
+                    onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
+                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55]"
+            
+                />
+            </div>
+
             {/*Grid de pads (3 colunas no celular, 4 no PC) */}
             <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 w-full">
                 {PADS.map((pad) => {
