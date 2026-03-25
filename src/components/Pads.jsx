@@ -118,21 +118,21 @@ const Pads = () => {
                                 relative flex flex-col items-center justify-center aspect-square rounded-2xl
                                 text-3xl md:text-5xl font-bold transition-all duration-300 overflow-hidden
                                 ${isActive
-                                    ? 'bg-[#27ca55] text-black scale-105 shadow-[0_0_30px_rgba(39,202,85,0.6)]'
+                                    ? 'bg-[#27ca55] text-black scale-105 shadow-[0_0_30px_rgba(39,202,85,0.6)] animate-pulse'
                                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:scale-105 shadow-lg'
                                 }`}
                         >
                             {pad.label}
 
-                            {/* Efeito de onda ao tocar 
+                            {/* Efeito de onda ao tocar */ } 
                             {isActive && (
                                 <span className="absolute inset-0 rounded-2xl bg-[#27ca55] opacity-50 animate-ping"></span>
-                            )}*/ } 
+                            )}
 
-                            {/*indicador visual de que es´ta sendo tocado */}
+                            {/*indicador visual de que es´ta sendo tocado 
                             {isActive && (
                                 <span className="absolute bottom-4 w-2 h-2 rounded-full bg-black animate-pulse"/>
-                            )}
+                            )}*/}
                         </button>
                     );
                 })}
