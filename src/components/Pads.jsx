@@ -23,6 +23,18 @@ const Pads = () => {
     //referência para guardar o objeto de áudio atual sem causar "re-renders" desnecessários
     const audioRef = useRef(null);
 
+    //slider de volume (começa em 60%)
+    const [masterVolume, setMasterVolume] = useState(0.6);
+    const masterVolumeRef = useRef(0.6);
+
+    useEffect(() => {
+        masterVolumeRef.current = masterVolume;
+        //atualiza o volume do áudio atual se tiver um tocando
+        if (audioRef.current && !audioRef.current.isFading) {
+            audioRef.current.volume = masterVolume;
+        }
+    }, [masterVolume]);
+
     //tempo de transição do fade
     const FADE_DURATION = 2500;
 
@@ -33,30 +45,43 @@ const Pads = () => {
         //limpa qualquer animação de fade anterior
         clearInterval(audioElement.fadeInterval);
 
+        audioElement.isFading = true; //flag para indicar que o áudio está em processo de fade
+
         const steps = 50; //quantidade de "degraus" do volume
         const stepTime = FADE_DURATION / steps; //tempo entre cada degrau
-        const volumeStep = 1.0 / steps;
+        //const volumeStep = 1.0 / steps;
+        const targetVolume = masterVolumeRef.current;
+
 
         if (direction === 'in') {
             audioElement.volume = 0;
             audioElement.play().catch(e => console.error("Erro ao tocar áudio: ", e));
 
+            const inStep = targetVolume / steps;
+
             audioElement.fadeInterval = setInterval(() => {
-                if (audioElement.volume < 1 - volumeStep) {
-                    audioElement.volume += volumeStep;
+                if (audioElement.volume < targetVolume - inStep) {
+                    audioElement.volume += inStep;
                 } else {
-                    audioElement.volume = 1;
+                    audioElement.volume = targetVolume;
+                    audioElement.isFading = false; //fade completo
                     clearInterval(audioElement.fadeInterval);
                 }
             }, stepTime);
 
         } else if (direction === 'out') {
+
+            //calcula os steps baseado no volume atual do áudio
+            const currentVol = audioElement.volume;
+            const outStep = currentVol / steps;
+
             audioElement.fadeInterval = setInterval(() => {
-                if (audioElement.volume > volumeStep) {
-                    audioElement.volume -= volumeStep;
+                if (audioElement.volume > outStep) {
+                    audioElement.volume -= outStep;
                 } else {
                     audioElement.volume = 0;
                     audioElement.pause();
+                    audioElement.isFading = false;
                     clearInterval(audioElement.fadeInterval);
                 }
             }, stepTime);
