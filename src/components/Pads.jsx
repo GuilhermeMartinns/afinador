@@ -126,9 +126,9 @@ const Pads = () => {
 
     return (
         <div className="w-full max-w-4xl flex flex-col items-center px-4 py-8">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-wider">
+            {/*<h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-wider">
                 Pads
-            </h2>
+            </h2>*/}
 
             {/* Slider de volume */ }
             <div className="w-full max-w-sm mb-10 bg-gray-800/40 p-5 rounded-2xl shadow-inner border-gray-700/50">
@@ -151,7 +151,7 @@ const Pads = () => {
             </div>
 
             {/*Grid de pads (3 colunas no celular, 4 no PC) */}
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 w-full">
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-5 w-full">
                 {PADS.map((pad) => {
                     const isActive = activePad === pad.id;
 
