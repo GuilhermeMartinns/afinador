@@ -235,7 +235,7 @@ const Sintetizador = () => {
                     <div className="flex justify-between items-center">
                         <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer">
                             <input type="checkbox" checked={layer1Active} onChange={(e) => setLayer1Active(e.target.checked)} className="accent-[#27ca55] w-4 h-4" />
-                            Camada 1 (Principal)
+                            Camada 1: <span className="text-[#27ca55] font-mono text-xs ml-1">{fileName || 'Principal'}</span>
                         </label>
                     </div>
                     
@@ -268,7 +268,7 @@ const Sintetizador = () => {
                     <div className="flex justify-between items-center">
                         <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer">
                             <input type="checkbox" checked={layer2Active} onChange={(e) => setLayer2Active(e.target.checked)} className="accent-[#3498db] w-4 h-4" />
-                            Camada 2 (Secundária)
+                            Camada 2: <span className="text-[#3498db] font-mono text-xs ml-1">{fileName || 'Secundária'}</span>
                         </label>
                     </div>
 
