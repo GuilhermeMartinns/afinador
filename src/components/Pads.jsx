@@ -26,7 +26,7 @@ const createReverbIR = (audioCtx) => {
 
     for (let i = 0; i < length; i++) {
         //decaimento exponencial
-        const decay = Math.exp(-i / (sampleRate * 1.0));
+        const decay = Math.exp(-i / (sampleRate * 1.5));
 
         //preenche com ruído branco decrescente
         left[i] = (Math.random() * 2 - 1) * decay;
@@ -50,11 +50,17 @@ const Pads = () => {
     //Filtro  "cutoff"
     const [filterValue, setFilterValue] = useState(100);
 
+    //reverb
+    const [reverbValue, setReverbValue] = useState(30);
+
     //referencia
     const audioCtxRef = useRef(null);
 
     //"pedal" de filtro
     const filterNodeRef = useRef(null);
+    const convolverNodeRef = useRef(null);
+    const dryGainRef = useRef(null);
+    const wetGainRef = useRef(null);
 
     useEffect(() => {
         masterVolumeRef.current = masterVolume;
@@ -79,12 +85,23 @@ const Pads = () => {
         }
     }, [filterValue]);
 
+    //sincronização do reverb
+    useEffect(() => {
+        if (dryGainRef.current && wetGainRef.current && audioCtxRef.current) {
+            const wetLevel = reverbValue / 100;
+            const dryLevel = 1 - (wetLevel * 0.5); //baixa um pouco o dry para evitar que fique muito alto quando o reverb estiver forte
+
+            wetGainRef.current.gain.setTargetAtTime(wetLevel, audioCtxRef.current.currentTime, 0.01);
+            dryGainRef.current.gain.setTargetAtTime(dryLevel, audioCtxRef.current.currentTime, 0.01);
+        }
+    }, [reverbValue]);
+
     //tempo de transição do fade
     const FADE_DURATION = 2500;
 
     //função de fade in/out
     const fadeAudio = (audioElement, direction) => {
-        if (!audioElement) return; // A função CONTINUA depois daqui!
+        if (!audioElement) return;
 
         //limpa qualquer animação de fade anterior
         clearInterval(audioElement.fadeInterval);
@@ -142,6 +159,19 @@ const Pads = () => {
             //ciando o pedal de filtro
             filterNodeRef.current = audioCtxRef.current.createBiquadFilter();
             filterNodeRef.current.type = 'lowpass';
+
+            convolverNodeRef.current = audioCtxRef.current.createConvolver();
+            convolverNodeRef.current.buffer = createReverbIR(audioCtxRef.current);
+
+            dryGainRef.current = audioCtxRef.current.createGain();
+            wetGainRef.current = audioCtxRef.current.createGain();
+
+            filterNodeRef.current.connect(dryGainRef.current);
+            filterNodeRef.current.connect(convolverNodeRef.current);
+
+            convolverNodeRef.current.connect(wetGainRef.current);
+            dryGainRef.current.connect(audioCtxRef.current.destination);
+            wetGainRef.current.connect(audioCtxRef.current.destination);
 
             //liga o pedal de filtro na saída de áudio
             filterNodeRef.current.connect(audioCtxRef.current.destination);
@@ -249,13 +279,21 @@ const Pads = () => {
                     <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Filtro</span>
                 </div>
 
-                {/* 3. ESPAÇO PARA REVERB */}
-                <div className="flex flex-col items-center gap-4 opacity-30 grayscale pointer-events-none">
-                    <span className="text-white font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center">
-                        --
+                {/* SLIDER  REVERB */}
+                <div className="flex flex-col items-center gap-4 transition-all hover:scale-105">
+                    <span className="text-[#9b59b6] font-bold font-mono text-sm bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+                        {reverbValue}%
                     </span>
                     <div className="relative w-8 h-40 flex items-center justify-center">
-                        <div className="absolute w-40 h-2 bg-gray-700 rounded-lg -rotate-90"></div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={reverbValue}
+                            onChange={(e) => setReverbValue(parseInt(e.target.value))}
+                            className="absolute w-40 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#9b59b6] -rotate-90"
+                        />
                     </div>
                     <span className="text-gray-400 font-semibold uppercase tracking-wider text-xs">Reverb</span>
                 </div>
