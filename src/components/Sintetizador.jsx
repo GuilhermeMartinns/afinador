@@ -121,7 +121,7 @@ const Sintetizador = () => {
 
     return (
         <div className="w-full max-w-4xl flex flex-col items-center px-4 py-8">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-wider">
+            <h2 className="text-xl md:text-2xl font-black text-white mb-6 tracking-wider">
                 SINTETIZADOR
             </h2>
 
