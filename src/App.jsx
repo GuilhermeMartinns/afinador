@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import './App.css'
 import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
 import Switch from './components/Switch.jsx'
 import { useAudio } from './hooks/useAudio.js'
 import Pads from './components/Pads.jsx'
+import { useWakeLock } from './hooks/useWakeLock.js'
 
 function App() {
   //Cria o estado para controlar qual aba está ativa (afinador ou pads)
   const [abaAtiva, setAbaAtiva] = useState('afinador');
+
+  useWakeLock(); //ativa o Wake Lock para manter a tela ligada enquanto o app estiver aberto
 
   const { startMic, stopMic, frequency: micFrequency, isMicOn} = useAudio();
 
@@ -77,8 +80,7 @@ function App() {
 
       {/* Header  */}
       <div className="flex flex-col items-center opacity-50 shrink-0">
-        <div className="text-sm md:text-base font-bold tracking-widest uppercase">Afinador Cromático</div>
-        <span className="text-[10px]">v.1.0.1 beta</span>
+        <span className="text-[10px]">v.1.0.2 beta</span>
       </div>
 
       {/* Conteúdo Principal */}
@@ -127,8 +129,6 @@ function App() {
 
         {abaAtiva === 'pads' && (
           <div className="w-full flex flex-col items-center">
-            <h2 className="text-2xl font-bold text-gray-400">Pads em construção...</h2>
-          
             <Pads />
           </div>
         )}
