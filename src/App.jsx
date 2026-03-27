@@ -82,6 +82,34 @@ function App() {
       window.location.reload(true); 
   };
 
+  // FUNÇÃO PARA FORÇAR ROTAÇÃO E ECRÃ INTEIRO
+  const handleOrientation = async () => {
+    try {
+        // 1. O navegador exige Ecrã Inteiro para forçar a rotação
+        if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
+        }
+
+        // 2. Verifica a orientação atual e inverte
+        const currentOrientation = window.screen.orientation.type;
+        
+        if (currentOrientation.startsWith('portrait')) {
+            await window.screen.orientation.lock('landscape');
+        } else {
+            await window.screen.orientation.lock('portrait');
+            // Nota: Em portrait, podemos querer sair do fullscreen
+            if (document.fullscreenElement) {
+               await document.exitFullscreen();
+            }
+        }
+    } catch (error) {
+        console.error("Erro ao mudar orientação:", error);
+        alert("O seu navegador ou dispositivo não suporta a rotação forçada por botão. Por favor, rode o telemóvel fisicamente.");
+    }
+    
+    setIsMenuOpen(false); // Fecha o menu
+  };
+
   return (
     <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden">
      {/* Header  */}
@@ -123,6 +151,12 @@ function App() {
                         <svg className="w-5 h-5 text-[#3498db]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
                         Compartilhar App
                     </button>
+
+                    <button onClick={handleOrientation} className="flex items-center gap-3 px-4 py-4 text-sm font-semibold text-white hover:bg-gray-800 transition-colors w-full text-left border-t border-gray-800">
+                        <svg className="w-5 h-5 text-[#f59e0b]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                        Alternar Rotação / Tela Cheia
+                    </button>
+
                     <button onClick={handleUpdate} className="flex items-center gap-3 px-4 py-4 text-sm font-semibold text-white hover:bg-gray-800 transition-colors w-full text-left border-t border-gray-800">
                         <svg className="w-5 h-5 text-[#27ca55]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Procurar Atualização
