@@ -54,6 +54,36 @@ function App() {
     }
   }, [micFrequency, isFlatNote]);
 
+  // ESTADO PARA SABER SE JÁ TEMOS PERMISSÃO
+  const [notiPermission, setNotiPermission] = useState(
+    'Notification' in window ? Notification.permission : 'unsupported'
+  );
+
+  // FUNÇÃO PARA PEDIR PERMISSÃO
+  const handleRequestNotification = async () => {
+    if (!('Notification' in window)) {
+        alert("Seu navegador não suporta notificações.");
+        return;
+    }
+
+    // O navegador abre a janelinha nativa perguntando "Permitir Notificações?"
+    const permission = await Notification.requestPermission();
+    setNotiPermission(permission);
+
+    if (permission === 'granted') {
+        // Dispara uma notificação de teste na hora para o usuário ver que funcionou!
+        new Notification("Sintetizador PWA", {
+            body: "Tudo certo! Avisaremos você quando houver novidades e atualizações.",
+            icon: "/vite.svg" // Troque pelo caminho do ícone do seu app se tiver
+        });
+    } else if (permission === 'denied') {
+        alert("Você bloqueou as notificações. Se mudar de ideia, precisará liberar nas configurações do navegador.");
+    }
+    
+    setIsMenuOpen(false); // Fecha o menu
+  };
+
+
   // Função de compartilhar o app usando a Web Share API
   const handleShare = async () => {
     const shareData = {
@@ -161,6 +191,14 @@ function App() {
                         <svg className="w-5 h-5 text-[#27ca55]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Procurar Atualização
                     </button>
+
+                    {/* BOTÃO DE NOTIFICAÇÃO (Só aparece se ainda não foi permitido) */}
+                    {notiPermission === 'default' && (
+                        <button onClick={handleRequestNotification} className="flex items-center gap-3 px-4 py-4 text-sm font-semibold text-white hover:bg-gray-800 transition-colors w-full text-left border-t border-gray-800">
+                            <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            Ativar Notificações
+                        </button>
+            )}
                 </div>
             </>
         )}
