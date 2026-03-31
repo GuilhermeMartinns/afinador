@@ -3,6 +3,7 @@ import { useMIDI } from '../hooks/useMIDI';
 import { WorkletSynthesizer } from 'spessasynth_lib';
 import VirtualKeyboard from './VirtualKeyboard'; 
 
+// Importação segura e estável para o Vite
 import processorUrl from 'spessasynth_lib/dist/spessasynth_processor.min.js?url';
 
 const PC_KEY_MAP = {
@@ -17,8 +18,9 @@ const Sintetizador = () => {
     const [fileName, setFileName] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
     const [showKeyboard, setShowKeyboard] = useState(true);
+
+    const [visualActiveNotes, setVisualActiveNotes] = useState(new Set());
 
     const [layer1Active, setLayer1Active] = useState(true);
     const [layer1Volume, setLayer1Volume] = useState(0.8);
@@ -44,24 +46,25 @@ const Sintetizador = () => {
         localStorage.setItem('worship_presets', JSON.stringify(presets));
     }, [presets]);
 
-    // LÓGICA DO BOTÃO DE PÂNICO (ALL NOTES OFF)
     const handlePanic = useCallback(() => {
         if (!synthRef.current) return;
-
-        // Dispara o comando de "Desligar" para as 128 notas MIDI nos 3 canais
         for (let i = 0; i < 128; i++) {
-            synthRef.current.noteOff(0, i);
-            synthRef.current.noteOff(1, i);
-            synthRef.current.noteOff(2, i);
+            synthRef.current.noteOff(0, i); synthRef.current.noteOff(1, i); synthRef.current.noteOff(2, i);
         }
-
-        // Limpa o nosso "caderno de anotações" de notas a tocar
         playingNotesRef.current = { 0: {}, 1: {}, 2: {} };
-        
+        setVisualActiveNotes(new Set()); 
     }, []);
 
-    const playNote = useCallback((note, velocity) => {
+    const playNote = useCallback(async (note, velocity = 100) => {
         if (!synthRef.current) return;
+        
+        // Garante que a placa de som esteja acordada
+        if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+            await audioCtxRef.current.resume();
+        }
+
+        setVisualActiveNotes(prev => new Set(prev).add(note));
+
         if (layer1Active) {
             const actualNote = Math.max(0, Math.min(127, note + (layer1Octave * 12)));
             playingNotesRef.current[0][note] = actualNote;
@@ -81,6 +84,13 @@ const Sintetizador = () => {
 
     const stopNote = useCallback((note) => {
         if (!synthRef.current) return;
+
+        setVisualActiveNotes(prev => {
+            const next = new Set(prev);
+            next.delete(note);
+            return next;
+        });
+
         const actualNote1 = playingNotesRef.current[0][note];
         if (actualNote1 !== undefined) {
             synthRef.current.noteOff(0, actualNote1);
@@ -98,11 +108,11 @@ const Sintetizador = () => {
         }
     }, []);
 
-    const { activeNotes, midiError } = useMIDI({ onNoteOn: playNote, onNoteOff: stopNote });
+    const { midiError, midiConnected, midiDeviceName } = useMIDI({ onNoteOn: playNote, onNoteOff: stopNote });
 
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (e.repeat) return; 
+            if (e.repeat || e.target.tagName === 'INPUT') return; 
             const midiNote = PC_KEY_MAP[e.key.toLowerCase()];
             if (midiNote) playNote(midiNote, 100);
         };
@@ -148,7 +158,7 @@ const Sintetizador = () => {
         const file = event.target.files[0];
         if (!file) return;
         if (!file.name.toLowerCase().endsWith('.sf2')) {
-            alert("Selecione um ficheiro .sf2 válido.");
+            alert("Selecione um arquivo .sf2 válido.");
             return;
         }
         setFileName(file.name);
@@ -158,29 +168,42 @@ const Sintetizador = () => {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             const ctx = new AudioContext();
             audioCtxRef.current = ctx;
+            
             await ctx.audioWorklet.addModule(processorUrl);
             const synth = new WorkletSynthesizer(ctx);
+            
+            // 🔌 A MÁGICA QUE FALTAVA: Conectando o sintetizador nas caixas de som!
+            synth.connect(ctx.destination);
+            
             await synth.soundBankManager.addSoundBank(arrayBuffer, "main");
             
-            synth.controllerChange(0, 7, layer1Volume * 127); synth.programChange(0, layer1Instrument);
-            synth.controllerChange(1, 7, layer2Volume * 127); synth.programChange(1, layer2Instrument);
-            synth.controllerChange(2, 7, layer3Volume * 127); synth.programChange(2, layer3Instrument);
+            // Configura os Pedais de Expressão e Volumes (Com Math.round obrigatório)
+            [0, 1, 2].forEach(ch => {
+                synth.controllerChange(ch, 11, 127); 
+            });
+
+            synth.controllerChange(0, 7, Math.round(layer1Volume * 127)); 
+            synth.programChange(0, layer1Instrument);
+            synth.controllerChange(1, 7, Math.round(layer2Volume * 127)); 
+            synth.programChange(1, layer2Instrument);
+            synth.controllerChange(2, 7, Math.round(layer3Volume * 127)); 
+            synth.programChange(2, layer3Instrument);
 
             synthRef.current = synth;
             setIsLoaded(true);
         } catch (error) {
             console.error("Erro no motor SF2:", error);
-            alert("Erro ao processar o banco de sons.");
+            alert("Erro ao processar o banco de sons. Verifique o console.");
         } finally {
             setIsLoading(false);
         }
     };
 
-    useEffect(() => { if (synthRef.current) synthRef.current.controllerChange(0, 7, layer1Volume * 127); }, [layer1Volume]);
+    useEffect(() => { if (synthRef.current) synthRef.current.controllerChange(0, 7, Math.round(layer1Volume * 127)); }, [layer1Volume]);
     useEffect(() => { if (synthRef.current) synthRef.current.programChange(0, layer1Instrument); }, [layer1Instrument]);
-    useEffect(() => { if (synthRef.current) synthRef.current.controllerChange(1, 7, layer2Volume * 127); }, [layer2Volume]);
+    useEffect(() => { if (synthRef.current) synthRef.current.controllerChange(1, 7, Math.round(layer2Volume * 127)); }, [layer2Volume]);
     useEffect(() => { if (synthRef.current) synthRef.current.programChange(1, layer2Instrument); }, [layer2Instrument]);
-    useEffect(() => { if (synthRef.current) synthRef.current.controllerChange(2, 7, layer3Volume * 127); }, [layer3Volume]);
+    useEffect(() => { if (synthRef.current) synthRef.current.controllerChange(2, 7, Math.round(layer3Volume * 127)); }, [layer3Volume]);
     useEffect(() => { if (synthRef.current) synthRef.current.programChange(2, layer3Instrument); }, [layer3Instrument]);
 
     useEffect(() => {
@@ -195,16 +218,20 @@ const Sintetizador = () => {
                 SINTETIZADOR
             </h2>
 
-            {/* PAINEL DE UPLOAD */}
             <div className="w-full max-w-3xl bg-gray-800/40 p-4 sm:p-6 rounded-3xl shadow-inner border border-gray-700/50 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
                 <div className="flex-1 w-full flex justify-between items-center bg-gray-900/50 p-3 rounded-xl border border-gray-700/30">
                     <span className="text-gray-400 text-sm font-semibold">MIDI:</span>
                     {midiError ? (
                         <span className="text-red-400 text-xs font-mono">{midiError}</span>
+                    ) : midiConnected ? (
+                        <span className="text-[#27ca55] text-xs font-mono flex items-center gap-2 truncate max-w-[150px] sm:max-w-[200px]" title={midiDeviceName}>
+                            <span className="w-2 h-2 rounded-full bg-[#27ca55] animate-pulse shrink-0"></span>
+                            <span className="truncate">{midiDeviceName}</span>
+                        </span>
                     ) : (
-                        <span className="text-[#27ca55] text-sm font-mono flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-[#27ca55] animate-pulse"></span>
-                            Conectado
+                        <span className="text-gray-500 text-xs font-mono flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-gray-500 shrink-0"></span>
+                            Desconectado
                         </span>
                     )}
                 </div>
@@ -212,17 +239,16 @@ const Sintetizador = () => {
                 <div className="flex-1 w-full flex flex-col items-center">
                     <label className="w-full flex flex-col items-center px-4 py-3 sm:py-4 bg-gray-900/30 text-gray-300 rounded-2xl border-2 border-dashed border-gray-600 cursor-pointer hover:bg-gray-800/50 hover:border-[#3498db] transition-all text-center">
                         <span className="font-semibold text-xs sm:text-sm truncate w-full">
-                            {isLoading ? "A processar..." : fileName ? fileName : "Selecione um ficheiro .SF2"}
+                            {isLoading ? "A processar..." : fileName ? fileName : "Selecione um arquivo .SF2"}
                         </span>
                         <input type="file" accept=".sf2" className="hidden" onChange={handleFileUpload} />
                     </label>
                 </div>
             </div>
 
-            {/* SECÇÃO DE PRESETS */}
             <div className={`w-full max-w-3xl mb-6 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                 <div className="flex justify-between items-center mb-3 px-1">
-                    <h3 className="text-gray-400 font-semibold uppercase tracking-widest text-xs">Os Meus Presets</h3>
+                    <h3 className="text-gray-400 font-semibold uppercase tracking-widest text-xs">Meus Presets</h3>
                     <button onClick={handleSavePreset} className="bg-gray-800 hover:bg-[#27ca55] text-white hover:text-black px-3 py-1 rounded-full text-xs font-bold transition-all border border-gray-600 hover:border-transparent"> + Guardar </button>
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar px-1">
@@ -239,19 +265,13 @@ const Sintetizador = () => {
                 </div>
             </div>
 
-            {/* BARRA DE FERRAMENTAS (Teclado, Pânico e Split) */}
             <div className={`w-full max-w-3xl mb-4 flex flex-wrap justify-center sm:justify-end gap-3 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
-                
-                {/* ⏸️ BOTÃO DE PAUSE SIMPLES */}
                 <button 
-                    onClick={handlePanic} // Mantemos a mesma função que corta o som
+                    onClick={handlePanic} 
                     className="px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 bg-transparent text-gray-300 border-gray-600 hover:border-red-500 hover:text-red-500 flex items-center gap-2 active:scale-95"
                     title="Pausar sons"
                 >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
-                    </svg>
-                    Pausar
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"></path></svg> Pausar
                 </button>
 
                 <button onClick={() => setShowKeyboard(!showKeyboard)} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 ${showKeyboard ? 'bg-gray-700 text-white border-gray-500' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}>
@@ -263,12 +283,9 @@ const Sintetizador = () => {
                 </button>
             </div>
 
-            {/* MIXER */}
             <div className={`w-full max-w-3xl flex flex-col gap-4 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                 
-                {/* GRID PARA CAMADAS 1 E 2 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* LAYER 1 */}
                     <div className="flex flex-col gap-3 bg-gray-800/30 p-4 rounded-2xl border border-gray-700/50">
                         <div className="flex justify-between items-center">
                             <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer truncate">
@@ -296,7 +313,6 @@ const Sintetizador = () => {
                         </div>
                     </div>
 
-                    {/* LAYER 2 */}
                     <div className="flex flex-col gap-3 bg-gray-800/30 p-4 rounded-2xl border border-gray-700/50">
                         <div className="flex justify-between items-center">
                             <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer truncate">
@@ -325,7 +341,6 @@ const Sintetizador = () => {
                     </div>
                 </div>
 
-                {/* LAYER 3 (BAIXO) */}
                 {layer3Enabled && (
                     <div className="flex flex-col gap-3 bg-[#f59e0b]/10 p-4 rounded-2xl border border-[#f59e0b]/30 animate-fade-in w-full">
                         <div className="flex justify-between items-center">
@@ -354,10 +369,9 @@ const Sintetizador = () => {
                     </div>
                 )}
 
-                {/* TECLADO VIRTUAL */}
                 {showKeyboard && (
                     <div className="w-full animate-fade-in mb-4">
-                        <VirtualKeyboard activeNotes={activeNotes} onNoteOn={playNote} onNoteOff={stopNote} />
+                        <VirtualKeyboard activeNotes={visualActiveNotes} onNoteOn={playNote} onNoteOff={stopNote} />
                     </div>
                 )}
 
