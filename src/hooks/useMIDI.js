@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 
 export const useMIDI = ({ onNoteOn, onNoteOff } = {}) => {
     const [midiAccess, setMidiAccess] = useState(null);
-    const [activeNotes, setActiveNotes] = useState(new Set());
     const [midiError, setMidiError] = useState('');
+    
+    // NOVOS ESTADOS: Controle real de conexão
+    const [midiConnected, setMidiConnected] = useState(false);
+    const [midiDeviceName, setMidiDeviceName] = useState('');
 
-    // Usamos refs para as funções não causarem re-renders desnecessários
     const callbacksRef = useRef({ onNoteOn, onNoteOff });
     
     useEffect(() => {
@@ -20,29 +22,37 @@ export const useMIDI = ({ onNoteOn, onNoteOff } = {}) => {
 
         const handleMIDIMessage = (message) => {
             const [status, note, velocity] = message.data;
-
-            // Tecla Pressionada
+            // Status 144 = Note On | 128 = Note Off
             if (status === 144 && velocity > 0) {
-                setActiveNotes(prev => new Set(prev).add(note));
                 if (callbacksRef.current.onNoteOn) callbacksRef.current.onNoteOn(note, velocity);
-            } 
-            // Tecla Solta
-            else if (status === 128 || (status === 144 && velocity === 0)) {
-                setActiveNotes(prev => {
-                    const newNotes = new Set(prev);
-                    newNotes.delete(note);
-                    return newNotes;
-                });
+            } else if (status === 128 || (status === 144 && velocity === 0)) {
                 if (callbacksRef.current.onNoteOff) callbacksRef.current.onNoteOff(note);
+            }
+        };
+
+        const updateDevices = (access) => {
+            // Conta os cabos reais conectados
+            const inputs = Array.from(access.inputs.values());
+            if (inputs.length > 0) {
+                setMidiConnected(true);
+                setMidiDeviceName(inputs[0].name || 'Teclado MIDI'); // Puxa o nome de fábrica!
+                inputs.forEach(input => {
+                    input.onmidimessage = handleMIDIMessage;
+                });
+            } else {
+                setMidiConnected(false);
+                setMidiDeviceName('');
             }
         };
 
         const onMIDISuccess = (access) => {
             setMidiAccess(access);
-            const inputs = access.inputs.values();
-            for (let input = inputs.next(); input && !input.done; input = inputs.next()) {
-                input.value.onmidimessage = handleMIDIMessage;
-            }
+            updateDevices(access);
+
+            // Escuta se você plugar/desplugar o cabo com o app aberto
+            access.onstatechange = () => {
+                updateDevices(access);
+            };
         };
 
         const onMIDIFailure = () => setMidiError('Falha ao acessar dispositivo MIDI.');
@@ -52,7 +62,8 @@ export const useMIDI = ({ onNoteOn, onNoteOff } = {}) => {
         return () => {
             if (midiAccess) midiAccess.onstatechange = null;
         };
-    }, []); // Hook roda apenas 1 vez
+    }, []);
 
-    return { activeNotes, midiError };
+    // Exporta o status de conexão real e o nome do teclado
+    return { midiError, midiConnected, midiDeviceName };
 };
