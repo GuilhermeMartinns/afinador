@@ -183,7 +183,7 @@ const Pads = () => {
     return (
         <div className="w-full max-w-4xl flex flex-col items-center px-4 py-8">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-wider text-center">
-                WORSHIP PADS
+                PADS
             </h2>
 
             {/* MIXER */}
@@ -237,7 +237,7 @@ const Pads = () => {
             </div>
 
             {/* GRID DE PADS */}
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-md">
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-5 w-full max-w-md">
                 {PADS.map((pad) => {
                     const isActive = activePad === pad.id;
                     return (
@@ -254,7 +254,7 @@ const Pads = () => {
                         >
                             {pad.label}
                             {isActive && (
-                                <span className="absolute bottom-4 w-2 h-2 rounded-full bg-black animate-pulse"/>
+                                <span className="absolute inset-0 rounded-2xl bg-[#27ca55] opacity-50 animate-ping"/>
                             )}
                         </button>
                     );
