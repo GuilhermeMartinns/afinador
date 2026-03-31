@@ -18,7 +18,6 @@ const Sintetizador = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // NOVO ESTADO: Controlo de visualização do teclado
     const [showKeyboard, setShowKeyboard] = useState(true);
 
     const [layer1Active, setLayer1Active] = useState(true);
@@ -44,6 +43,22 @@ const Sintetizador = () => {
     useEffect(() => {
         localStorage.setItem('worship_presets', JSON.stringify(presets));
     }, [presets]);
+
+    // LÓGICA DO BOTÃO DE PÂNICO (ALL NOTES OFF)
+    const handlePanic = useCallback(() => {
+        if (!synthRef.current) return;
+
+        // Dispara o comando de "Desligar" para as 128 notas MIDI nos 3 canais
+        for (let i = 0; i < 128; i++) {
+            synthRef.current.noteOff(0, i);
+            synthRef.current.noteOff(1, i);
+            synthRef.current.noteOff(2, i);
+        }
+
+        // Limpa o nosso "caderno de anotações" de notas a tocar
+        playingNotesRef.current = { 0: {}, 1: {}, 2: {} };
+        
+    }, []);
 
     const playNote = useCallback((note, velocity) => {
         if (!synthRef.current) return;
@@ -180,7 +195,7 @@ const Sintetizador = () => {
                 SINTETIZADOR
             </h2>
 
-            {/* 1. PAINEL DE UPLOAD (Agora fica lado-a-lado em ecrãs maiores: sm:flex-row) */}
+            {/* PAINEL DE UPLOAD */}
             <div className="w-full max-w-3xl bg-gray-800/40 p-4 sm:p-6 rounded-3xl shadow-inner border border-gray-700/50 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
                 <div className="flex-1 w-full flex justify-between items-center bg-gray-900/50 p-3 rounded-xl border border-gray-700/30">
                     <span className="text-gray-400 text-sm font-semibold">MIDI:</span>
@@ -204,7 +219,7 @@ const Sintetizador = () => {
                 </div>
             </div>
 
-            {/* SECÇÃO DE PRESETS (Aumentada para max-w-3xl) */}
+            {/* SECÇÃO DE PRESETS */}
             <div className={`w-full max-w-3xl mb-6 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                 <div className="flex justify-between items-center mb-3 px-1">
                     <h3 className="text-gray-400 font-semibold uppercase tracking-widest text-xs">Os Meus Presets</h3>
@@ -224,20 +239,31 @@ const Sintetizador = () => {
                 </div>
             </div>
 
-            {/* 2. BARRA DE FERRAMENTAS (Teclado e Split) */}
+            {/* BARRA DE FERRAMENTAS (Teclado, Pânico e Split) */}
             <div className={`w-full max-w-3xl mb-4 flex flex-wrap justify-center sm:justify-end gap-3 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
-                {/* BOTÃO DO TECLADO */}
+                
+                {/* ⏸️ BOTÃO DE PAUSE SIMPLES */}
+                <button 
+                    onClick={handlePanic} // Mantemos a mesma função que corta o som
+                    className="px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 bg-transparent text-gray-300 border-gray-600 hover:border-red-500 hover:text-red-500 flex items-center gap-2 active:scale-95"
+                    title="Pausar sons"
+                >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
+                    </svg>
+                    Pausar
+                </button>
+
                 <button onClick={() => setShowKeyboard(!showKeyboard)} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 ${showKeyboard ? 'bg-gray-700 text-white border-gray-500' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}>
                     🎹 {showKeyboard ? 'Esconder Teclado' : 'Mostrar Teclado'}
                 </button>
                 
-                {/* BOTÃO DO BAIXO */}
                 <button onClick={() => setLayer3Enabled(!layer3Enabled)} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 ${layer3Enabled ? 'bg-[#f59e0b] text-black border-[#f59e0b] shadow-[0_0_15px_rgba(245,158,11,0.4)]' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}>
                     {layer3Enabled ? 'Baixo Ativo (Split)' : '+ Baixo (Split)'}
                 </button>
             </div>
 
-            {/* 3. MIXER (Agora usa Grid para ficar lado-a-lado na horizontal) */}
+            {/* MIXER */}
             <div className={`w-full max-w-3xl flex flex-col gap-4 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                 
                 {/* GRID PARA CAMADAS 1 E 2 */}
@@ -299,7 +325,7 @@ const Sintetizador = () => {
                     </div>
                 </div>
 
-                {/* LAYER 3 (BAIXO) - Ocupa a largura toda abaixo do Grid */}
+                {/* LAYER 3 (BAIXO) */}
                 {layer3Enabled && (
                     <div className="flex flex-col gap-3 bg-[#f59e0b]/10 p-4 rounded-2xl border border-[#f59e0b]/30 animate-fade-in w-full">
                         <div className="flex justify-between items-center">
@@ -328,7 +354,7 @@ const Sintetizador = () => {
                     </div>
                 )}
 
-                {/* 4. RENDERIZAÇÃO CONDICIONAL DO TECLADO VIRTUAL */}
+                {/* TECLADO VIRTUAL */}
                 {showKeyboard && (
                     <div className="w-full animate-fade-in mb-4">
                         <VirtualKeyboard activeNotes={activeNotes} onNoteOn={playNote} onNoteOff={stopNote} />
