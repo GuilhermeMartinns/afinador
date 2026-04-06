@@ -181,46 +181,80 @@ const Pads = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-4xl flex flex-col items-center px-4 py-8">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-wider text-center">
-                PADS
-            </h2>
-
+        <div className="w-full max-w-4xl h-full flex flex-col items-center justify-start px-3 pt-2 pb-24 overflow-y-auto no-scrollbar">
+            
             {/* MIXER */}
-            <div className="w-full max-w-md mb-6 bg-gray-800/40 p-4 rounded-3xl shadow-inner border border-gray-700/50 flex justify-around items-center">
-                <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
-                    <span className="text-[#27ca55] font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+            <div className="w-full max-w-md mb-3 bg-gray-800/40 p-3 sm:p-4 rounded-3xl shadow-inner border border-gray-700/50 flex justify-center gap-6 md:gap-12 items-center shrink-0">
+                
+                {/* SLIDER DE VOLUME */}
+                <div className="flex flex-col items-center gap-2 transition-all hover:scale-105">
+                    <span className="text-[#27ca55] mb-3 font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
                         {Math.round(masterVolume * 100)}%
                     </span>
-                    <div className="relative w-8 h-24 flex items-center justify-center">
-                        <input type="range" min="0" max="1" step="0.01" value={masterVolume} onChange={(e) => setMasterVolume(parseFloat(e.target.value))} className="absolute w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#27ca55] -rotate-90" />
+                    <div className="relative w-16 h-24 flex items-center justify-center">
+                        <input 
+                            type="range" 
+                            min="0" max="1" step="0.01" 
+                            value={masterVolume} 
+                            onChange={(e) => setMasterVolume(parseFloat(e.target.value))} 
+                            className="absolute w-32 h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
+                                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
+                                       [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                            style={{
+                                background: `linear-gradient(to right, #27ca55 ${masterVolume * 100}%, #374151 ${masterVolume * 100}%)`
+                            }}
+                        />
                     </div>
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-[10px]">Vol</span>
+                    <span className="text-gray-400 mt-3 font-semibold uppercase tracking-wider text-[10px]">Vol</span>
                 </div>
 
-                <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
-                    <span className="text-[#3498db] font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+                {/* SLIDER DE FILTRO */}
+                <div className="flex flex-col items-center gap-2 transition-all hover:scale-105">
+                    <span className="text-[#3498db] mb-3 font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
                         {filterValue}%
                     </span>
-                    <div className="relative w-8 h-24 flex items-center justify-center">
-                        <input type="range" min="0" max="100" step="1" value={filterValue} onChange={(e) => setFilterValue(parseInt(e.target.value))} className="absolute w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#3498db] -rotate-90" />
+                    <div className="relative w-16 h-24 flex items-center justify-center">
+                        <input 
+                            type="range" 
+                            min="0" max="1" step="0.01" 
+                            value={filterValue} 
+                            onChange={(e) => setFilterValue(parseFloat(e.target.value))} 
+                            className="absolute w-32 h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
+                                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
+                                       [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                            style={{
+                                background: `linear-gradient(to right, #3498db ${filterValue}%, #374151 ${filterValue}%)`
+                            }}
+                        />
                     </div>
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-[10px]">Filtro</span>
+                    <span className="text-gray-400 mt-3 font-semibold uppercase tracking-wider text-[10px]">Filtro</span>
                 </div>
 
-                <div className="flex flex-col items-center gap-3 transition-all hover:scale-105">
-                    <span className="text-[#9b59b6] font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
+                {/* SLIDER DE REVERB */}
+                <div className="flex flex-col items-center gap-2 transition-all hover:scale-105">
+                    <span className="text-[#9b59b6] mb-3 font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
                         {reverbValue}%
                     </span>
-                    <div className="relative w-8 h-24 flex items-center justify-center">
-                        <input type="range" min="0" max="100" step="1" value={reverbValue} onChange={(e) => setReverbValue(parseInt(e.target.value))} className="absolute w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#9b59b6] -rotate-90" />
+                    <div className="relative w-16 h-24 flex items-center justify-center">
+                        <input 
+                            type="range" 
+                            min="0" max="100" step="1" 
+                            value={reverbValue} 
+                            onChange={(e) => setReverbValue(parseInt(e.target.value))} 
+                            className="absolute w-32 h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
+                                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
+                                       [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                            style={{
+                                background: `linear-gradient(to right, #9b59b6 ${reverbValue}%, #374151 ${reverbValue}%)`
+                            }}
+                        />
                     </div>
-                    <span className="text-gray-400 font-semibold uppercase tracking-wider text-[10px]">Reverb</span>
+                    <span className="text-gray-400 mt-3 font-semibold uppercase tracking-wider text-[10px]">Reverb</span>
                 </div>
             </div>
 
             {/* BOTÃO DE PAUSE GLOBAL DOS PADS */}
-            <div className="w-full max-w-md flex justify-end mb-6">
+            <div className="w-full max-w-md flex justify-end mb-3 shrink-0">
                  <button 
                     onClick={handleStopPad}
                     disabled={!activePad}
@@ -237,7 +271,8 @@ const Pads = () => {
             </div>
 
             {/* GRID DE PADS */}
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-5 w-full max-w-md">
+            {/* O gap-2 no mobile (sm:gap-4) deixa os botões mais próximos, salvando bastante altura da tela */}
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4 w-full max-w-md pb-4 shrink-0">
                 {PADS.map((pad) => {
                     const isActive = activePad === pad.id;
                     return (
@@ -246,9 +281,9 @@ const Pads = () => {
                             onClick={() => handlePadClick(pad)}
                             className={`
                                 relative flex flex-col items-center justify-center aspect-square rounded-2xl
-                                text-3xl md:text-5xl font-bold transition-all duration-300 overflow-hidden
+                                text-2xl md:text-4xl font-bold transition-all duration-300 overflow-hidden
                                 ${isActive
-                                    ? 'bg-[#27ca55] text-black scale-105 shadow-[0_0_20px_rgba(39,202,85,0.4)]'
+                                    ? 'bg-[#27ca55] text-black scale-105 shadow-[0_0_20px_rgba(39,202,85,0.4)] z-10'
                                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700 shadow-lg'
                                 }`}
                         >
@@ -261,7 +296,7 @@ const Pads = () => {
                 })}
             </div>
         </div>
-    );   
-};
+    );
+};  
 
 export default Pads;
