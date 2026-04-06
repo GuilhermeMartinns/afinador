@@ -99,7 +99,7 @@ export const useAudio = () => {
 
             // CONFIGURAÇÃO DE VELOCIDADE:
             //quanto maior o número, mais lento o ponteiro se move
-            if (pitchBuffer.length > 6) {
+            if (pitchBuffer.length > 5) {
                 pitchBuffer.shift(); 
             }
 
