@@ -20,6 +20,8 @@ const Sintetizador = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showKeyboard, setShowKeyboard] = useState(true);
+    const [isControlsCollapsed, setIsControlsCollapsed] = useState(false);
+    const [isLandscapeCompact, setIsLandscapeCompact] = useState(false);
 
     const [visualActiveNotes, setVisualActiveNotes] = useState(new Set());
 
@@ -46,6 +48,23 @@ const Sintetizador = () => {
     useEffect(() => {
         localStorage.setItem('worship_presets', JSON.stringify(presets));
     }, [presets]);
+
+    useEffect(() => {
+        const updateLayoutMode = () => {
+            const compact = window.matchMedia('(orientation: landscape) and (max-height: 540px) and (max-width: 767px)').matches;
+            setIsLandscapeCompact(compact);
+            setIsControlsCollapsed(compact);
+        };
+
+        updateLayoutMode();
+        window.addEventListener('resize', updateLayoutMode);
+        window.addEventListener('orientationchange', updateLayoutMode);
+
+        return () => {
+            window.removeEventListener('resize', updateLayoutMode);
+            window.removeEventListener('orientationchange', updateLayoutMode);
+        };
+    }, []);
 
     useEffect(() => {
         // Carrega o SoundFont padrão automaticamente ao abrir a aba
@@ -289,7 +308,7 @@ const Sintetizador = () => {
                 SINTETIZADOR
             </h2>
 
-            <div className="w-full max-w-3xl bg-gray-800/40 p-3 sm:p-6 rounded-2xl sm:rounded-3xl shadow-inner border border-gray-700/50 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 mb-3 sm:mb-6 landscape-phone-stack landscape-tablet-stack">
+            <div className={`w-full max-w-3xl bg-gray-800/40 p-3 sm:p-6 rounded-2xl sm:rounded-3xl shadow-inner border border-gray-700/50 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 mb-3 sm:mb-6 landscape-phone-stack landscape-tablet-stack ${isControlsCollapsed ? 'p-2 sm:p-3' : ''}`}>
                 <div className="flex-1 w-full flex justify-between items-center bg-gray-900/50 p-3 rounded-xl border border-gray-700/30">
                     <span className="text-gray-400 text-sm font-semibold">MIDI:</span>
                     {midiError ? (
@@ -317,7 +336,7 @@ const Sintetizador = () => {
                 </div>
             </div>
 
-            <div className={`w-full max-w-3xl mb-3 sm:mb-6 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+            <div className={`w-full max-w-3xl mb-3 sm:mb-6 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'} ${isLandscapeCompact ? 'landscape-phone-hide' : ''}`}>
                 <div className="flex justify-between items-center mb-3 px-1 landscape-phone-hide">
                     <h3 className="text-gray-400 font-semibold uppercase tracking-widest text-xs">Meus Presets</h3>
                     <button onClick={handleSavePreset} className="bg-gray-800 hover:bg-[#27ca55] text-white hover:text-black px-3 py-1 rounded-full text-xs font-bold transition-all border border-gray-600 hover:border-transparent"> + Guardar </button>
@@ -348,15 +367,22 @@ const Sintetizador = () => {
                 <button onClick={() => setShowKeyboard(!showKeyboard)} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 ${showKeyboard ? 'bg-gray-700 text-white border-gray-500' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}>
                     🎹 {showKeyboard ? 'Esconder Teclado' : 'Mostrar Teclado'}
                 </button>
+
+                <button
+                    onClick={() => setIsControlsCollapsed(prev => !prev)}
+                    className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 ${isControlsCollapsed ? 'bg-[#3498db] text-black border-[#3498db]' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}
+                >
+                    {isControlsCollapsed ? 'Expandir Controles' : 'Compactar Controles'}
+                </button>
                 
                 <button onClick={() => setLayer3Enabled(!layer3Enabled)} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 ${layer3Enabled ? 'bg-[#f59e0b] text-black border-[#f59e0b] shadow-[0_0_15px_rgba(245,158,11,0.4)]' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}>
                     {layer3Enabled ? 'Baixo Ativo (Split)' : '+ Baixo (Split)'}
                 </button>
             </div>
 
-            <div className={`w-full max-w-3xl flex flex-col gap-3 sm:gap-4 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+            <div className={`w-full max-w-3xl flex flex-col gap-3 sm:gap-4 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'} ${isControlsCollapsed ? 'gap-2' : ''}`}>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 landscape-phone-stack">
+                <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 landscape-phone-stack ${isControlsCollapsed ? 'lg:grid-cols-3' : ''}`}>
                     <div className="flex flex-col gap-2 sm:gap-3 bg-gray-800/30 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-700/50">
                         <div className="flex justify-between items-center">
                             <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer truncate">
@@ -412,7 +438,7 @@ const Sintetizador = () => {
                     </div>
                 </div>
 
-                {layer3Enabled && (
+                {layer3Enabled && !isLandscapeCompact && (
                     <div className="flex flex-col gap-2 sm:gap-3 bg-[#f59e0b]/10 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#f59e0b]/30 animate-fade-in w-full landscape-phone-hide">
                         <div className="flex justify-between items-center">
                             <span className="text-white font-bold text-sm truncate">
@@ -441,7 +467,7 @@ const Sintetizador = () => {
                 )}
 
                 {showKeyboard && (
-                    <div className="w-full animate-fade-in mb-4 landscape-phone-keyboard landscape-tablet-keyboard">
+                    <div className={`w-full animate-fade-in mb-4 landscape-phone-keyboard landscape-tablet-keyboard ${isControlsCollapsed ? 'mt-2' : ''}`}>
                         <VirtualKeyboard activeNotes={visualActiveNotes} onNoteOn={playNote} onNoteOff={stopNote} />
                     </div>
                 )}
