@@ -1,4 +1,4 @@
-import { use, useEffect, useState, lazy, Suspense } from 'react'
+import { use, useEffect, useState, useRef, lazy, Suspense } from 'react'
 import './App.css'
 import MedidorFrequencia from './components/MedidorFrequencia.jsx'
 import { getNoteDetails } from './utils/NoteHelpers.js'
@@ -25,9 +25,18 @@ function App() {
     return localStorage.getItem('notePreference') === 'flat';
   });
 
+  const [referencePitch, setReferencePitch] = useState(() => {
+    const saved = localStorage.getItem('referencePitch');
+    return saved ? parseInt(saved, 10) : 440;
+  });
+
   useEffect(() => {
     localStorage.setItem('notePreference', isFlatNote ? 'flat' : 'sharp');
   }, [isFlatNote]);
+
+  useEffect(() => {
+    localStorage.setItem('referencePitch', referencePitch.toString());
+  }, [referencePitch]);
 
   const toggleNotePreference = () => setIsFlatNote(!isFlatNote);
 
@@ -42,17 +51,84 @@ function App() {
 
   useEffect(() => {
     if (micFrequency > 0){
-      const data = getNoteDetails(micFrequency, isFlatNote);
+      const data = getNoteDetails(micFrequency, isFlatNote, referencePitch);
       setAudioData({
         noteName: data.noteName + data.octave,
         cents: data.cents,
         frequency: data.frequency
       });
     } else if (audioData.frequency > 0) {
-      const data = getNoteDetails(audioData.frequency, isFlatNote);
+      const data = getNoteDetails(audioData.frequency, isFlatNote, referencePitch);
       setAudioData(prev => ({ ...prev, noteName: data.noteName + data.octave }));
     }
-  }, [micFrequency, isFlatNote]);
+  }, [micFrequency, isFlatNote, referencePitch]);
+
+  // PWA INSTALL PROMPT
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSInstructions, setShowIOSInstructions] = useState(false);
+
+  useEffect(() => {
+    // 1. Verificar se o usuário já escolheu "não mostrar novamente"
+    const isDismissed = localStorage.getItem('pwa_install_dismissed') === 'true';
+    if (isDismissed) return;
+
+    // 2. Verificar se o app já está rodando instalado (standalone)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone) return;
+
+    // 3. Detectar se é iOS
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const ios = /iphone|ipad|ipod/.test(userAgent);
+    setIsIOS(ios);
+
+    // Se for iOS, podemos mostrar o modal diretamente após 3 segundos
+    if (ios) {
+      const timer = setTimeout(() => {
+        setShowInstallPrompt(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+
+    // 4. Capturar o evento no Android/Windows
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallPrompt(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (isIOS) {
+      setShowIOSInstructions(true);
+      return;
+    }
+
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`PWA install choice outcome: ${outcome}`);
+    setDeferredPrompt(null);
+    setShowInstallPrompt(false);
+  };
+
+  const handleClosePrompt = () => {
+    setShowInstallPrompt(false);
+    setShowIOSInstructions(false);
+  };
+
+  const handleDismissPermanently = () => {
+    localStorage.setItem('pwa_install_dismissed', 'true');
+    setShowInstallPrompt(false);
+    setShowIOSInstructions(false);
+  };
 
   // ESTADO PARA SABER SE JÁ TEMOS PERMISSÃO
   const [notiPermission, setNotiPermission] = useState(
@@ -141,16 +217,16 @@ function App() {
   };
 
   return (
-    <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden">
+    <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden landscape-safe">
      {/* Header  */}
       <div className="absolute top-2 left-4 opacity-30 shrink-0 z-50">
         <span className="text-[8px] font-mono">v.1.0.4 beta</span>
       </div>
       
      {/* Botões de navegação entre abas */ }
-     <header className="w-full relative flex justify-center items-center p-3 sm:p-4 shrink-0 z-40 bg-gray-950/50 backdrop-blur-sm border-b border-gray-800/50">
+     <header className="w-full relative flex justify-center items-center p-3 sm:p-4 shrink-0 z-40 bg-gray-950/50 backdrop-blur-sm border-b border-gray-800/50 landscape-phone-header landscape-tablet-header">
      {/* Botões Centrais (Abas) */}
-        <div className="flex gap-1.5 sm:gap-4 px-2 no-scrollbar">
+        <div className="flex gap-1.5 sm:gap-4 px-2 no-scrollbar landscape-phone-toolbar">
             <button onClick={() => setAbaAtiva('afinador')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'afinador' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Afinador</button>
             <button onClick={() => setAbaAtiva('pads')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'pads' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Pads</button>
             <button onClick={() => setAbaAtiva('sintetizador')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base whitespace-nowrap ${abaAtiva === 'sintetizador' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Sintetizador</button>
@@ -206,13 +282,15 @@ function App() {
 
       {/* Conteúdo Principal */}
     
-      <main className="flex-1 flex flex-col items-center justify-center gap-12 w-full max-w-xl lg:max-w-2xl px-3 py-2 relative z-10">
+      <main className="flex-1 flex flex-col items-center justify-start sm:justify-center gap-4 sm:gap-12 w-full max-w-xl lg:max-w-2xl px-3 py-2 relative z-10 overflow-y-auto no-scrollbar landscape-phone-main landscape-tablet-main landscape-safe">
         
         {abaAtiva === 'afinador' && (
-          <div className="w-full flex flex-col items-center gap-10 animate-fade-in">
-            <MedidorFrequencia cents={audioData.cents} note={audioData.noteName} frequency={audioData.frequency} />
+          <div className="w-full flex flex-col items-center gap-4 sm:gap-10 animate-fade-in landscape-phone-row landscape-tablet-row">
+            <div className="landscape-phone-col-left landscape-tablet-col-left w-full flex items-center justify-center">
+              <MedidorFrequencia cents={audioData.cents} note={audioData.noteName} frequency={audioData.frequency} />
+            </div>
             
-            <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 w-full justify-center">
+            <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8 w-full justify-center landscape-phone-col-right landscape-tablet-col-right">
                 
                 {/* 3. AJUSTE: Botão de Microfone Polido (Sombra e Gradiente Interno) */}
                 <button 
@@ -228,9 +306,25 @@ function App() {
                     {isMicOn ? 'Parar Afinador' : 'Iniciar Afinador'}
                 </button>
 
-                <div className="flex items-center gap-3 bg-gray-800/40 backdrop-blur-sm px-5 py-2.5 rounded-full border border-gray-700/50 hover:bg-gray-800/80 transition-colors shadow-inner">
-                    <span className='text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap'>Notação</span>
-                    <Switch isOn={isFlatNote} handleToggle={toggleNotePreference} />
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex items-center gap-3 bg-gray-800/40 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700/50 hover:bg-gray-800/80 transition-colors shadow-inner">
+                      <span className='text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap'>Notação</span>
+                      <Switch isOn={isFlatNote} handleToggle={toggleNotePreference} />
+                  </div>
+
+                  <div className="flex items-center gap-3 bg-gray-800/40 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700/50 hover:bg-gray-800/80 transition-colors shadow-inner text-xs">
+                      <span className='font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap'>Frequência</span>
+                      <select 
+                        value={referencePitch} 
+                        onChange={(e) => setReferencePitch(parseInt(e.target.value, 10))}
+                        className="bg-gray-900/60 text-[#27ca55] font-bold font-mono border-0 rounded px-2 py-0.5 outline-none cursor-pointer hover:bg-gray-900 transition-colors"
+                      >
+                        <option value="440">440 Hz</option>
+                        <option value="432">432 Hz</option>
+                        <option value="442">442 Hz</option>
+                        <option value="444">444 Hz</option>
+                      </select>
+                  </div>
                 </div>
             </div>
         </div>
@@ -254,7 +348,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full text-center py-4 shrink-0 border-t border-gray-800/50 bg-gray-950/30 backdrop-blur-sm mt-auto z-20 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+      <footer className="w-full text-center py-4 shrink-0 border-t border-gray-800/50 bg-gray-950/30 backdrop-blur-sm mt-auto z-20 pb-[calc(1rem+env(safe-area-inset-bottom))] landscape-phone-hide">
         <span className="text-[11px] text-gray-600 block px-4 font-mono">
           Desenvolvido por{' '}
           <a 
@@ -264,6 +358,73 @@ function App() {
             Guilherme Martins</a>
         </span>
       </footer>
+
+      {/* MODAL DE INSTALAÇÃO PWA */}
+      {showInstallPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm bg-gray-900 border border-gray-800 p-6 rounded-3xl shadow-2xl flex flex-col items-center text-center animate-fade-in">
+            
+            {/* Ícone */}
+            <div className="w-14 h-14 bg-[#27ca55]/10 rounded-2xl flex items-center justify-center mb-4 border border-[#27ca55]/20 shrink-0">
+              <svg className="w-7 h-7 text-[#27ca55]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+            </div>
+
+            <h3 className="text-lg font-bold text-white mb-2">Instalar Aplicativo</h3>
+            
+            <p className="text-gray-300 text-xs sm:text-sm mb-5 leading-relaxed">
+              {isIOS 
+                ? "Adicione o afinador à sua tela de início para acessá-lo facilmente offline direto do seu dispositivo iOS." 
+                : "Deseja instalar o afinador para acesso offline rápido e direto da sua tela inicial?"}
+            </p>
+
+            {showIOSInstructions && (
+              <div className="w-full bg-gray-950/40 p-4 rounded-2xl border border-gray-800 text-left mb-5 text-[11px] text-gray-400 leading-relaxed flex flex-col gap-2">
+                <div className="flex items-start gap-2">
+                  <span className="bg-gray-800 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] shrink-0 mt-0.5 font-bold">1</span>
+                  <span>Toque no botão de <strong>Compartilhar</strong> (Share) <svg className="w-3.5 h-3.5 inline text-blue-400 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg> na barra inferior do Safari.</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-gray-800 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] shrink-0 mt-0.5 font-bold">2</span>
+                  <span>Role a lista para baixo e clique em <strong>Adicionar à Tela de Início</strong>.</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-gray-800 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] shrink-0 mt-0.5 font-bold">3</span>
+                  <span>Clique em <strong>Adicionar</strong> no canto superior direito do seu ecrã.</span>
+                </div>
+              </div>
+            )}
+
+            {/* Ações */}
+            <div className="w-full flex flex-col gap-2">
+              {!showIOSInstructions && (
+                <button 
+                  onClick={handleInstallClick}
+                  className="w-full py-2.5 bg-[#27ca55] hover:bg-[#22b24a] active:scale-95 text-black font-bold text-sm rounded-xl transition-all shadow-lg shadow-[#27ca55]/20 cursor-pointer border-0"
+                >
+                  {isIOS ? "Como instalar" : "Sim, instalar"}
+                </button>
+              )}
+              
+              <button 
+                onClick={handleClosePrompt}
+                className="w-full py-2.5 bg-gray-800 hover:bg-gray-750 active:scale-95 text-gray-300 text-sm font-semibold rounded-xl transition-all border border-gray-700/50 cursor-pointer"
+              >
+                {showIOSInstructions ? "Entendi" : "Não, obrigado"}
+              </button>
+
+              <button 
+                onClick={handleDismissPermanently}
+                className="w-full py-1 mt-1 text-[10px] sm:text-[11px] text-gray-500 hover:text-gray-400 font-medium underline transition-colors cursor-pointer bg-transparent border-0 outline-none"
+              >
+                Não mostrar novamente
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   )
 }

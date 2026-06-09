@@ -1,8 +1,8 @@
 export const NOTE_NAMES =["C", "C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
 export const NOTE_NAMES_FLAT =["C", "D♭","D","E♭","E","F","G♭","G","A♭","A","B♭","B"];
-export const getNoteDetails = (frequency, isFlatNote = false) => {
+export const getNoteDetails = (frequency, isFlatNote = false, referencePitch = 440) => {
     
-    const A4 = 440;
+    const A4 = referencePitch;
     /* pow é potência. O primeiro parâmetro é a base, o segundo é o expoente.
     
     2 é a base  das frequencias musicais, para subir uma oitava, multiplica-se por 2 (dobra a frequencia).

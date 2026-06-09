@@ -14,6 +14,7 @@ const Sintetizador = () => {
     const synthRef = useRef(null);
     const audioCtxRef = useRef(null);
     const playingNotesRef = useRef({ 0: {}, 1: {}, 2: {} });
+    const activeDefaultLoadRef = useRef(true);
     
     const [fileName, setFileName] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -45,6 +46,66 @@ const Sintetizador = () => {
     useEffect(() => {
         localStorage.setItem('worship_presets', JSON.stringify(presets));
     }, [presets]);
+
+    useEffect(() => {
+        // Carrega o SoundFont padrão automaticamente ao abrir a aba
+        const loadDefaultSoundFont = async () => {
+            setIsLoading(true);
+            setFileName("Acoustic Grand Piano (Padrão)");
+            try {
+                const response = await fetch("https://soundfonts.pages.dev/GeneralUser_GS_v1.471/000.sf3");
+                if (!response.ok) throw new Error("Erro no download");
+                
+                if (!activeDefaultLoadRef.current) return;
+                const arrayBuffer = await response.arrayBuffer();
+                
+                if (!activeDefaultLoadRef.current) return;
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                audioCtxRef.current = ctx;
+                
+                await ctx.audioWorklet.addModule(processorUrl);
+                const synth = new WorkletSynthesizer(ctx);
+                synth.connect(ctx.destination);
+                
+                await synth.soundBankManager.addSoundBank(arrayBuffer, "main");
+                
+                [0, 1, 2].forEach(ch => {
+                    synth.controllerChange(ch, 11, 127); 
+                });
+
+                synth.controllerChange(0, 7, Math.round(layer1Volume * 127)); 
+                synth.programChange(0, layer1Instrument);
+                synth.controllerChange(1, 7, Math.round(layer2Volume * 127)); 
+                synth.programChange(1, layer2Instrument);
+                synth.controllerChange(2, 7, Math.round(layer3Volume * 127)); 
+                synth.programChange(2, layer3Instrument);
+
+                if (!activeDefaultLoadRef.current) {
+                    await ctx.close();
+                    return;
+                }
+
+                synthRef.current = synth;
+                setIsLoaded(true);
+            } catch (error) {
+                console.warn("Não foi possível carregar a SoundFont padrão automáticamente:", error);
+                if (activeDefaultLoadRef.current) {
+                    setFileName(null);
+                }
+            } finally {
+                if (activeDefaultLoadRef.current) {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        loadDefaultSoundFont();
+
+        return () => {
+            activeDefaultLoadRef.current = false;
+        };
+    }, []);
 
     const handlePanic = useCallback(() => {
         if (!synthRef.current) return;
@@ -161,9 +222,19 @@ const Sintetizador = () => {
             alert("Selecione um arquivo .sf2 válido.");
             return;
         }
+        activeDefaultLoadRef.current = false; // Cancel default autoload if still in progress
         setFileName(file.name);
         setIsLoading(true);
         try {
+            // Close previous context if exists
+            if (audioCtxRef.current) {
+                try {
+                    await audioCtxRef.current.close();
+                } catch (err) {
+                    console.warn("Error closing old AudioContext:", err);
+                }
+            }
+
             const arrayBuffer = await file.arrayBuffer();
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             const ctx = new AudioContext();
@@ -213,12 +284,12 @@ const Sintetizador = () => {
     const formatOctave = (val) => val > 0 ? `+${val}` : val;
 
     return (
-        <div className="w-full max-w-4xl flex flex-col items-center px-2 sm:px-4 py-8">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-wider text-center">
+        <div className="w-full max-w-4xl flex flex-col items-center px-2 sm:px-4 py-3 sm:py-6 landscape-phone-compact landscape-tablet-main">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 sm:mb-6 tracking-wider text-center landscape-phone-hide">
                 SINTETIZADOR
             </h2>
 
-            <div className="w-full max-w-3xl bg-gray-800/40 p-4 sm:p-6 rounded-3xl shadow-inner border border-gray-700/50 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6">
+            <div className="w-full max-w-3xl bg-gray-800/40 p-3 sm:p-6 rounded-2xl sm:rounded-3xl shadow-inner border border-gray-700/50 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 mb-3 sm:mb-6 landscape-phone-stack landscape-tablet-stack">
                 <div className="flex-1 w-full flex justify-between items-center bg-gray-900/50 p-3 rounded-xl border border-gray-700/30">
                     <span className="text-gray-400 text-sm font-semibold">MIDI:</span>
                     {midiError ? (
@@ -246,12 +317,12 @@ const Sintetizador = () => {
                 </div>
             </div>
 
-            <div className={`w-full max-w-3xl mb-6 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
-                <div className="flex justify-between items-center mb-3 px-1">
+            <div className={`w-full max-w-3xl mb-3 sm:mb-6 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+                <div className="flex justify-between items-center mb-3 px-1 landscape-phone-hide">
                     <h3 className="text-gray-400 font-semibold uppercase tracking-widest text-xs">Meus Presets</h3>
                     <button onClick={handleSavePreset} className="bg-gray-800 hover:bg-[#27ca55] text-white hover:text-black px-3 py-1 rounded-full text-xs font-bold transition-all border border-gray-600 hover:border-transparent"> + Guardar </button>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar px-1">
+                <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar px-1 landscape-phone-hide">
                     {presets.length === 0 ? (
                         <span className="text-gray-600 text-xs italic">Nenhum preset guardado.</span>
                     ) : (
@@ -265,7 +336,7 @@ const Sintetizador = () => {
                 </div>
             </div>
 
-            <div className={`w-full max-w-3xl mb-4 flex flex-wrap justify-center sm:justify-end gap-3 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+            <div className={`w-full max-w-3xl mb-2 sm:mb-4 flex flex-wrap justify-center sm:justify-end gap-3 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'} landscape-phone-toolbar landscape-tablet-toolbar`}>
                 <button 
                     onClick={handlePanic} 
                     className="px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 bg-transparent text-gray-300 border-gray-600 hover:border-red-500 hover:text-red-500 flex items-center gap-2 active:scale-95"
@@ -283,10 +354,10 @@ const Sintetizador = () => {
                 </button>
             </div>
 
-            <div className={`w-full max-w-3xl flex flex-col gap-4 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
+            <div className={`w-full max-w-3xl flex flex-col gap-3 sm:gap-4 transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-3 bg-gray-800/30 p-4 rounded-2xl border border-gray-700/50">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 landscape-phone-stack">
+                    <div className="flex flex-col gap-2 sm:gap-3 bg-gray-800/30 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-700/50">
                         <div className="flex justify-between items-center">
                             <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer truncate">
                                 <input type="checkbox" checked={layer1Active} onChange={(e) => setLayer1Active(e.target.checked)} className="accent-[#27ca55] w-4 h-4 shrink-0" />
@@ -313,7 +384,7 @@ const Sintetizador = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-3 bg-gray-800/30 p-4 rounded-2xl border border-gray-700/50">
+                    <div className="flex flex-col gap-2 sm:gap-3 bg-gray-800/30 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-700/50">
                         <div className="flex justify-between items-center">
                             <label className="flex items-center gap-2 text-white font-bold text-sm cursor-pointer truncate">
                                 <input type="checkbox" checked={layer2Active} onChange={(e) => setLayer2Active(e.target.checked)} className="accent-[#3498db] w-4 h-4 shrink-0" />
@@ -342,7 +413,7 @@ const Sintetizador = () => {
                 </div>
 
                 {layer3Enabled && (
-                    <div className="flex flex-col gap-3 bg-[#f59e0b]/10 p-4 rounded-2xl border border-[#f59e0b]/30 animate-fade-in w-full">
+                    <div className="flex flex-col gap-2 sm:gap-3 bg-[#f59e0b]/10 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#f59e0b]/30 animate-fade-in w-full landscape-phone-hide">
                         <div className="flex justify-between items-center">
                             <span className="text-white font-bold text-sm truncate">
                                 🎸 Auxiliar: <span className="text-[#f59e0b] font-mono text-xs ml-1">Baixo (Split)</span>
@@ -370,7 +441,7 @@ const Sintetizador = () => {
                 )}
 
                 {showKeyboard && (
-                    <div className="w-full animate-fade-in mb-4">
+                    <div className="w-full animate-fade-in mb-4 landscape-phone-keyboard landscape-tablet-keyboard">
                         <VirtualKeyboard activeNotes={visualActiveNotes} onNoteOn={playNote} onNoteOff={stopNote} />
                     </div>
                 )}

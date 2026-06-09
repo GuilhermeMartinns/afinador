@@ -1,18 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 const PADS = [
-    { id: 'C', label: 'C', file: 'pad-C.mp3' },
-    { id: 'Cs', label: 'C#', file: 'pad-Cs.mp3' },
-    { id: 'D', label: 'D', file: 'pad-D.mp3' },
-    { id: 'Ds', label: 'D#', file: 'pad-Ds.mp3' },
-    { id: 'E', label: 'E', file: 'pad-E.mp3' },
-    { id: 'F', label: 'F', file: 'pad-F.mp3' },
-    { id: 'Fs', label: 'F#', file: 'pad-Fs.mp3' },
-    { id: 'G', label: 'G', file: 'pad-G.mp3' },
-    { id: 'Gs', label: 'G#', file: 'pad-Gs.mp3' },
-    { id: 'A', label: 'A', file: 'pad-A.mp3' },
-    { id: 'As', label: 'A#', file: 'pad-As.mp3' },
-    { id: 'B', label: 'B', file: 'pad-B.mp3' },
+    { id: 'C', label: 'C', file: 'pad-C.mp3', key: '1', altKey: 'q' },
+    { id: 'Cs', label: 'C#', file: 'pad-Cs.mp3', key: '2', altKey: 'w' },
+    { id: 'D', label: 'D', file: 'pad-D.mp3', key: '3', altKey: 'e' },
+    { id: 'Ds', label: 'D#', file: 'pad-Ds.mp3', key: '4', altKey: 'r' },
+    { id: 'E', label: 'E', file: 'pad-E.mp3', key: '5', altKey: 't' },
+    { id: 'F', label: 'F', file: 'pad-F.mp3', key: '6', altKey: 'y' },
+    { id: 'Fs', label: 'F#', file: 'pad-Fs.mp3', key: '7', altKey: 'u' },
+    { id: 'G', label: 'G', file: 'pad-G.mp3', key: '8', altKey: 'i' },
+    { id: 'Gs', label: 'G#', file: 'pad-Gs.mp3', key: '9', altKey: 'o' },
+    { id: 'A', label: 'A', file: 'pad-A.mp3', key: '0', altKey: 'p' },
+    { id: 'As', label: 'A#', file: 'pad-As.mp3', key: '-', altKey: '[' },
+    { id: 'B', label: 'B', file: 'pad-B.mp3', key: '=', altKey: ']' },
 ];
 
 const createReverbIR = (audioCtx) => {
@@ -44,11 +44,12 @@ const Pads = () => {
     const convolverNodeRef = useRef(null);
     const dryGainRef = useRef(null);
     const wetGainRef = useRef(null);
+    const masterGainRef = useRef(null);
 
     useEffect(() => {
         masterVolumeRef.current = masterVolume;
-        if (audioRef.current && !audioRef.current.isFading) {
-            audioRef.current.volume = masterVolume;
+        if (masterGainRef.current && audioCtxRef.current) {
+            masterGainRef.current.gain.setTargetAtTime(masterVolume, audioCtxRef.current.currentTime, 0.05);
         }
     }, [masterVolume]);
 
@@ -75,41 +76,31 @@ const Pads = () => {
     const fadeAudio = (audioElement, direction) => {
         if (!audioElement) return;
 
-        clearInterval(audioElement.fadeInterval);
+        const gainNode = audioElement.gainNode;
+        if (!gainNode || !audioCtxRef.current || audioCtxRef.current.state === 'closed') {
+            return;
+        }
+
+        clearTimeout(audioElement.fadeTimeout);
         audioElement.isFading = true;
 
-        const steps = 40;
-        const stepTime = FADE_DURATION / steps;
-        const targetVolume = masterVolumeRef.current;
-
         if (direction === 'in') {
-            audioElement.volume = 0;
+            gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtxRef.current.currentTime);
+            gainNode.gain.linearRampToValueAtTime(1, audioCtxRef.current.currentTime + FADE_DURATION / 1000);
+            
             audioElement.play().catch(e => console.error("Erro ao tocar áudio: ", e));
-            const inStep = targetVolume / steps;
-
-            audioElement.fadeInterval = setInterval(() => {
-                if (audioElement.volume < targetVolume - inStep) {
-                    audioElement.volume += inStep;
-                } else {
-                    audioElement.volume = targetVolume; 
-                    audioElement.isFading = false; 
-                    clearInterval(audioElement.fadeInterval);
-                }
-            }, stepTime);
+            
+            audioElement.fadeTimeout = setTimeout(() => {
+                audioElement.isFading = false;
+            }, FADE_DURATION);
         } else if (direction === 'out') {
-            const currentVol = audioElement.volume;
-            const outStep = currentVol / steps;
-
-            audioElement.fadeInterval = setInterval(() => {
-                if (audioElement.volume > outStep) {
-                    audioElement.volume -= outStep;
-                } else {
-                    audioElement.volume = 0;
-                    audioElement.pause();
-                    audioElement.isFading = false; 
-                    clearInterval(audioElement.fadeInterval);
-                }
-            }, stepTime);
+            gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtxRef.current.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0, audioCtxRef.current.currentTime + FADE_DURATION / 1000);
+            
+            audioElement.fadeTimeout = setTimeout(() => {
+                audioElement.pause();
+                audioElement.isFading = false;
+            }, FADE_DURATION);
         }
     };
 
@@ -133,18 +124,22 @@ const Pads = () => {
             convolverNodeRef.current.buffer = createReverbIR(audioCtxRef.current);
             dryGainRef.current = audioCtxRef.current.createGain();
             wetGainRef.current = audioCtxRef.current.createGain();
+            masterGainRef.current = audioCtxRef.current.createGain();
             
             filterNodeRef.current.connect(dryGainRef.current);
             filterNodeRef.current.connect(convolverNodeRef.current);
             convolverNodeRef.current.connect(wetGainRef.current);
-            dryGainRef.current.connect(audioCtxRef.current.destination);
-            wetGainRef.current.connect(audioCtxRef.current.destination);
+            
+            dryGainRef.current.connect(masterGainRef.current);
+            wetGainRef.current.connect(masterGainRef.current);
+            masterGainRef.current.connect(audioCtxRef.current.destination);
             
             const freq = 300 * Math.pow(20000 / 300, filterValue / 100);
             filterNodeRef.current.frequency.value = freq;
             const initialWet = reverbValue / 100;
             wetGainRef.current.gain.value = initialWet;
             dryGainRef.current.gain.value = 1 - (initialWet * 0.5);
+            masterGainRef.current.gain.value = masterVolume;
         }
 
         if (audioCtxRef.current.state === 'suspended') {
@@ -165,13 +160,38 @@ const Pads = () => {
         newAudio.crossOrigin = "anonymous"; 
         
         const source = audioCtxRef.current.createMediaElementSource(newAudio);
-        source.connect(filterNodeRef.current);
+        
+        // Criar nó de ganho para o pad para fazer fade
+        const padGain = audioCtxRef.current.createGain();
+        padGain.gain.value = 0; // Inicia mudo para fazer o fadeIn
+        newAudio.gainNode = padGain;
+        
+        source.connect(padGain);
+        padGain.connect(filterNodeRef.current);
 
         fadeAudio(newAudio, 'in');
 
         audioRef.current = newAudio;
         setActivePad(pad.id);
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.repeat || e.target.tagName === 'INPUT') return;
+            const pad = PADS.find(p => p.key === e.key || p.altKey === e.key.toLowerCase());
+            if (pad) {
+                handlePadClick(pad);
+            } else if (e.key === 'Space' || e.key === ' ' || e.code === 'Space') {
+                e.preventDefault(); // Evita scroll ao pressionar espaço
+                handleStopPad();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [activePad, filterValue, reverbValue, masterVolume]);
 
     useEffect(() => {
         return () => {
@@ -181,119 +201,119 @@ const Pads = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-4xl h-full flex flex-col items-center justify-start px-3 pt-2 pb-24 overflow-y-auto no-scrollbar">
+        <div className="w-full max-w-4xl flex flex-col items-center justify-start px-3 pt-2 pb-6 sm:pb-12 landscape-phone-row landscape-phone-compact landscape-tablet-row">
             
-            {/* MIXER */}
-            <div className="w-full max-w-md mb-3 bg-gray-800/40 p-3 sm:p-4 rounded-3xl shadow-inner border border-gray-700/50 flex justify-center gap-6 md:gap-12 items-center shrink-0">
-                
-                {/* SLIDER DE VOLUME */}
-                <div className="flex flex-col items-center gap-2 transition-all hover:scale-105">
-                    <span className="text-[#27ca55] mb-3 font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
-                        {Math.round(masterVolume * 100)}%
-                    </span>
-                    <div className="relative w-16 h-24 flex items-center justify-center">
-                        <input 
-                            type="range" 
-                            min="0" max="1" step="0.01" 
-                            value={masterVolume} 
-                            onChange={(e) => setMasterVolume(parseFloat(e.target.value))} 
-                            className="absolute w-32 h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
-                                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
-                                       [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
-                            style={{
-                                background: `linear-gradient(to right, #27ca55 ${masterVolume * 100}%, #374151 ${masterVolume * 100}%)`
-                            }}
-                        />
+            <div className="landscape-phone-col-left landscape-tablet-col-left w-full flex flex-col items-center">
+                <div className="w-full max-w-md mb-2 sm:mb-3 bg-gray-800/40 p-2 sm:p-4 rounded-2xl sm:rounded-3xl shadow-inner border border-gray-700/50 flex justify-center gap-3 sm:gap-6 md:gap-12 items-center shrink-0">
+                    
+                    <div className="flex flex-col items-center gap-1 sm:gap-2 transition-all hover:scale-105">
+                        <span className="text-[#27ca55] mb-1 sm:mb-3 font-bold font-mono text-[10px] sm:text-xs bg-gray-900/50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded w-10 sm:w-12 text-center shadow-sm">
+                            {Math.round(masterVolume * 100)}%
+                        </span>
+                        <div className="relative w-12 h-16 sm:w-16 sm:h-24 flex items-center justify-center">
+                            <input 
+                                type="range" 
+                                min="0" max="1" step="0.01" 
+                                value={masterVolume} 
+                                onChange={(e) => setMasterVolume(parseFloat(e.target.value))} 
+                                className="absolute w-20 h-8 sm:w-32 sm:h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
+                                           [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-8 sm:[&::-webkit-slider-thumb]:w-4 sm:[&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
+                                           [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-8 sm:[&::-moz-range-thumb]:w-4 sm:[&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                                style={{
+                                    background: `linear-gradient(to right, #27ca55 ${masterVolume * 100}%, #374151 ${masterVolume * 100}%)`
+                                }}
+                            />
+                        </div>
+                        <span className="text-gray-400 mt-1 sm:mt-3 font-semibold uppercase tracking-wider text-[9px] sm:text-[10px]">Vol</span>
                     </div>
-                    <span className="text-gray-400 mt-3 font-semibold uppercase tracking-wider text-[10px]">Vol</span>
+
+                    <div className="flex flex-col items-center gap-1 sm:gap-2 transition-all hover:scale-105">
+                        <span className="text-[#3498db] mb-1 sm:mb-3 font-bold font-mono text-[10px] sm:text-xs bg-gray-900/50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded w-10 sm:w-12 text-center shadow-sm">
+                            {filterValue}%
+                        </span>
+                        <div className="relative w-12 h-16 sm:w-16 sm:h-24 flex items-center justify-center">
+                            <input 
+                                type="range" 
+                                min="0" max="100" step="1" 
+                                value={filterValue} 
+                                onChange={(e) => setFilterValue(parseInt(e.target.value))} 
+                                className="absolute w-20 h-8 sm:w-32 sm:h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
+                                           [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-8 sm:[&::-webkit-slider-thumb]:w-4 sm:[&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
+                                           [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-8 sm:[&::-moz-range-thumb]:w-4 sm:[&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                                style={{
+                                    background: `linear-gradient(to right, #3498db ${filterValue}%, #374151 ${filterValue}%)`
+                                }}
+                            />
+                        </div>
+                        <span className="text-gray-400 mt-1 sm:mt-3 font-semibold uppercase tracking-wider text-[9px] sm:text-[10px]">Filtro</span>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-1 sm:gap-2 transition-all hover:scale-105">
+                        <span className="text-[#9b59b6] mb-1 sm:mb-3 font-bold font-mono text-[10px] sm:text-xs bg-gray-900/50 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded w-10 sm:w-12 text-center shadow-sm">
+                            {reverbValue}%
+                        </span>
+                        <div className="relative w-12 h-16 sm:w-16 sm:h-24 flex items-center justify-center">
+                            <input 
+                                type="range" 
+                                min="0" max="100" step="1" 
+                                value={reverbValue} 
+                                onChange={(e) => setReverbValue(parseInt(e.target.value))} 
+                                className="absolute w-20 h-8 sm:w-32 sm:h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
+                                           [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-8 sm:[&::-webkit-slider-thumb]:w-4 sm:[&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
+                                           [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-8 sm:[&::-moz-range-thumb]:w-4 sm:[&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
+                                style={{
+                                    background: `linear-gradient(to right, #9b59b6 ${reverbValue}%, #374151 ${reverbValue}%)`
+                                }}
+                            />
+                        </div>
+                        <span className="text-gray-400 mt-1 sm:mt-3 font-semibold uppercase tracking-wider text-[9px] sm:text-[10px]">Reverb</span>
+                    </div>
                 </div>
 
-                {/* SLIDER DE FILTRO */}
-                <div className="flex flex-col items-center gap-2 transition-all hover:scale-105">
-                    <span className="text-[#3498db] mb-3 font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
-                        {filterValue}%
-                    </span>
-                    <div className="relative w-16 h-24 flex items-center justify-center">
-                        <input 
-                            type="range" 
-                            min="0" max="1" step="0.01" 
-                            value={filterValue} 
-                            onChange={(e) => setFilterValue(parseFloat(e.target.value))} 
-                            className="absolute w-32 h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
-                                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
-                                       [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
-                            style={{
-                                background: `linear-gradient(to right, #3498db ${filterValue}%, #374151 ${filterValue}%)`
-                            }}
-                        />
-                    </div>
-                    <span className="text-gray-400 mt-3 font-semibold uppercase tracking-wider text-[10px]">Filtro</span>
-                </div>
-
-                {/* SLIDER DE REVERB */}
-                <div className="flex flex-col items-center gap-2 transition-all hover:scale-105">
-                    <span className="text-[#9b59b6] mb-3 font-bold font-mono text-xs bg-gray-900/50 px-2 py-1 rounded w-12 text-center shadow-sm">
-                        {reverbValue}%
-                    </span>
-                    <div className="relative w-16 h-24 flex items-center justify-center">
-                        <input 
-                            type="range" 
-                            min="0" max="100" step="1" 
-                            value={reverbValue} 
-                            onChange={(e) => setReverbValue(parseInt(e.target.value))} 
-                            className="absolute w-32 h-11 appearance-none cursor-pointer rounded-lg -rotate-90 outline-none
-                                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-12 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md
-                                       [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-10 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0"
-                            style={{
-                                background: `linear-gradient(to right, #9b59b6 ${reverbValue}%, #374151 ${reverbValue}%)`
-                            }}
-                        />
-                    </div>
-                    <span className="text-gray-400 mt-3 font-semibold uppercase tracking-wider text-[10px]">Reverb</span>
+                <div className="w-full max-w-md flex justify-end mb-2 sm:mb-3 shrink-0">
+                    <button 
+                        onClick={handleStopPad}
+                        disabled={!activePad}
+                        className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 w-full justify-center
+                        ${activePad 
+                            ? 'bg-transparent text-gray-300 border-gray-600 hover:border-red-500 hover:text-red-500 active:scale-95 cursor-pointer' 
+                            : 'bg-transparent text-gray-600 border-gray-800 opacity-50 cursor-not-allowed'}`}
+                    >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
+                        </svg>
+                        Pausar Pad <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] bg-gray-800 text-gray-400 rounded border border-gray-700 font-mono ml-1">Espaço</kbd>
+                    </button>
                 </div>
             </div>
 
-            {/* BOTÃO DE PAUSE GLOBAL DOS PADS */}
-            <div className="w-full max-w-md flex justify-end mb-3 shrink-0">
-                 <button 
-                    onClick={handleStopPad}
-                    disabled={!activePad}
-                    className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 
-                    ${activePad 
-                        ? 'bg-transparent text-gray-300 border-gray-600 hover:border-red-500 hover:text-red-500 active:scale-95 cursor-pointer' 
-                        : 'bg-transparent text-gray-600 border-gray-800 opacity-50 cursor-not-allowed'}`}
-                >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 5h4v14H6zm8 0h4v14h-4z"></path>
-                    </svg>
-                    Pausar Pad
-                </button>
-            </div>
-
-            {/* GRID DE PADS */}
-            {/* O gap-2 no mobile (sm:gap-4) deixa os botões mais próximos, salvando bastante altura da tela */}
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4 w-full max-w-md pb-4 shrink-0">
-                {PADS.map((pad) => {
-                    const isActive = activePad === pad.id;
-                    return (
-                        <button
-                            key={pad.id}
-                            onClick={() => handlePadClick(pad)}
-                            className={`
-                                relative flex flex-col items-center justify-center aspect-square rounded-2xl
-                                text-2xl md:text-4xl font-bold transition-all duration-300 overflow-hidden
-                                ${isActive
-                                    ? 'bg-[#27ca55] text-black scale-105 shadow-[0_0_20px_rgba(39,202,85,0.4)] z-10'
-                                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 shadow-lg'
-                                }`}
-                        >
-                            {pad.label}
-                            {isActive && (
-                                <span className="absolute inset-0 rounded-2xl bg-[#27ca55] opacity-50 animate-ping"/>
-                            )}
-                        </button>
-                    );
-                })}
+            <div className="landscape-phone-col-right landscape-tablet-col-right w-full flex flex-col items-center">
+                <div className="grid grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 w-full max-w-md pb-4 shrink-0">
+                    {PADS.map((pad) => {
+                        const isActive = activePad === pad.id;
+                        return (
+                            <button
+                                key={pad.id}
+                                onClick={() => handlePadClick(pad)}
+                                className={`
+                                    relative flex flex-col items-center justify-center aspect-[1.35/1] sm:aspect-square rounded-xl sm:rounded-2xl
+                                    text-xl sm:text-2xl md:text-4xl font-bold transition-all duration-300 overflow-hidden
+                                    ${isActive
+                                        ? 'bg-[#27ca55] text-black scale-105 shadow-[0_0_20px_rgba(39,202,85,0.4)] z-10'
+                                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 shadow-lg'
+                                    }`}
+                            >
+                                {pad.label}
+                                {isActive && (
+                                    <span className="absolute inset-0 rounded-xl sm:rounded-2xl bg-[#27ca55] opacity-50 animate-ping"/>
+                                )}
+                                <span className={`absolute bottom-1 right-1.5 text-[8px] sm:text-[10px] font-mono transition-colors ${isActive ? 'text-black/60' : 'text-gray-500'}`}>
+                                    {pad.key}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

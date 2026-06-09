@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['Afinador.svg', 'icons/*.png'], 
+      includeAssets: ['Afinador.svg', 'icons/*.png', 'pads/*.mp3'], 
       manifest: {
         name: 'Afinador Cromático',
         short_name: 'Afinador',

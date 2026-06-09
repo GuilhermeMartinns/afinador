@@ -82,7 +82,7 @@ const VirtualKeyboard = ({ activeNotes, onNoteOn, onNoteOff }) => {
   };
 
   return (
-    <div className="w-full h-40 bg-gray-900 rounded-xl border border-gray-700 overflow-hidden flex relative mt-6 px-1">
+    <div className="w-full h-36 sm:h-44 lg:h-48 bg-gray-900 rounded-xl border border-gray-700 overflow-hidden flex relative mt-6 px-1 landscape-phone-keyboard landscape-tablet-keyboard">
       {renderKeys()}
     </div>
   );
