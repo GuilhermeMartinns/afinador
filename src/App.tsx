@@ -146,7 +146,7 @@ function App() {
     } else if (permission === 'denied') {
       alert("Você bloqueou as notificações. Se mudar de ideia, precisará liberar nas configurações do navegador.");
     }
-    
+
     setIsMenuOpen(false);
   };
 
@@ -171,7 +171,7 @@ function App() {
   };
 
   const handleUpdate = () => {
-    window.location.reload(); 
+    window.location.reload();
   };
 
   const handleOrientation = async () => {
@@ -182,7 +182,7 @@ function App() {
 
       const screenOrientation = window.screen.orientation as ScreenOrientation & { lock?: (mode: string) => Promise<void> };
       const currentOrientation = screenOrientation.type;
-      
+
       if (screenOrientation.lock) {
         if (currentOrientation.startsWith('portrait')) {
           await screenOrientation.lock('landscape');
@@ -197,7 +197,7 @@ function App() {
       console.error("Erro ao mudar orientação:", error);
       alert("O seu navegador ou dispositivo não suporta a rotação forçada por botão. Por favor, rode o telemóvel fisicamente.");
     }
-    
+
     setIsMenuOpen(false);
   };
 
@@ -205,9 +205,9 @@ function App() {
     <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden landscape-safe">
       {/* Header */}
       <div className="absolute top-2 left-4 opacity-30 shrink-0 z-50">
-        <span className="text-[8px] font-mono">v.1.0.4 beta</span>
+        <span className="text-[8px] font-mono">v.1.0.5 beta</span>
       </div>
-      
+
       {/* Botões de navegação entre abas */}
       <header className="w-full relative flex justify-center items-center p-3 sm:p-4 shrink-0 z-40 bg-gray-950/50 backdrop-blur-sm border-b border-gray-800/50 landscape-phone-header landscape-tablet-header">
         <div className="flex gap-1.5 sm:gap-4 px-2 no-scrollbar landscape-phone-toolbar">
@@ -217,7 +217,7 @@ function App() {
         </div>
 
         {/* Botão de Menu */}
-        <button 
+        <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="absolute right-3 sm:right-4 p-2 text-gray-400 hover:text-white transition-colors z-50 bg-gray-900/80 backdrop-blur rounded-xl border border-gray-700/50"
           aria-label="Menu Principal"
@@ -270,15 +270,15 @@ function App() {
             <div className="landscape-phone-col-left landscape-tablet-col-left w-full flex items-center justify-center">
               <MedidorFrequencia cents={audioData.cents} note={audioData.noteName} frequency={audioData.frequency} />
             </div>
-            
+
             <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8 w-full justify-center landscape-phone-col-right landscape-tablet-col-right">
-              <button 
-                onClick={toggleMic} 
+              <button
+                onClick={toggleMic}
                 className={`
                   relative px-10 py-3.5 rounded-full font-bold text-lg tracking-wide transition-all duration-300
                   hover:scale-105 active:scale-95 border-b-4 whitespace-nowrap
-                  ${isMicOn 
-                    ? 'bg-gradient-to-b from-red-500 to-red-600 border-red-800 text-white shadow-lg shadow-red-900/50' 
+                  ${isMicOn
+                    ? 'bg-gradient-to-b from-red-500 to-red-600 border-red-800 text-white shadow-lg shadow-red-900/50'
                     : 'bg-gradient-to-b from-green-500 to-green-600 border-green-800 text-white shadow-lg shadow-green-900/50'}
                 `}
               >
@@ -293,8 +293,8 @@ function App() {
 
                 <div className="flex items-center gap-3 bg-gray-800/40 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-700/50 hover:bg-gray-800/80 transition-colors shadow-inner text-xs">
                   <span className='font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap'>Frequência</span>
-                  <select 
-                    value={referencePitch} 
+                  <select
+                    value={referencePitch}
                     onChange={(e) => setReferencePitch(parseInt(e.target.value, 10))}
                     className="bg-gray-900/60 text-[#27ca55] font-bold font-mono border-0 rounded px-2 py-0.5 outline-none cursor-pointer hover:bg-gray-900 transition-colors"
                   >
@@ -330,9 +330,9 @@ function App() {
       <footer className="w-full text-center py-4 shrink-0 border-t border-gray-800/50 bg-gray-950/30 backdrop-blur-sm mt-auto z-20 pb-[calc(1rem+env(safe-area-inset-bottom))] landscape-phone-hide">
         <span className="text-[11px] text-gray-600 block px-4 font-mono">
           Desenvolvido por{' '}
-          <a 
-            href="https://github.com/GuilhermeMartinns" 
-            target="_blank" 
+          <a
+            href="https://github.com/GuilhermeMartinns"
+            target="_blank"
             rel="noreferrer"
             className="hover:text-green-400 transition-colors"
           >
@@ -352,10 +352,10 @@ function App() {
             </div>
 
             <h3 className="text-lg font-bold text-white mb-2">Instalar Aplicativo</h3>
-            
+
             <p className="text-gray-300 text-xs sm:text-sm mb-5 leading-relaxed">
-              {isIOS 
-                ? "Adicione o afinador à sua tela de início para acessá-lo facilmente offline direto do seu dispositivo iOS." 
+              {isIOS
+                ? "Adicione o afinador à sua tela de início para acessá-lo facilmente offline direto do seu dispositivo iOS."
                 : "Deseja instalar o afinador para acesso offline rápido e direto da sua tela inicial?"}
             </p>
 
@@ -378,22 +378,22 @@ function App() {
 
             <div className="w-full flex flex-col gap-2">
               {!showIOSInstructions && (
-                <button 
+                <button
                   onClick={handleInstallClick}
                   className="w-full py-2.5 bg-[#27ca55] hover:bg-[#22b24a] active:scale-95 text-black font-bold text-sm rounded-xl transition-all shadow-lg shadow-[#27ca55]/20 cursor-pointer border-0"
                 >
                   {isIOS ? "Como instalar" : "Sim, instalar"}
                 </button>
               )}
-              
-              <button 
+
+              <button
                 onClick={handleClosePrompt}
                 className="w-full py-2.5 bg-gray-800 hover:bg-gray-750 active:scale-95 text-gray-300 text-sm font-semibold rounded-xl transition-all border border-gray-700/50 cursor-pointer"
               >
                 {showIOSInstructions ? "Entendi" : "Não, obrigado"}
               </button>
 
-              <button 
+              <button
                 onClick={handleDismissPermanently}
                 className="w-full py-1 mt-1 text-[10px] sm:text-[11px] text-gray-500 hover:text-gray-400 font-medium underline transition-colors cursor-pointer bg-transparent border-0 outline-none"
               >
