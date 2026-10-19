@@ -1,26 +1,26 @@
-export const autoCorrelate = (buffer, sampleRate) => {
+export const autoCorrelate = (buffer: Float32Array, sampleRate: number): number => {
     const SIZE = buffer.length;
 
-    //sumOfSquares (soma dos quadrados)
-    //precisa elevar ao quadrado para que a frequencia não se "auto anule"
-    //pois a onda possui picos (positivos) e vales (negativos)
+    // sumOfSquares (soma dos quadrados)
+    // precisa elevar ao quadrado para que a frequencia não se "auto anule"
+    // pois a onda possui picos (positivos) e vales (negativos)
     let sumOfSquares = 0;
     for (let i = 0; i < SIZE; i++) {
         const val = buffer[i];
         sumOfSquares += val * val;
     }
     
-     //root mean square mede o volume do sinal
-    //se o som for muito baixo ou silencio não tenta detectar a frequência
+    // root mean square mede o volume do sinal
+    // se o som for muito baixo ou silencio não tenta detectar a frequência
     const rootMeanSquare = Math.sqrt(sumOfSquares / SIZE);
     
-    //Noise gate
+    // Noise gate
     if (rootMeanSquare < 0.01) {
         return -1; // Silêncio
     }
 
-     // corta o ínicio e o fim do buffer para aumentar a precisão da detecção
-    // pois se cortar no meio do pico ou no meio de um vale pode gerar erros de calculo
+    // corta o início e o fim do buffer para aumentar a precisão da detecção
+    // pois se cortar no meio do pico ou no meio de um vale pode gerar erros de cálculo
     // então tenta cortar mais próximo do repouso (perto de 0)
     let r1 = 0;
     let r2 = SIZE - 1;
@@ -28,7 +28,6 @@ export const autoCorrelate = (buffer, sampleRate) => {
     // Threshold para achar o começo real da onda
     const threshold = 0.10;
 
-    // CORREÇÃO 2: Procura onde o som fica MAIOR que o threshold
     for (let i = 0; i < SIZE / 2; i++) {
         if (Math.abs(buffer[i]) > threshold) { 
             r1 = i;
@@ -38,7 +37,7 @@ export const autoCorrelate = (buffer, sampleRate) => {
 
     // Procura o fim real da onda (de trás pra frente)
     for (let i = 1; i < SIZE / 2; i++) {
-        if (Math.abs(buffer[SIZE - i]) > threshold) {
+        if (Math.abs(buffer[SIZE - i]) > threshold) { 
             r2 = SIZE - i;
             break;
         }
@@ -77,12 +76,10 @@ export const autoCorrelate = (buffer, sampleRate) => {
         }
     }
 
-    // interpolação de parábolas
-    // para aumentar a precisão do afinador
-    //sem a interpolação ele pode ficar variando entre 2 frequencias
+    // interpolação de parábolas para aumentar a precisão do afinador
+    // sem a interpolação ele pode ficar variando entre 2 frequências
     let T0 = maxpos;
-    //proteção para o T0 nao for válido ou igual a 0 
-    if (T0 < 1 ) {
+    if (T0 < 1) {
         return -1;
     }
 
@@ -90,13 +87,12 @@ export const autoCorrelate = (buffer, sampleRate) => {
     const x2 = c[T0];
     const x3 = c[T0 + 1];
     
-    if (x1 && x2 && x3){
+    if (x1 !== undefined && x2 !== undefined && x3 !== undefined) {
         const a = (x1 + x3 - 2 * x2) / 2;
         const b = (x3 - x1) / 2;
         if (a) T0 = T0 - b / (2 * a);
     }
 
-    //Convertendo para herts
-    // frequencia = taxa de amostragem / período (f=1/T)
+    // Convertendo para hertz (f = 1/T)
     return sampleRate / T0;
 };
