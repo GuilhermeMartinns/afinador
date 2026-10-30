@@ -68,7 +68,7 @@ export interface StringNoteDetail {
   isBass: boolean;
 }
 
-const SEMITONE_MAP: Record<string, number> = {
+export const SEMITONE_MAP: Record<string, number> = {
   'C': 0, 'C#': 1, 'Db': 1, 'C♯': 1, 'D♭': 1,
   'D': 2, 'D#': 3, 'Eb': 3, 'D♯': 3, 'E♭': 3,
   'E': 4,
@@ -78,7 +78,7 @@ const SEMITONE_MAP: Record<string, number> = {
   'B': 11,
 };
 
-const INTERVAL_SHORT: Record<number, string> = {
+export const INTERVAL_SHORT: Record<number, string> = {
   0: 'T',
   1: 'b9',
   2: '9/2M',
@@ -93,7 +93,7 @@ const INTERVAL_SHORT: Record<number, string> = {
   11: '7M',
 };
 
-const INTERVAL_FULL: Record<number, string> = {
+export const INTERVAL_FULL: Record<number, string> = {
   0: 'Tônica (Fundamental)',
   1: '2ª Menor / 9ª Bemol (b9)',
   2: '2ª Maior / 9ª Maior (9)',
@@ -171,7 +171,9 @@ export function formatChordSymbol(
   bass?: string
 ): string {
   const formattedRoot = formatNoteName(key, isFlat);
-  const displaySuffix = suffix === 'M' ? '' : suffix;
+  let displaySuffix = suffix === 'M' ? '' : suffix;
+  // Substitui "dim" por "°" (ex: Cdim -> C°, Cdim7 -> C°7)
+  displaySuffix = displaySuffix.replace(/dim/g, '°');
   const baseSymbol = `${formattedRoot}${displaySuffix}`;
   if (bass) {
     const formattedBass = formatNoteName(bass, isFlat);

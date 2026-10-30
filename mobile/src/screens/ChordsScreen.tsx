@@ -298,7 +298,7 @@ export default function ChordsScreen() {
                 style={[styles.chordPill, isSelected && styles.chordPillActive]}
               >
                 <Text style={[styles.chordPillText, isSelected && styles.chordPillTextActive]}>
-                  {selectedKey}{chord.suffix}
+                  {selectedKey}{(chord.suffix || '').replace(/dim/g, '°')}
                 </Text>
               </Pressable>
             );
@@ -310,7 +310,7 @@ export default function ChordsScreen() {
       <View style={styles.diagramCard}>
         <View style={styles.cardHeaderRow}>
           <Text style={styles.chordTitle}>
-            {selectedKey}{currentChord?.suffix || ''}
+            {selectedKey}{(currentChord?.suffix || '').replace(/dim/g, '°')}
           </Text>
 
           {/* Botão de Ouvir Acorde */}

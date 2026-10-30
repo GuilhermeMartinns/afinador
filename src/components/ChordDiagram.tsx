@@ -156,16 +156,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           fill="url(#fretboardGrad)"
         />
 
-        {/* Thick Outer Fretboard Edges (Delimitações mais grossas das bordas do braço) */}
+        {/* Thick Outer Fretboard Edges (100% opacidade, cantos precisos e bem acabados) */}
         {/* Borda Esquerda (Lado da corda mais grave) */}
         <line
           x1={topPadLeft}
           y1={padTop}
           x2={bottomPadLeft}
           y2={padTop + gridHeight}
-          stroke="#475569"
-          strokeWidth={4.5}
-          strokeLinecap="round"
+          stroke="#64748b"
+          strokeWidth={3}
+          strokeLinecap="square"
         />
         {/* Borda Direita (Lado da corda mais aguda) */}
         <line
@@ -173,19 +173,19 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           y1={padTop}
           x2={bottomPadLeft + bottomGridWidth}
           y2={padTop + gridHeight}
-          stroke="#475569"
-          strokeWidth={4.5}
-          strokeLinecap="round"
+          stroke="#64748b"
+          strokeWidth={3}
+          strokeLinecap="square"
         />
-        {/* Borda Inferior (Fim do braço / última casa visível) */}
+        {/* Borda Inferior (Fim do braço / base) */}
         <line
           x1={bottomPadLeft}
           y1={padTop + gridHeight}
           x2={bottomPadLeft + bottomGridWidth}
           y2={padTop + gridHeight}
-          stroke="#475569"
-          strokeWidth={3.5}
-          strokeLinecap="round"
+          stroke="#64748b"
+          strokeWidth={3}
+          strokeLinecap="square"
         />
 
         {/* Fretboard Inlay Dots (3rd, 5th, 7th, 9th, 12th actual frets) */}
@@ -235,9 +235,9 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
               y1={y}
               x2={x2}
               y2={y}
-              stroke={isTopNut ? '#e2e8f0' : '#334155'}
-              strokeWidth={isTopNut ? 6 : 2}
-              strokeLinecap="round"
+              stroke={isTopNut ? '#f8fafc' : '#475569'}
+              strokeWidth={isTopNut ? 6 : 1.8}
+              strokeLinecap="square"
             />
           );
         })}

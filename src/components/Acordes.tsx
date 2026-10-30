@@ -12,6 +12,9 @@ import {
   playGuitarNote,
   FINGER_NAMES,
   PORTUGUESE_NOTE_NAMES,
+  SEMITONE_MAP,
+  INTERVAL_SHORT,
+  INTERVAL_FULL,
 } from '../utils/ChordHelpers';
 
 interface AcordesProps {
@@ -50,7 +53,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   const [displayMode, setDisplayMode] = useState<DiagramDisplayMode>('fingers');
   const [quizMode, setQuizMode] = useState<boolean>(false);
   const [quizRevealed, setQuizRevealed] = useState<boolean>(false);
-  const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
+  const [capoFret, setCapoFret] = useState<number>(0);
 
   // SoundFont HD Audio Engine state
   const [isHdAudioActive, setIsHdAudioActive] = useState<boolean>(() => soundFontAudio.isAvailable());
@@ -127,16 +130,26 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
     return activeChord.positions[safePosIdx];
   }, [activeChord, selectedPositionIndex]);
 
+  // Effective position taking capo into account
+  const effectivePosition = useMemo(() => {
+    if (!activePosition) return null;
+    if (capoFret === 0) return activePosition;
+    return {
+      ...activePosition,
+      baseFret: (activePosition.baseFret || 1) + capoFret,
+    };
+  }, [activePosition, capoFret]);
+
   // Calculate string-by-string notes, fingers, and intervals
   const stringDetails = useMemo(() => {
-    if (!activePosition || !currentTuning || !activeChord) return [];
+    if (!effectivePosition || !currentTuning || !activeChord) return [];
     return analyzeChordPosition(
-      activePosition,
+      effectivePosition,
       currentTuning.strings,
       activeChord.key,
       isFlatNote
     );
-  }, [activePosition, currentTuning, activeChord, isFlatNote]);
+  }, [effectivePosition, currentTuning, activeChord, isFlatNote]);
 
   const handleTuningChange = (newTuningId: string) => {
     setLoadingChords(true);
@@ -171,73 +184,75 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
 
   return (
     <div className="w-full max-w-4xl flex flex-col gap-3 sm:gap-4 pb-6 text-white">
-      {/* BARRA SUPERIOR: Instrumento e Afinação (Apple Inset Glass Card) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-3.5 sm:p-4 shadow-xl backdrop-blur-sm">
-        {/* Seletor de Instrumento */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between">
-            <span>Instrumento</span>
-            <span className="text-[#34C759] font-mono text-[11px]">
-              {currentInstrument.id === 'teclado' ? 'Teclas' : `${currentInstrument.stringsCount} Cordas`}
-            </span>
-          </label>
-          <div className="relative">
-            <select
-              value={selectedInstrumentId}
-              onChange={(e) => {
-                const newInstId = e.target.value;
-                setLoadingChords(true);
-                setSelectedInstrumentId(newInstId);
-                soundFontAudio.setInstrument(newInstId);
-                const targetInst = instruments.find((i) => i.id === newInstId);
-                if (targetInst && targetInst.tunings.length > 0) {
-                  setSelectedTuningId(targetInst.tunings[0].id);
-                }
-                setSelectedChordIndex(0);
-                setSelectedPositionIndex(0);
-              }}
-              className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-white text-xs sm:text-sm font-medium rounded-2xl px-3.5 py-2.5 pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99]"
-            >
-              {instruments.map((inst) => (
-                <option key={inst.id} value={inst.id} disabled={!inst.available} className="bg-gray-900 text-white">
-                  {inst.name}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+      {/* BARRA SUPERIOR: Instrumento e Afinação lado a lado (Apple Inset Glass Card) */}
+      <div className="flex flex-col gap-3 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-3.5 sm:p-4 shadow-xl backdrop-blur-sm">
+        <div className="flex flex-row items-center gap-2.5 sm:gap-3 w-full">
+          {/* Seletor de Instrumento */}
+          <div className="flex-1 flex flex-col gap-1 min-w-0">
+            <label className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between truncate">
+              <span>Instrumento</span>
+              <span className="text-[#34C759] font-mono text-[10px] sm:text-[11px]">
+                {currentInstrument.id === 'teclado' ? 'Teclas' : `${currentInstrument.stringsCount}C`}
+              </span>
+            </label>
+            <div className="relative w-full">
+              <select
+                value={selectedInstrumentId}
+                onChange={(e) => {
+                  const newInstId = e.target.value;
+                  setLoadingChords(true);
+                  setSelectedInstrumentId(newInstId);
+                  soundFontAudio.setInstrument(newInstId);
+                  const targetInst = instruments.find((i) => i.id === newInstId);
+                  if (targetInst && targetInst.tunings.length > 0) {
+                    setSelectedTuningId(targetInst.tunings[0].id);
+                  }
+                  setSelectedChordIndex(0);
+                  setSelectedPositionIndex(0);
+                }}
+                className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-white text-xs sm:text-sm font-medium rounded-2xl px-3 py-2 sm:px-3.5 sm:py-2.5 pr-7 sm:pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99] truncate"
+              >
+                {instruments.map((inst) => (
+                  <option key={inst.id} value={inst.id} disabled={!inst.available} className="bg-gray-900 text-white">
+                    {inst.name}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 sm:px-3 text-gray-400">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Seletor de Afinação */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between">
-            <span>Afinação</span>
-            {currentTuning && (
-              <span className="text-sky-400 font-mono text-[10px]">
-                {currentTuning.strings.join(' · ')}
-              </span>
-            )}
-          </label>
-          <div className="relative">
-            <select
-              value={selectedTuningId}
-              onChange={(e) => handleTuningChange(e.target.value)}
-              className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-[#34C759] text-xs sm:text-sm font-semibold rounded-2xl px-3.5 py-2.5 pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99]"
-            >
-              {currentInstrument.tunings.map((tuning) => (
-                <option key={tuning.id} value={tuning.id} className="bg-gray-900 text-white">
-                  {tuning.name}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+          {/* Seletor de Afinação */}
+          <div className="flex-1 flex flex-col gap-1 min-w-0">
+            <label className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between truncate">
+              <span>Afinação</span>
+              {currentTuning && (
+                <span className="text-sky-400 font-mono text-[9px] sm:text-[10px] hidden sm:inline truncate">
+                  {currentTuning.strings.join('·')}
+                </span>
+              )}
+            </label>
+            <div className="relative w-full">
+              <select
+                value={selectedTuningId}
+                onChange={(e) => handleTuningChange(e.target.value)}
+                className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-[#34C759] text-xs sm:text-sm font-semibold rounded-2xl px-3 py-2 sm:px-3.5 sm:py-2.5 pr-7 sm:pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99] truncate"
+              >
+                {currentInstrument.tunings.map((tuning) => (
+                  <option key={tuning.id} value={tuning.id} className="bg-gray-900 text-white">
+                    {tuning.name}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 sm:px-3 text-gray-400">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -496,7 +511,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               )}
             </div>
 
-            {/* Modos de Visualização do Diagrama (iOS Segmented Control) */}
+            {/* Modos de Visualização do Diagrama (iOS Segmented Control) + Capotraste */}
             <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-2">
               <div className="inline-flex items-center p-0.5 rounded-full bg-white/[0.08] border border-white/[0.06] text-xs">
                 <button
@@ -531,25 +546,46 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 </button>
               </div>
 
-              {/* Botão Modo Memorização (Quiz) */}
-              <button
-                onClick={() => {
-                  if (!quizMode) {
-                    setQuizMode(true);
-                    setQuizRevealed(false);
-                  } else {
-                    setQuizMode(false);
-                    setQuizRevealed(false);
-                  }
-                }}
-                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
-                  quizMode
-                    ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
-                    : 'bg-white/[0.05] border-white/[0.08] text-gray-400 hover:text-white'
-                }`}
-              >
-                {quizMode ? 'Sair do Quiz' : 'Treinar Memória'}
-              </button>
+              {/* Controles de Capotraste e Quiz */}
+              <div className="flex items-center gap-1.5">
+                {selectedInstrumentId !== 'teclado' && (
+                  <div className="flex items-center gap-1 bg-white/[0.05] border border-white/[0.08] px-2 py-0.5 rounded-full text-xs">
+                    <span className="text-[10px] text-gray-400 font-medium">Capo:</span>
+                    <select
+                      value={capoFret}
+                      onChange={(e) => setCapoFret(parseInt(e.target.value, 10))}
+                      className="bg-transparent text-[#34C759] font-bold text-xs outline-none cursor-pointer"
+                    >
+                      <option value={0} className="bg-gray-900 text-white">Sem</option>
+                      {Array.from({ length: 9 }, (_, i) => i + 1).map((fret) => (
+                        <option key={fret} value={fret} className="bg-gray-900 text-white">
+                          {fret}ª casa
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Botão Modo Memorização (Quiz) */}
+                <button
+                  onClick={() => {
+                    if (!quizMode) {
+                      setQuizMode(true);
+                      setQuizRevealed(false);
+                    } else {
+                      setQuizMode(false);
+                      setQuizRevealed(false);
+                    }
+                  }}
+                  className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
+                    quizMode
+                      ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
+                      : 'bg-white/[0.05] border-white/[0.08] text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {quizMode ? 'Sair do Quiz' : 'Treinar Memória'}
+                </button>
+              </div>
             </div>
 
             {/* Renderizador Vetorial: Teclado vs Braço de Cordas */}
@@ -564,7 +600,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               />
             ) : (
               <ChordDiagram
-                position={activePosition}
+                position={effectivePosition || activePosition}
                 stringDetails={stringDetails}
                 displayMode={displayMode}
                 hidePositions={hideDiagramDots}
@@ -630,53 +666,19 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
             </div>
           </div>
 
-          {/* COLUNA DIREITA: Posição Detalhada de Cada Dedo + Estrutura JSON */}
+          {/* COLUNA DIREITA: Posição Detalhada de Cada Dedo */}
           <div className="lg:col-span-6 flex flex-col justify-between gap-3">
             <div className="bg-gray-950/60 border border-gray-800/80 rounded-2xl p-4 flex-1 flex flex-col">
-              <div className="flex items-center justify-between border-b border-gray-800 pb-2.5 mb-3">
-                <div>
-                  <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">
-                    Posição dos Dedos e Cordas
-                  </h3>
-                  <p className="text-[11px] text-gray-400">
-                    Toque em qualquer linha abaixo para ouvir a corda isolada
-                  </p>
-                </div>
-                <button
-                  onClick={() => setShowJsonModal(!showJsonModal)}
-                  className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-lg bg-gray-900 border border-gray-700 text-sky-400 hover:bg-gray-800 transition-colors"
-                >
-                  {showJsonModal ? 'Ver Guia' : '{ } Ver JSON'}
-                </button>
+              <div className="border-b border-gray-800 pb-2.5 mb-3">
+                <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">
+                  Posição dos Dedos e Cordas
+                </h3>
+                <p className="text-[11px] text-gray-400">
+                  Toque em qualquer linha abaixo para ouvir a corda isolada
+                </p>
               </div>
 
-              {showJsonModal ? (
-                <div className="flex-1 flex flex-col justify-between bg-gray-950 border border-gray-800 rounded-xl p-3 font-mono text-[11px] text-gray-300 overflow-x-auto">
-                  <pre className="leading-relaxed text-sky-300">
-{JSON.stringify(
-  {
-    chord: activeChord.symbol,
-    name: activeChord.name,
-    bass: activeChord.bass || 'Tônica',
-    tuning: currentTuning.strings,
-    position: {
-      label: activePosition.label,
-      baseFret: activePosition.baseFret,
-      frets: activePosition.frets,
-      fingers: activePosition.fingers,
-      barres: activePosition.barres || [],
-    },
-  },
-  null,
-  2
-)}
-                  </pre>
-                  <p className="text-[10px] text-gray-500 mt-2 border-t border-gray-800 pt-2">
-                    * Arrays ordenados da 6ª corda (mais grave) até a 1ª corda (mais aguda). -1 = abafada, 0 = solta.
-                  </p>
-                </div>
-              ) : (
-                <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
+              <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
                   {selectedInstrumentId === 'teclado' ? (
                     /* Lista de Notas do Acorde no Teclado */
                     activePosition.frets.map((midi, idx) => {
@@ -839,7 +841,6 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                     </>
                   )}
                 </div>
-              )}
             </div>
           </div>
         </div>
