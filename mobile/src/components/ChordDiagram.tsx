@@ -172,17 +172,17 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Base fret indication */}
+        {/* Base fret indication (apenas número em tom neutro) */}
         {baseFret > 1 && (
           <SvgText
-            x={padLeft - 18}
-            y={getFingerCenterY(1) + 4}
-            fill="#38bdf8"
-            fontSize="12"
-            fontWeight="bold"
+            x={getFretLeftX(getFingerCenterY(1)) - 12}
+            y={getFingerCenterY(1) + 5}
+            fill="#94a3b8"
+            fontSize="15"
+            fontWeight="900"
             textAnchor="end"
           >
-            {`${baseFret}ª`}
+            {baseFret}
           </SvgText>
         )}
 

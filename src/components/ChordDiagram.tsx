@@ -242,29 +242,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Fret Number on the Left (Mostra apenas a primeira casa do acorde se baseFret > 1) */}
+        {/* Fret Number on the Left (Mostra apenas o número da primeira casa se baseFret > 1) */}
         {position.baseFret > 1 && (
-          <g key="base-fret-label">
-            <rect
-              x={8}
-              y={getFingerCenterY(1) - 11}
-              width={36}
-              height={22}
-              rx={6}
-              fill="#27ca55"
-              fillOpacity={0.16}
-              stroke="#27ca55"
-              strokeOpacity={0.5}
-            />
-            <text
-              x={26}
-              y={getFingerCenterY(1) + 4}
-              textAnchor="middle"
-              className="font-mono text-[11px] font-bold fill-[#27ca55]"
-            >
-              {position.baseFret}ª
-            </text>
-          </g>
+          <text
+            x={getFretLeftX(getFingerCenterY(1)) - 14}
+            y={getFingerCenterY(1) + 5}
+            textAnchor="end"
+            className="font-mono text-[15px] font-extrabold fill-slate-400 select-none"
+          >
+            {position.baseFret}
+          </text>
         )}
 
         {/* Vertical Strings (Cordas com afunilamento trapezoidal suave) */}
