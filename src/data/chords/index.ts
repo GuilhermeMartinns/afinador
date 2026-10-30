@@ -51,6 +51,9 @@ export async function loadChordsForTuning(
     } else if (instrumentId === 'cavaquinho') {
       const mod = await import('./cavaquinho/tunings/standard');
       return (mod.default || mod.CAVAQUINHO_STANDARD_CHORDS) as ChordDefinition[];
+    } else if (instrumentId === 'teclado') {
+      const mod = await import('./teclado/tunings/standard');
+      return (mod.default || mod.TECLADO_STANDARD_CHORDS) as ChordDefinition[];
     }
     return [];
   } catch (error) {

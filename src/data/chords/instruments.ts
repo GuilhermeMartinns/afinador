@@ -119,6 +119,21 @@ export const INSTRUMENTS_METADATA: InstrumentMetadata[] = [
     ],
   },
   {
+    id: 'teclado',
+    name: 'Teclado / Piano',
+    stringsCount: 0,
+    available: true,
+    tunings: [
+      {
+        id: 'standard',
+        name: 'Teclado 61/88 Teclas (Afinação Padrão A4 = 440Hz)',
+        shortName: 'Padrão (C3 - C5)',
+        description: 'Visualização de acordes no teclado com posições fundamentais e inversões de mão direita.',
+        strings: ['C3', 'E3', 'G3', 'C4'],
+      },
+    ],
+  },
+  {
     id: 'viola',
     name: 'Viola Caipira (Em breve)',
     stringsCount: 5,

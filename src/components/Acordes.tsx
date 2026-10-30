@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { INSTRUMENTS_METADATA, loadChordsForTuning, InstrumentMetadata, TuningMetadata } from '../data/chords';
 import ChordDiagram, { DiagramDisplayMode } from './ChordDiagram';
+import KeyboardDiagram from './KeyboardDiagram';
 import {
   ChordDefinition,
   analyzeChordPosition,
@@ -170,7 +171,9 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
         <div className="flex flex-col gap-1">
           <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center justify-between">
             <span>Instrumento</span>
-            <span className="text-[#27ca55] font-mono">{currentInstrument.stringsCount} Cordas</span>
+            <span className="text-[#27ca55] font-mono">
+              {currentInstrument.id === 'teclado' ? 'Teclas' : `${currentInstrument.stringsCount} Cordas`}
+            </span>
           </label>
           <select
             value={selectedInstrumentId}
@@ -429,14 +432,14 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               )}
             </div>
 
-            {/* Modos de Visualização do Diagrama */}
+            {/* Modos de Visualização do Diagrama (iOS Segmented Control) */}
             <div className="w-full flex flex-wrap items-center justify-between gap-2 mb-2">
-              <div className="flex items-center bg-gray-900 p-1 rounded-xl border border-gray-800 text-[11px]">
+              <div className="inline-flex items-center p-0.5 rounded-full bg-white/[0.08] border border-white/[0.06] text-xs">
                 <button
                   onClick={() => setDisplayMode('fingers')}
-                  className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
                     displayMode === 'fingers'
-                      ? 'bg-[#27ca55] text-black font-bold'
+                      ? 'bg-white text-gray-950 font-semibold shadow-sm'
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
@@ -444,9 +447,9 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 </button>
                 <button
                   onClick={() => setDisplayMode('notes')}
-                  className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
                     displayMode === 'notes'
-                      ? 'bg-[#27ca55] text-black font-bold'
+                      ? 'bg-white text-gray-950 font-semibold shadow-sm'
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
@@ -454,9 +457,9 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 </button>
                 <button
                   onClick={() => setDisplayMode('intervals')}
-                  className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
+                  className={`px-3 py-1 rounded-full font-medium transition-all ${
                     displayMode === 'intervals'
-                      ? 'bg-[#27ca55] text-black font-bold'
+                      ? 'bg-white text-gray-950 font-semibold shadow-sm'
                       : 'text-gray-400 hover:text-white'
                   }`}
                 >
@@ -475,23 +478,34 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                     setQuizRevealed(false);
                   }
                 }}
-                className={`px-2.5 py-1.5 rounded-xl text-[11px] font-bold border transition-all ${
+                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
                   quizMode
-                    ? 'bg-amber-500/20 border-amber-500 text-amber-300'
-                    : 'bg-gray-900 border-gray-800 text-gray-400 hover:text-white'
+                    ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
+                    : 'bg-white/[0.05] border-white/[0.08] text-gray-400 hover:text-white'
                 }`}
               >
                 {quizMode ? 'Sair do Quiz' : 'Treinar Memória'}
               </button>
             </div>
 
-            {/* Renderizador Vetorial SVG */}
-            <ChordDiagram
-              position={activePosition}
-              stringDetails={stringDetails}
-              displayMode={displayMode}
-              hidePositions={hideDiagramDots}
-            />
+            {/* Renderizador Vetorial: Teclado vs Braço de Cordas */}
+            {selectedInstrumentId === 'teclado' ? (
+              <KeyboardDiagram
+                midiNotes={activePosition.frets}
+                rootKey={activeChord.key}
+                fingers={activePosition.fingers}
+                displayMode={displayMode}
+                onKeyClick={(midi) => playGuitarNote(midi, 0, 2.5)}
+                isFlatNote={isFlatNote}
+              />
+            ) : (
+              <ChordDiagram
+                position={activePosition}
+                stringDetails={stringDetails}
+                displayMode={displayMode}
+                hidePositions={hideDiagramDots}
+              />
+            )}
 
             {/* Botões de Ação Sonoros e Quiz (Apple-style pill buttons) */}
             <div className="w-full flex flex-wrap items-center justify-center gap-2.5 mt-3 pt-3 border-t border-white/[0.06]">
@@ -510,7 +524,15 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
 
               {/* Botão Primário: Tocar Acorde */}
               <button
-                onClick={() => playChordStrum(stringDetails, 'strum')}
+                onClick={() => {
+                  if (selectedInstrumentId === 'teclado') {
+                    activePosition.frets.forEach((midi, idx) => {
+                      playGuitarNote(midi, 0, 2.5);
+                    });
+                  } else {
+                    playChordStrum(stringDetails, 'strum');
+                  }
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-gray-100 active:scale-[0.98] text-gray-950 font-semibold text-xs tracking-tight shadow-sm transition-all"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -519,9 +541,19 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 <span>Tocar Acorde</span>
               </button>
 
-              {/* Botão Secundário: Dedilhar Cordas */}
+              {/* Botão Secundário: Dedilhar / Arpejar */}
               <button
-                onClick={() => playChordStrum(stringDetails, 'arpeggio')}
+                onClick={() => {
+                  if (selectedInstrumentId === 'teclado') {
+                    activePosition.frets.forEach((midi, idx) => {
+                      setTimeout(() => {
+                        playGuitarNote(midi, 0, 2.0);
+                      }, idx * 180);
+                    });
+                  } else {
+                    playChordStrum(stringDetails, 'arpeggio');
+                  }
+                }}
                 className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.12] active:scale-[0.98] text-gray-200 hover:text-white font-medium text-xs tracking-tight border border-white/[0.08] transition-all"
               >
                 <svg className="w-3.5 h-3.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -529,7 +561,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                   <circle cx="6" cy="18" r="3" />
                   <circle cx="18" cy="16" r="3" />
                 </svg>
-                <span>Dedilhar</span>
+                <span>Arpejar</span>
               </button>
             </div>
           </div>
@@ -580,118 +612,168 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-2">
-                  {/* Indicador de Pestana se houver */}
-                  {activePosition.barres && activePosition.barres.length > 0 && (
-                    <div className="bg-sky-500/10 border border-sky-500/30 rounded-xl px-3 py-2 text-xs text-sky-300 flex items-center gap-2">
-                      <span className="font-bold">Pestana:</span>
-                      <span>
-                        Dedo 1 pressionando múltiplas cordas na{' '}
-                        <strong>
-                          {activePosition.baseFret + activePosition.barres[0] - 1}ª casa
-                        </strong>
-                        .
-                      </span>
-                    </div>
-                  )}
+                <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] divide-y divide-white/[0.06] overflow-hidden">
+                  {selectedInstrumentId === 'teclado' ? (
+                    /* Lista de Notas do Acorde no Teclado */
+                    activePosition.frets.map((midi, idx) => {
+                      const semitone = midi % 12;
+                      const noteName = isFlatNote ? NOTE_NAMES_FLAT[semitone] : NOTE_NAMES[semitone];
+                      const ptName = PORTUGUESE_NOTE_NAMES[noteName] || noteName;
+                      const rootSemitone = SEMITONE_MAP[activeChord.key] ?? 0;
+                      const intervalDist = (semitone - rootSemitone + 12) % 12;
+                      const isRoot = intervalDist === 0;
+                      const finger = activePosition.fingers[idx] || (idx === 0 ? 1 : idx === 1 ? 3 : 5);
 
-                  {/* Lista Corda por Corda (6ª até 1ª) */}
-                  {stringDetails.map((detail) => {
-                    const ptOpenName =
-                      PORTUGUESE_NOTE_NAMES[detail.openNoteName] || detail.openNoteName;
-                    const ptPlayedName = detail.noteName
-                      ? PORTUGUESE_NOTE_NAMES[detail.noteName] || detail.noteName
-                      : '';
+                      const KEYBOARD_FINGERS: Record<number, string> = {
+                        1: 'Polegar (Dedo 1)',
+                        2: 'Indicador (Dedo 2)',
+                        3: 'Médio (Dedo 3)',
+                        4: 'Anelar (Dedo 4)',
+                        5: 'Mínimo (Dedo 5)',
+                      };
 
-                    return (
-                      <div
-                        key={detail.stringNumber}
-                        onClick={() => {
-                          if (detail.midiNote !== null) {
-                            playGuitarNote(detail.midiNote, 0, 2.2);
-                          }
-                        }}
-                        className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
-                          detail.status === 'muted'
-                            ? 'bg-gray-900/30 border-gray-800/50 opacity-60'
-                            : detail.isRoot
-                            ? 'bg-[#27ca55]/10 border-[#27ca55]/40 hover:bg-[#27ca55]/15 cursor-pointer'
-                            : detail.isBass
-                            ? 'bg-amber-500/10 border-amber-500/40 hover:bg-amber-500/15 cursor-pointer'
-                            : 'bg-gray-900/70 border-gray-800 hover:border-gray-700 cursor-pointer'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5">
-                          {/* Badge da Corda */}
-                          <span className={`w-14 text-center py-1 rounded-lg font-mono text-[11px] font-bold shrink-0 border ${
-                            detail.isBass && !detail.isRoot
-                              ? 'bg-amber-950/40 border-amber-700 text-amber-300'
-                              : 'bg-gray-950 border-gray-800 text-gray-300'
-                          }`}>
-                            {detail.stringNumber}ª ({detail.openNoteName})
-                          </span>
-
-                          {/* Explicação de Dedo e Casa */}
-                          <div className="flex flex-col">
-                            {detail.status === 'muted' && (
-                              <span className="text-xs font-semibold text-red-400">
-                                Não tocar (Corda {ptOpenName} abafada)
+                      return (
+                        <div
+                          key={`key-note-${midi}-${idx}`}
+                          onClick={() => playGuitarNote(midi, 0, 2.5)}
+                          className="flex items-center justify-between px-3.5 py-3 transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] cursor-pointer"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 py-1 rounded-full text-center font-mono text-[11px] font-medium shrink-0 bg-white/[0.07] text-gray-300 border border-white/[0.05]">
+                              {noteName}{Math.floor(midi / 12) - 1}
+                            </div>
+                            <div className="flex flex-col text-left">
+                              <span className="text-xs font-normal text-gray-200">
+                                <span className="text-[#38bdf8] font-medium">{KEYBOARD_FINGERS[finger]}</span> na tecla{' '}
+                                <strong className="text-white font-medium">{noteName} ({ptName})</strong>
                               </span>
-                            )}
-                            {detail.status === 'open' && (
-                              <span className="text-xs font-semibold text-gray-200">
-                                Corda {ptOpenName} solta (Casa 0)
+                              <span className="text-[11px] text-gray-400 mt-0.5">
+                                Frequência MIDI {midi} • {isRoot ? 'Tônica (Raiz)' : `Intervalo ${INTERVAL_FULL[intervalDist] || ''}`}
                               </span>
-                            )}
-                            {detail.status === 'fretted' && (
-                              <span className="text-xs font-semibold text-white">
-                                <strong className="text-sky-400">
-                                  {FINGER_NAMES[detail.finger] || `Dedo ${detail.finger}`}
-                                </strong>{' '}
-                                na <strong>{detail.actualFret}ª casa</strong> (Corda {ptOpenName})
-                              </span>
-                            )}
-
-                            {detail.status !== 'muted' && (
-                              <span className="text-[10px] text-gray-400 flex flex-wrap items-center gap-1">
-                                <span>
-                                  Soa a nota{' '}
-                                  <strong className="text-gray-200">
-                                    {detail.noteName} ({ptPlayedName})
-                                  </strong>{' '}
-                                  • {detail.intervalFullName}
-                                </span>
-                                {detail.isBass && !detail.isRoot && (
-                                  <span className="text-amber-400 font-bold px-1.5 py-0.2 bg-amber-500/15 border border-amber-500/30 rounded text-[9px] uppercase tracking-wider">
-                                    Baixo Invertido
-                                  </span>
-                                )}
-                              </span>
-                            )}
+                            </div>
                           </div>
-                        </div>
-
-                        {/* Badge da Nota / Grau Resultante */}
-                        {detail.status !== 'muted' ? (
-                          <div className="flex items-center gap-1.5 shrink-0">
+                          <div className="flex items-center shrink-0">
                             <span
-                              className={`px-2 py-0.5 rounded-md font-mono text-[11px] font-bold ${
-                                detail.isRoot
-                                  ? 'bg-[#27ca55] text-black'
-                                  : detail.isBass
-                                  ? 'bg-amber-500 text-black'
-                                  : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                              className={`px-2.5 py-0.5 rounded-full font-mono text-[11px] font-medium tracking-tight ${
+                                isRoot
+                                  ? 'bg-[#34C759]/20 text-[#34C759] border border-[#34C759]/30'
+                                  : 'bg-white/[0.08] text-gray-300 border border-white/[0.06]'
                               }`}
                             >
-                              {detail.noteName} ({detail.interval})
+                              {noteName} · {INTERVAL_SHORT[intervalDist] || 'T'}
                             </span>
                           </div>
-                        ) : (
-                          <span className="text-red-400/80 font-bold text-xs px-2">✕</span>
-                        )}
-                      </div>
-                    );
-                  })}
+                        </div>
+                      );
+                    })
+                  ) : (
+                    /* Lista Corda por Corda (Violão, Cavaquinho, Ukulele) */
+                    <>
+                      {/* Indicador de Pestana se houver */}
+                      {activePosition.barres && activePosition.barres.length > 0 && (
+                        <div className="bg-sky-500/10 px-4 py-2.5 text-xs text-sky-300 flex items-center gap-2">
+                          <span className="font-semibold">Pestana:</span>
+                          <span className="text-gray-300">
+                            Dedo 1 cobrindo múltiplas cordas na{' '}
+                            <strong className="text-white">
+                              {activePosition.baseFret + activePosition.barres[0] - 1}ª casa
+                            </strong>
+                          </span>
+                        </div>
+                      )}
+
+                      {stringDetails.map((detail) => {
+                        const ptOpenName =
+                          PORTUGUESE_NOTE_NAMES[detail.openNoteName] || detail.openNoteName;
+                        const ptPlayedName = detail.noteName
+                          ? PORTUGUESE_NOTE_NAMES[detail.noteName] || detail.noteName
+                          : '';
+
+                        return (
+                          <div
+                            key={detail.stringNumber}
+                            onClick={() => {
+                              if (detail.midiNote !== null) {
+                                playGuitarNote(detail.midiNote, 0, 2.2);
+                              }
+                            }}
+                            className={`flex items-center justify-between px-3.5 py-3 transition-colors ${
+                              detail.status === 'muted'
+                                ? 'opacity-40 cursor-not-allowed'
+                                : 'hover:bg-white/[0.04] active:bg-white/[0.06] cursor-pointer'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              {/* Cápsula sutil em cinza fosco da corda */}
+                              <div className={`w-12 py-1 rounded-full text-center font-mono text-[11px] font-medium shrink-0 ${
+                                detail.isBass && !detail.isRoot
+                                  ? 'bg-amber-500/15 text-amber-300 border border-amber-500/20'
+                                  : 'bg-white/[0.07] text-gray-300 border border-white/[0.05]'
+                              }`}>
+                                {detail.stringNumber}ª({detail.openNoteName})
+                              </div>
+
+                              {/* Explicação de Dedo e Casa */}
+                              <div className="flex flex-col text-left">
+                                {detail.status === 'muted' && (
+                                  <span className="text-xs font-normal text-gray-400">
+                                    Corda {ptOpenName} abafada (não tocar)
+                                  </span>
+                                )}
+                                {detail.status === 'open' && (
+                                  <span className="text-xs font-normal text-gray-200">
+                                    Corda {ptOpenName} solta
+                                  </span>
+                                )}
+                                {detail.status === 'fretted' && (
+                                  <span className="text-xs font-normal text-gray-200">
+                                    <span className="text-[#38bdf8] font-medium">
+                                      {FINGER_NAMES[detail.finger] || `Dedo ${detail.finger}`}
+                                    </span>{' '}
+                                    na <strong className="text-white font-medium">{detail.actualFret}ª casa</strong> ({ptOpenName})
+                                  </span>
+                                )}
+
+                                {detail.status !== 'muted' && (
+                                  <span className="text-[11px] text-gray-400 flex items-center gap-1.5 mt-0.5">
+                                    <span>
+                                      Soa <strong className="text-gray-300 font-medium">{detail.noteName} ({ptPlayedName})</strong>
+                                      <span className="text-gray-500"> • </span>
+                                      {detail.intervalFullName}
+                                    </span>
+                                    {detail.isBass && !detail.isRoot && (
+                                      <span className="text-amber-400 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-500/10">
+                                        Baixo
+                                      </span>
+                                    )}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Badge da Nota / Grau Resultante */}
+                            {detail.status !== 'muted' ? (
+                              <div className="flex items-center shrink-0">
+                                <span
+                                  className={`px-2.5 py-0.5 rounded-full font-mono text-[11px] font-medium tracking-tight ${
+                                    detail.isRoot
+                                      ? 'bg-[#34C759]/20 text-[#34C759] border border-[#34C759]/30'
+                                      : detail.isBass
+                                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                                      : 'bg-white/[0.08] text-gray-300 border border-white/[0.06]'
+                                  }`}
+                                >
+                                  {detail.noteName} · {detail.interval}
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-gray-500 font-mono text-xs px-2">✕</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </>
+                  )}
                 </div>
               )}
             </div>
