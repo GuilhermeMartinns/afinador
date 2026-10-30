@@ -28,7 +28,7 @@ export interface ChordDefinition {
   suffix: string;    // e.g. "M", "m", "7", "7M", "m7", "sus4", "sus2", "add9", "dim", "5"
   name: string;      // e.g. "Sol Maior"
   symbol: string;    // e.g. "G", "Gm", "G7", "G/B", "D/F#"
-  category: 'maior' | 'menor' | 'setima' | 'suspenso' | 'invertido' | 'outros';
+  category: 'maior' | 'menor' | 'setima' | 'suspenso' | 'invertido' | 'jazz_bossa' | 'outros';
   bass?: string;     // Note of the bass in sharp notation, e.g. "B", "F#", "A"
   positions: ChordPosition[];
 }
@@ -79,32 +79,32 @@ const SEMITONE_MAP: Record<string, number> = {
 
 const INTERVAL_SHORT: Record<number, string> = {
   0: 'T',
-  1: '2m',
-  2: '2M',
-  3: '3m',
+  1: 'b9',
+  2: '9/2M',
+  3: '3m/#9',
   4: '3M',
-  5: '4J',
-  6: '5°',
+  5: '11/4J',
+  6: 'b5/#11',
   7: '5J',
-  8: '5+',
-  9: '6M',
+  8: 'b13/#5',
+  9: '13/6M',
   10: '7m',
   11: '7M',
 };
 
 const INTERVAL_FULL: Record<number, string> = {
   0: 'Tônica (Fundamental)',
-  1: '2ª Menor',
-  2: '2ª Maior / 9ª',
-  3: '3ª Menor',
-  4: '3ª Maior',
-  5: '4ª Justa / 11ª',
-  6: '5ª Diminuta',
-  7: '5ª Justa',
-  8: '5ª Aumentada / 6ª Menor',
-  9: '6ª Maior / 7ª Diminuta',
-  10: '7ª Menor',
-  11: '7ª Maior',
+  1: '2ª Menor / 9ª Bemol (b9)',
+  2: '2ª Maior / 9ª Maior (9)',
+  3: '3ª Menor / 9ª Aumentada (#9)',
+  4: '3ª Maior (3M)',
+  5: '4ª Justa / 11ª Justa (11)',
+  6: '5ª Diminuta / 11ª Aumentada (b5/#11)',
+  7: '5ª Justa (5J)',
+  8: '13ª Menor / 5ª Aumentada (b13/#5)',
+  9: '6ª Maior / 13ª Maior (13)',
+  10: '7ª Menor (7m)',
+  11: '7ª Maior (7M)',
 };
 
 export const FINGER_NAMES: Record<number, string> = {

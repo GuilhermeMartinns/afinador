@@ -24,6 +24,7 @@ const CATEGORIES = [
   { id: 'maior', label: 'Maiores' },
   { id: 'menor', label: 'Menores' },
   { id: 'invertido', label: 'Invertidos (Baixo /)' },
+  { id: 'jazz_bossa', label: 'Jazz & Bossa' },
   { id: 'setima', label: 'Com 7ª' },
   { id: 'suspenso', label: 'Sus / Add9' },
   { id: 'outros', label: 'Power / Dim' },
