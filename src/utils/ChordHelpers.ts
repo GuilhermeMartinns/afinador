@@ -28,7 +28,7 @@ export interface ChordDefinition {
   suffix: string;    // e.g. "M", "m", "7", "7M", "m7", "sus4", "sus2", "add9", "dim", "5"
   name: string;      // e.g. "Sol Maior"
   symbol: string;    // e.g. "G", "Gm", "G7", "G/B", "D/F#"
-  category: 'maior' | 'menor' | 'setima' | 'suspenso' | 'invertido' | 'jazz_bossa' | 'outros';
+  category: 'maior' | 'menor' | 'setima' | 'suspenso' | 'invertido' | 'jazz_bossa' | 'power_chord' | 'outros';
   bass?: string;     // Note of the bass in sharp notation, e.g. "B", "F#", "A"
   positions: ChordPosition[];
 }

@@ -1685,12 +1685,12 @@
   {
     "key": "C",
     "suffix": "5",
-    "name": "Dó Power Chord (5ª)",
+    "name": "Dó Power Chord (Quinta / Rock)",
     "symbol": "C5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (10ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (10ª Casa)",
         "baseFret": 10,
         "frets": [
           1,
@@ -1711,7 +1711,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (5ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (5ª Casa)",
         "baseFret": 5,
         "frets": [
           -1,
@@ -1726,6 +1747,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "5(add9)",
+    "name": "Dó Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "C5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "5(b5)",
+    "name": "Dó Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "C5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "5(#5)",
+    "name": "Dó Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "C5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "5(6)",
+    "name": "Dó Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "C5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -3812,12 +4165,12 @@
   {
     "key": "C#",
     "suffix": "5",
-    "name": "Dó Sustenido / Ré Bemol Power Chord (5ª)",
+    "name": "Dó Sustenido / Ré Bemol Power Chord (Quinta / Rock)",
     "symbol": "C#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (11ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (11ª Casa)",
         "baseFret": 11,
         "frets": [
           1,
@@ -3838,7 +4191,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (6ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (6ª Casa)",
         "baseFret": 6,
         "frets": [
           -1,
@@ -3853,6 +4227,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "5(add9)",
+    "name": "Dó Sustenido / Ré Bemol Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "C#5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "5(b5)",
+    "name": "Dó Sustenido / Ré Bemol Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "C#5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "5(#5)",
+    "name": "Dó Sustenido / Ré Bemol Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "C#5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "5(6)",
+    "name": "Dó Sustenido / Ré Bemol Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "C#5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -6233,9 +6939,9 @@
   {
     "key": "D",
     "suffix": "5",
-    "name": "Ré Power Chord (5ª)",
+    "name": "Ré Power Chord (Quinta / Rock)",
     "symbol": "D5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord Aberto",
@@ -6259,7 +6965,7 @@
         "barres": []
       },
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (12ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (12ª Casa)",
         "baseFret": 12,
         "frets": [
           1,
@@ -6280,7 +6986,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (7ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (7ª Casa)",
         "baseFret": 7,
         "frets": [
           -1,
@@ -6295,6 +7022,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "5(add9)",
+    "name": "Ré Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "D5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "5(b5)",
+    "name": "Ré Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "D5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "5(#5)",
+    "name": "Ré Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "D5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "5(6)",
+    "name": "Ré Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "D5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -8444,12 +9503,12 @@
   {
     "key": "D#",
     "suffix": "5",
-    "name": "Ré Sustenido / Mi Bemol Power Chord (5ª)",
+    "name": "Ré Sustenido / Mi Bemol Power Chord (Quinta / Rock)",
     "symbol": "D#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (1ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (1ª Casa)",
         "baseFret": 1,
         "frets": [
           1,
@@ -8470,7 +9529,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (8ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (8ª Casa)",
         "baseFret": 8,
         "frets": [
           -1,
@@ -8485,6 +9565,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "5(add9)",
+    "name": "Ré Sustenido / Mi Bemol Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "D#5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "5(b5)",
+    "name": "Ré Sustenido / Mi Bemol Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "D#5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "5(#5)",
+    "name": "Ré Sustenido / Mi Bemol Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "D#5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "5(6)",
+    "name": "Ré Sustenido / Mi Bemol Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "D#5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -10571,12 +11983,12 @@
   {
     "key": "E",
     "suffix": "5",
-    "name": "Mi Power Chord (5ª)",
+    "name": "Mi Power Chord (Quinta / Rock)",
     "symbol": "E5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (2ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (2ª Casa)",
         "baseFret": 2,
         "frets": [
           1,
@@ -10597,7 +12009,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (9ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (9ª Casa)",
         "baseFret": 9,
         "frets": [
           -1,
@@ -10612,6 +12045,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "5(add9)",
+    "name": "Mi Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "E5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "5(b5)",
+    "name": "Mi Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "E5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "5(#5)",
+    "name": "Mi Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "E5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "5(6)",
+    "name": "Mi Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "E5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -12866,12 +14631,12 @@
   {
     "key": "F",
     "suffix": "5",
-    "name": "Fá Power Chord (5ª)",
+    "name": "Fá Power Chord (Quinta / Rock)",
     "symbol": "F5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (3ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (3ª Casa)",
         "baseFret": 3,
         "frets": [
           1,
@@ -12892,7 +14657,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (10ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (10ª Casa)",
         "baseFret": 10,
         "frets": [
           -1,
@@ -12907,6 +14693,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "5(add9)",
+    "name": "Fá Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "F5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "5(b5)",
+    "name": "Fá Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "F5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "5(#5)",
+    "name": "Fá Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "F5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "5(6)",
+    "name": "Fá Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "F5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -14993,12 +17111,12 @@
   {
     "key": "F#",
     "suffix": "5",
-    "name": "Fá Sustenido / Sol Bemol Power Chord (5ª)",
+    "name": "Fá Sustenido / Sol Bemol Power Chord (Quinta / Rock)",
     "symbol": "F#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (4ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (4ª Casa)",
         "baseFret": 4,
         "frets": [
           1,
@@ -15019,7 +17137,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (11ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (11ª Casa)",
         "baseFret": 11,
         "frets": [
           -1,
@@ -15034,6 +17173,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "5(add9)",
+    "name": "Fá Sustenido / Sol Bemol Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "F#5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "5(b5)",
+    "name": "Fá Sustenido / Sol Bemol Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "F#5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "5(#5)",
+    "name": "Fá Sustenido / Sol Bemol Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "F#5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "5(6)",
+    "name": "Fá Sustenido / Sol Bemol Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "F#5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -17414,9 +19885,9 @@
   {
     "key": "G",
     "suffix": "5",
-    "name": "Sol Power Chord (5ª)",
+    "name": "Sol Power Chord (Quinta / Rock)",
     "symbol": "G5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord Aberto",
@@ -17440,7 +19911,7 @@
         "barres": []
       },
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (5ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (5ª Casa)",
         "baseFret": 5,
         "frets": [
           1,
@@ -17461,7 +19932,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (12ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (12ª Casa)",
         "baseFret": 12,
         "frets": [
           -1,
@@ -17476,6 +19968,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "5(add9)",
+    "name": "Sol Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "G5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "5(b5)",
+    "name": "Sol Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "G5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "5(#5)",
+    "name": "Sol Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "G5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "5(6)",
+    "name": "Sol Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "G5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (12ª Casa)",
+        "baseFret": 12,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -19562,12 +22386,12 @@
   {
     "key": "G#",
     "suffix": "5",
-    "name": "Sol Sustenido / Lá Bemol Power Chord (5ª)",
+    "name": "Sol Sustenido / Lá Bemol Power Chord (Quinta / Rock)",
     "symbol": "G#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (6ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (6ª Casa)",
         "baseFret": 6,
         "frets": [
           1,
@@ -19588,7 +22412,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (1ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (1ª Casa)",
         "baseFret": 1,
         "frets": [
           -1,
@@ -19603,6 +22448,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "5(add9)",
+    "name": "Sol Sustenido / Lá Bemol Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "G#5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "5(b5)",
+    "name": "Sol Sustenido / Lá Bemol Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "G#5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "5(#5)",
+    "name": "Sol Sustenido / Lá Bemol Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "G#5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "5(6)",
+    "name": "Sol Sustenido / Lá Bemol Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "G#5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -21710,12 +24887,12 @@
   {
     "key": "A",
     "suffix": "5",
-    "name": "Lá Power Chord (5ª)",
+    "name": "Lá Power Chord (Quinta / Rock)",
     "symbol": "A5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (7ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (7ª Casa)",
         "baseFret": 7,
         "frets": [
           1,
@@ -21736,7 +24913,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (2ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (2ª Casa)",
         "baseFret": 2,
         "frets": [
           -1,
@@ -21751,6 +24949,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "5(add9)",
+    "name": "Lá Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "A5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "5(b5)",
+    "name": "Lá Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "A5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "5(#5)",
+    "name": "Lá Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "A5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "5(6)",
+    "name": "Lá Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "A5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -24026,12 +27556,12 @@
   {
     "key": "A#",
     "suffix": "5",
-    "name": "Lá Sustenido / Si Bemol Power Chord (5ª)",
+    "name": "Lá Sustenido / Si Bemol Power Chord (Quinta / Rock)",
     "symbol": "A#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (8ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (8ª Casa)",
         "baseFret": 8,
         "frets": [
           1,
@@ -24052,7 +27582,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (3ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (3ª Casa)",
         "baseFret": 3,
         "frets": [
           -1,
@@ -24067,6 +27618,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "5(add9)",
+    "name": "Lá Sustenido / Si Bemol Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "A#5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "5(b5)",
+    "name": "Lá Sustenido / Si Bemol Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "A#5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "5(#5)",
+    "name": "Lá Sustenido / Si Bemol Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "A#5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "5(6)",
+    "name": "Lá Sustenido / Si Bemol Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "A#5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],
@@ -26153,12 +30036,12 @@
   {
     "key": "B",
     "suffix": "5",
-    "name": "Si Power Chord (5ª)",
+    "name": "Si Power Chord (Quinta / Rock)",
     "symbol": "B5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
-        "label": "Power Chord 6ª Corda (Com Oitava) (9ª Casa)",
+        "label": "Power Chord 6ª Corda (3 Cordas c/ Oitava) (9ª Casa)",
         "baseFret": 9,
         "frets": [
           1,
@@ -26179,7 +30062,28 @@
         "barres": []
       },
       {
-        "label": "Power Chord 5ª Corda (Com Oitava) (4ª Casa)",
+        "label": "Power Chord 6ª Corda (Díade 2 Cordas) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          3,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          3,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (3 Cordas c/ Oitava) (4ª Casa)",
         "baseFret": 4,
         "frets": [
           -1,
@@ -26194,6 +30098,338 @@
           1,
           3,
           4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (Díade 2 Cordas) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (3 Cordas c/ Oitava) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 4ª Corda (Díade 2 Cordas) (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          -1,
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 6ª Corda Invertido (Quinta no Baixo 5/5J) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          1,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "5(add9)",
+    "name": "Si Power Chord com Nona (Modern Rock / Metal)",
+    "symbol": "B5(add9)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ 9ª na 6ª Corda (ex: Foo Fighters / Rush) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          3,
+          5,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª na 5ª Corda (Police / Post-Rock) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ 9ª Aberta Aguda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          3,
+          3,
+          5,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "5(b5)",
+    "name": "Si Power Chord com Quinta Diminuta (Trítono / Metal Extremo)",
+    "symbol": "B5(b5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Trítono / Diabolus in Musica na 6ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          2,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Trítono na 5ª Corda (Metal / Black Sabbath) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          2,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord com b5 e Oitava (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          2,
+          3,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          2,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "5(#5)",
+    "name": "Si Power Chord com Quinta Aumentada (Prog Rock / Grunge)",
+    "symbol": "B5(#5)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord c/ #5 na 6ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord c/ #5 na 5ª Corda (Kurt Cobain / Soundgarden) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "5(6)",
+    "name": "Si Power Chord com Sexta (Rock & Roll / Chuck Berry)",
+    "symbol": "B5(6)",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord Shuffle 6ª Corda (Riff Clássico) (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          4,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord Shuffle 5ª Corda (Blues / Rock) (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          4,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          4,
+          0,
           0,
           0
         ],

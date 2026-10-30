@@ -22,11 +22,12 @@ const CATEGORIES = [
   { id: 'todos', label: 'Todos' },
   { id: 'maior', label: 'Maiores' },
   { id: 'menor', label: 'Menores' },
+  { id: 'power_chord', label: 'Power Chords (5ª)' },
   { id: 'invertido', label: 'Invertidos (Baixo /)' },
   { id: 'jazz_bossa', label: 'Jazz & Bossa' },
   { id: 'setima', label: 'Com 7ª' },
   { id: 'suspenso', label: 'Sus / Add9' },
-  { id: 'outros', label: 'Power / Dim' },
+  { id: 'outros', label: 'Dim / Aug' },
 ] as const;
 
 const instruments = INSTRUMENTS_METADATA;

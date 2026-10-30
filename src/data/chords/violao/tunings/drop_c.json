@@ -110,7 +110,7 @@
     "suffix": "5",
     "name": "Dó Power Chord",
     "symbol": "C5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Cordas Graves Soltas (Drop)",
@@ -302,7 +302,7 @@
     "suffix": "5",
     "name": "Dó Sustenido / Ré Bemol Power Chord",
     "symbol": "C#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (1ª Casa)",
@@ -486,7 +486,7 @@
     "suffix": "5",
     "name": "Ré Power Chord",
     "symbol": "D5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (2ª Casa)",
@@ -649,7 +649,7 @@
     "suffix": "5",
     "name": "Ré Sustenido / Mi Bemol Power Chord",
     "symbol": "D#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (3ª Casa)",
@@ -812,7 +812,7 @@
     "suffix": "5",
     "name": "Mi Power Chord",
     "symbol": "E5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (4ª Casa)",
@@ -996,7 +996,7 @@
     "suffix": "5",
     "name": "Fá Power Chord",
     "symbol": "F5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (5ª Casa)",
@@ -1190,7 +1190,7 @@
     "suffix": "5",
     "name": "Fá Sustenido / Sol Bemol Power Chord",
     "symbol": "F#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (6ª Casa)",
@@ -1349,7 +1349,7 @@
     "suffix": "5",
     "name": "Sol Power Chord",
     "symbol": "G5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (7ª Casa)",
@@ -1491,7 +1491,7 @@
     "suffix": "5",
     "name": "Sol Sustenido / Lá Bemol Power Chord",
     "symbol": "G#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (8ª Casa)",
@@ -1654,7 +1654,7 @@
     "suffix": "5",
     "name": "Lá Power Chord",
     "symbol": "A5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (9ª Casa)",
@@ -1838,7 +1838,7 @@
     "suffix": "5",
     "name": "Lá Sustenido / Si Bemol Power Chord",
     "symbol": "A#5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (10ª Casa)",
@@ -2032,7 +2032,7 @@
     "suffix": "5",
     "name": "Si Power Chord",
     "symbol": "B5",
-    "category": "outros",
+    "category": "power_chord",
     "positions": [
       {
         "label": "Power Chord 1 Dedo (11ª Casa)",
