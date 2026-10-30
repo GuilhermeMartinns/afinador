@@ -154,6 +154,38 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           fill="url(#fretboardGrad)"
         />
 
+        {/* Thick Outer Fretboard Edges (Delimitações mais grossas das bordas do braço) */}
+        {/* Borda Esquerda (Lado da corda mais grave) */}
+        <line
+          x1={topPadLeft}
+          y1={padTop}
+          x2={bottomPadLeft}
+          y2={padTop + gridHeight}
+          stroke="#475569"
+          strokeWidth={4.5}
+          strokeLinecap="round"
+        />
+        {/* Borda Direita (Lado da corda mais aguda) */}
+        <line
+          x1={topPadLeft + topGridWidth}
+          y1={padTop}
+          x2={bottomPadLeft + bottomGridWidth}
+          y2={padTop + gridHeight}
+          stroke="#475569"
+          strokeWidth={4.5}
+          strokeLinecap="round"
+        />
+        {/* Borda Inferior (Fim do braço / última casa visível) */}
+        <line
+          x1={bottomPadLeft}
+          y1={padTop + gridHeight}
+          x2={bottomPadLeft + bottomGridWidth}
+          y2={padTop + gridHeight}
+          stroke="#475569"
+          strokeWidth={3.5}
+          strokeLinecap="round"
+        />
+
         {/* Fretboard Inlay Dots (3rd, 5th, 7th, 9th, 12th actual frets) */}
         {Array.from({ length: numFrets }, (_, i) => {
           const relFret = i + 1;
