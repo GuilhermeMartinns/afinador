@@ -9,8 +9,9 @@ import { useWakeLock } from './hooks/useWakeLock';
 const Pads = lazy(() => import('./components/Pads'));
 const Sintetizador = lazy(() => import('./components/Sintetizador'));
 const Acordes = lazy(() => import('./components/Acordes'));
+const Harmonia = lazy(() => import('./components/Harmonia/Harmonia'));
 
-type TabType = 'afinador' | 'acordes' | 'pads' | 'sintetizador';
+type TabType = 'afinador' | 'acordes' | 'harmonia' | 'pads' | 'sintetizador';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -204,30 +205,66 @@ function App() {
 
   return (
     <div className="h-[100dvh] w-screen flex flex-col items-center justify-between bg-gradient-to-b from-gray-900 to-black text-white py-1 overflow-hidden landscape-safe">
-      {/* Header */}
-      <div className="absolute top-2 left-4 opacity-30 shrink-0 z-50">
-        <span className="text-[8px] font-mono">v.1.0.5 beta</span>
-      </div>
-
-      {/* Botões de navegação entre abas */}
-      <header className="w-full relative flex justify-center items-center p-3 sm:p-4 shrink-0 z-40 bg-gray-950/50 backdrop-blur-sm border-b border-gray-800/50 landscape-phone-header landscape-tablet-header">
-        <div className="flex gap-1.5 sm:gap-4 px-2 no-scrollbar landscape-phone-toolbar">
-          <button onClick={() => setAbaAtiva('afinador')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'afinador' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Afinador</button>
-          <button onClick={() => setAbaAtiva('acordes')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'acordes' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Acordes</button>
-          <button onClick={() => setAbaAtiva('pads')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'pads' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Pads</button>
-          <button onClick={() => setAbaAtiva('sintetizador')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base whitespace-nowrap ${abaAtiva === 'sintetizador' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Sintetizador</button>
+      {/* Botões de navegação entre abas (Floating Glass Capsule) */}
+      <header className="w-full relative flex justify-center items-center py-2.5 px-3 shrink-0 z-40 bg-transparent landscape-phone-header landscape-tablet-header">
+        <div className="flex items-center gap-1 sm:gap-1.5 p-1 rounded-full bg-white/[0.06] backdrop-blur-xl border border-white/[0.08] shadow-2xl max-w-full overflow-x-auto no-scrollbar landscape-phone-toolbar">
+          <button
+            onClick={() => setAbaAtiva('afinador')}
+            className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'afinador'
+                ? 'bg-white text-gray-950 font-semibold shadow-sm'
+                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              }`}
+          >
+            Afinador
+          </button>
+          <button
+            onClick={() => setAbaAtiva('acordes')}
+            className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'acordes'
+                ? 'bg-white text-gray-950 font-semibold shadow-sm'
+                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              }`}
+          >
+            Acordes
+          </button>
+          <button
+            onClick={() => setAbaAtiva('harmonia')}
+            className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'harmonia'
+                ? 'bg-white text-gray-950 font-semibold shadow-sm'
+                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              }`}
+          >
+            Harmonia
+          </button>
+          <button
+            onClick={() => setAbaAtiva('pads')}
+            className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'pads'
+                ? 'bg-white text-gray-950 font-semibold shadow-sm'
+                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              }`}
+          >
+            Pads
+          </button>
+          <button
+            onClick={() => setAbaAtiva('sintetizador')}
+            className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'sintetizador'
+                ? 'bg-white text-gray-950 font-semibold shadow-sm'
+                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              }`}
+          >
+            Sintetizador
+          </button>
         </div>
 
-        {/* Botão de Menu */}
+        {/* Botão de Menu Minimalista */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="absolute right-3 sm:right-4 p-2 text-gray-400 hover:text-white transition-colors z-50 bg-gray-900/80 backdrop-blur rounded-xl border border-gray-700/50"
+          className="absolute right-3 sm:right-6 p-2 text-gray-400 hover:text-white transition-all active:scale-[0.95] z-50 bg-white/[0.06] backdrop-blur-lg rounded-full border border-white/[0.08]"
           aria-label="Menu Principal"
         >
           {isMenuOpen ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           ) : (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
           )}
         </button>
 
@@ -236,8 +273,9 @@ function App() {
           <>
             <div className="fixed inset-0 z-40 bg-black/20" onClick={() => setIsMenuOpen(false)}></div>
             <div className="absolute top-16 right-3 sm:right-4 w-56 bg-gray-900/95 backdrop-blur-lg border border-gray-700 rounded-2xl shadow-2xl z-50 overflow-hidden animate-fade-in flex flex-col">
-              <div className="px-4 py-3 bg-gray-950/50 border-b border-gray-800">
+              <div className="px-4 py-3 bg-gray-950/50 border-b border-gray-800 flex items-center justify-between">
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Opções Globais</span>
+                <span className="text-[10px] font-mono text-gray-600">v1.0.9</span>
               </div>
               <button onClick={handleShare} className="flex items-center gap-3 px-4 py-4 text-sm font-semibold text-white hover:bg-gray-800 transition-colors w-full text-left">
                 <svg className="w-5 h-5 text-[#3498db]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
@@ -315,6 +353,14 @@ function App() {
           <Suspense fallback={<LoadingFallback text="Carregando dicionário de acordes..." />}>
             <div className="w-full flex flex-col items-center animate-fade-in">
               <Acordes isFlatNote={isFlatNote} />
+            </div>
+          </Suspense>
+        )}
+
+        {abaAtiva === 'harmonia' && (
+          <Suspense fallback={<LoadingFallback text="Carregando laboratório de harmonia..." />}>
+            <div className="w-full flex flex-col items-center animate-fade-in">
+              <Harmonia isFlatNote={isFlatNote} />
             </div>
           </Suspense>
         )}

@@ -171,43 +171,50 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
 
   return (
     <div className="w-full max-w-4xl flex flex-col gap-3 sm:gap-4 pb-6 text-white">
-      {/* BARRA SUPERIOR: Instrumento e Afinação */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 bg-gray-900/70 border border-gray-800/80 rounded-2xl p-3 shadow-lg">
+      {/* BARRA SUPERIOR: Instrumento e Afinação (Apple Inset Glass Card) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-3.5 sm:p-4 shadow-xl backdrop-blur-sm">
         {/* Seletor de Instrumento */}
-        <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center justify-between">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between">
             <span>Instrumento</span>
-            <span className="text-[#27ca55] font-mono">
+            <span className="text-[#34C759] font-mono text-[11px]">
               {currentInstrument.id === 'teclado' ? 'Teclas' : `${currentInstrument.stringsCount} Cordas`}
             </span>
           </label>
-          <select
-            value={selectedInstrumentId}
-            onChange={(e) => {
-              const newInstId = e.target.value;
-              setLoadingChords(true);
-              setSelectedInstrumentId(newInstId);
-              soundFontAudio.setInstrument(newInstId);
-              const targetInst = instruments.find((i) => i.id === newInstId);
-              if (targetInst && targetInst.tunings.length > 0) {
-                setSelectedTuningId(targetInst.tunings[0].id);
-              }
-              setSelectedChordIndex(0);
-              setSelectedPositionIndex(0);
-            }}
-            className="bg-gray-950/90 text-white text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 border border-gray-700/60 focus:border-[#27ca55] outline-none cursor-pointer transition-colors"
-          >
-            {instruments.map((inst) => (
-              <option key={inst.id} value={inst.id} disabled={!inst.available}>
-                {inst.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={selectedInstrumentId}
+              onChange={(e) => {
+                const newInstId = e.target.value;
+                setLoadingChords(true);
+                setSelectedInstrumentId(newInstId);
+                soundFontAudio.setInstrument(newInstId);
+                const targetInst = instruments.find((i) => i.id === newInstId);
+                if (targetInst && targetInst.tunings.length > 0) {
+                  setSelectedTuningId(targetInst.tunings[0].id);
+                }
+                setSelectedChordIndex(0);
+                setSelectedPositionIndex(0);
+              }}
+              className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-white text-xs sm:text-sm font-medium rounded-2xl px-3.5 py-2.5 pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99]"
+            >
+              {instruments.map((inst) => (
+                <option key={inst.id} value={inst.id} disabled={!inst.available} className="bg-gray-900 text-white">
+                  {inst.name}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Seletor de Afinação */}
-        <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center justify-between">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between">
             <span>Afinação</span>
             {currentTuning && (
               <span className="text-sky-400 font-mono text-[10px]">
@@ -215,34 +222,41 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               </span>
             )}
           </label>
-          <select
-            value={selectedTuningId}
-            onChange={(e) => handleTuningChange(e.target.value)}
-            className="bg-gray-950/90 text-[#27ca55] text-xs sm:text-sm font-bold rounded-xl px-3 py-2 border border-gray-700/60 focus:border-[#27ca55] outline-none cursor-pointer transition-colors"
-          >
-            {currentInstrument.tunings.map((tuning) => (
-              <option key={tuning.id} value={tuning.id} className="text-white">
-                {tuning.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={selectedTuningId}
+              onChange={(e) => handleTuningChange(e.target.value)}
+              className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-[#34C759] text-xs sm:text-sm font-semibold rounded-2xl px-3.5 py-2.5 pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99]"
+            >
+              {currentInstrument.tunings.map((tuning) => (
+                <option key={tuning.id} value={tuning.id} className="bg-gray-900 text-white">
+                  {tuning.name}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Descrição da Afinação e Controle de Áudio HD (SoundFont) */}
         {currentTuning && (
-          <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-800/60 text-[11px] text-gray-400">
-            <span>{currentTuning.description}</span>
+          <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-white/[0.06] text-[11px] text-gray-400">
+            <span className="text-gray-400 font-normal">{currentTuning.description}</span>
 
             {/* Alternador de Áudio HD com SoundFont gravado */}
             <div className="flex items-center gap-2">
-              <span className="text-gray-400 text-[10px]">Timbre:</span>
+              <span className="text-gray-500 text-[10px]">Timbre:</span>
               {isDownloadingHd ? (
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.06] text-[10px] text-amber-300">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.06] text-[10px] text-amber-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
                   <span>Baixando HD ({downloadProgress}%)...</span>
                 </div>
               ) : isHdAudioActive ? (
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#34C759]/15 border border-[#34C759]/30 text-[10px] text-[#34C759] font-medium">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#34C759]/15 border border-[#34C759]/30 text-[10px] text-[#34C759] font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]"></span>
                   <span>Som Real HD Ativo</span>
                 </div>
@@ -257,7 +271,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                       setIsHdAudioActive(true);
                     }
                   }}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.14] text-white text-[10px] font-medium border border-white/[0.08] transition-all active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.14] active:scale-[0.97] text-white text-[10px] font-medium border border-white/[0.08] transition-all"
                   title="Baixa um banco SoundFont leve (~1.9MB) gravado para ter reprodução idêntica ao instrumento real"
                 >
                   <svg className="w-3 h-3 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -274,17 +288,17 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
       </div>
 
       {/* SELETOR DE TOM (TÔNICA) */}
-      <div className="flex flex-col gap-1.5 bg-gray-900/50 border border-gray-800/60 rounded-2xl p-2.5 sm:p-3">
+      <div className="flex flex-col gap-2 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-3.5 sm:p-4">
         <div className="flex items-center justify-between px-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">
             Escolha o Tom (Nota Raiz)
           </span>
           <button
             onClick={() => handleKeySelect('ALL')}
-            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full transition-colors ${
+            className={`text-[10px] font-medium px-3 py-1 rounded-full transition-all active:scale-[0.97] ${
               selectedKey === 'ALL'
-                ? 'bg-[#27ca55] text-black'
-                : 'bg-gray-800 text-gray-400 hover:text-white'
+                ? 'bg-white text-gray-950 font-semibold shadow-sm'
+                : 'bg-white/[0.06] text-gray-400 hover:text-white'
             }`}
           >
             Ver Todos os Tons
@@ -302,12 +316,12 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 key={k}
                 disabled={!hasChords}
                 onClick={() => handleKeySelect(k)}
-                className={`py-1.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+                className={`py-2 rounded-2xl font-mono text-xs sm:text-sm font-semibold transition-all active:scale-[0.95] ${
                   isSelected
-                    ? 'bg-[#27ca55] text-black shadow-md shadow-[#27ca55]/25 scale-[1.03]'
+                    ? 'bg-white text-gray-950 font-bold shadow-md'
                     : hasChords
-                    ? 'bg-gray-800/90 text-gray-200 hover:bg-gray-700 hover:text-white'
-                    : 'bg-gray-900/40 text-gray-700 cursor-not-allowed'
+                    ? 'bg-white/[0.05] hover:bg-white/[0.1] text-gray-200 border border-white/[0.05]'
+                    : 'bg-white/[0.02] text-gray-700 cursor-not-allowed border border-transparent'
                 }`}
               >
                 {displayKey}
