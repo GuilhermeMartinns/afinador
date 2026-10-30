@@ -391,35 +391,65 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             return null;
           })}
 
-        {/* Barres (Pestanas) */}
+        {/* Barres (Pestanas) - Barra elegante com identificador limpo do dedo */}
         {!hidePositions &&
           barresToRender.map((barre, bIdx) => {
             const cy = getFingerCenterY(barre.fret);
             const x1 = getInterpolatedStringX(barre.fromIdx, cy);
             const x2 = getInterpolatedStringX(barre.toIdx, cy);
+            const minX = Math.min(x1, x2);
+            const maxX = Math.max(x1, x2);
             const barHeight = 22;
 
             return (
               <g key={`barre-${bIdx}`} filter="url(#dotGlow)">
+                {/* Corpo contínuo e elegante da pestana */}
                 <rect
-                  x={x1 - 12}
+                  x={minX - 12}
                   y={cy - barHeight / 2}
-                  width={x2 - x1 + 24}
+                  width={maxX - minX + 24}
                   height={barHeight}
                   rx={barHeight / 2}
-                  fill="#0284c7"
+                  fill="url(#normalDotGrad)"
                   stroke="#38bdf8"
                   strokeWidth={1.5}
-                  opacity={0.92}
+                  opacity={0.95}
                 />
+                {/* Rótulo do Dedo no início da pestana (lado grave) */}
+                <circle
+                  cx={minX}
+                  cy={cy}
+                  r={8.5}
+                  fill="#0369a1"
+                  stroke="#38bdf8"
+                  strokeWidth={1}
+                />
+                <text
+                  x={minX}
+                  y={cy + 3.5}
+                  textAnchor="middle"
+                  className="font-bold text-[10px] fill-white"
+                >
+                  {barre.finger || 1}
+                </text>
               </g>
             );
           })}
 
-        {/* Fretted Finger Dots (Posições dos Dedos nas Casas) */}
+        {/* Fretted Finger Dots (Apenas dedos adicionais: 2, 3, 4 ou notas fora da pestana) */}
         {!hidePositions &&
           stringDetails.map((detail, idx) => {
             if (detail.status !== 'fretted') return null;
+
+            // Se esta corda está sendo coberta pela pestana com o Dedo 1, não renderiza círculo duplicado!
+            const isCoveredByBarre = barresToRender.some(
+              (b) =>
+                b.fret === detail.relativeFret &&
+                idx >= Math.min(b.fromIdx, b.toIdx) &&
+                idx <= Math.max(b.fromIdx, b.toIdx) &&
+                detail.finger === 1
+            );
+            if (isCoveredByBarre) return null;
 
             const cy = getFingerCenterY(detail.relativeFret);
             const cx = getInterpolatedStringX(idx, cy);
@@ -435,7 +465,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 <circle
                   cx={cx}
                   cy={cy}
-                  r={18.5}
+                  r={15}
                   fill={
                     detail.isRoot
                       ? 'url(#rootDotGrad)'
@@ -443,13 +473,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                         ? 'url(#bassDotGrad)'
                         : 'url(#normalDotGrad)'
                   }
+                  stroke={detail.isRoot ? '#4ade80' : '#7dd3fc'}
+                  strokeWidth={1.2}
                 />
                 <text
                   x={cx}
-                  y={cy + 4.5}
+                  y={cy + 4}
                   textAnchor="middle"
-                  className={`font-bold text-[34x] ${detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
-                    }`}
+                  className={`font-bold text-[12px] ${
+                    detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
+                  }`}
                 >
                   {label}
                 </text>

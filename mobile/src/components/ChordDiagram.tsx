@@ -202,33 +202,45 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Barres */}
+        {/* Barres (Pestanas elegantes com Dedo 1 no início) */}
         {barresToRender.map((b, i) => {
           const y = getFingerCenterY(b.fret);
           const x1 = getInterpolatedStringX(b.fromIdx, y);
           const x2 = getInterpolatedStringX(b.toIdx, y);
-          const minX = Math.min(x1, x2) - 13;
-          const maxX = Math.max(x1, x2) + 13;
+          const minX = Math.min(x1, x2);
+          const maxX = Math.max(x1, x2);
+          const barHeight = 22;
 
           return (
             <G key={`barre-${i}`}>
               <Rect
-                x={minX}
-                y={y - 12}
-                width={maxX - minX}
-                height={24}
-                rx={12}
+                x={minX - 12}
+                y={y - barHeight / 2}
+                width={maxX - minX + 24}
+                height={barHeight}
+                rx={barHeight / 2}
                 fill="url(#normalDotGrad)"
+                stroke="#38bdf8"
+                strokeWidth={1.5}
+                opacity={0.95}
+              />
+              <Circle
+                cx={minX}
+                cy={y}
+                r={8.5}
+                fill="#0369a1"
+                stroke="#38bdf8"
+                strokeWidth={1}
               />
               <SvgText
-                x={(minX + maxX) / 2}
-                y={y + 4}
+                x={minX}
+                y={y + 3.5}
                 fill="#ffffff"
-                fontSize="11"
+                fontSize="10"
                 fontWeight="bold"
                 textAnchor="middle"
               >
-                {b.finger}
+                {b.finger || 1}
               </SvgText>
             </G>
           );
