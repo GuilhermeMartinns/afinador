@@ -38,6 +38,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [selectedChordIndex, setSelectedChordIndex] = useState<number>(0);
   const [selectedPositionIndex, setSelectedPositionIndex] = useState<number>(0);
+  const [slashFilterMode, setSlashFilterMode] = useState<'root' | 'bass'>('root');
 
   // Study controls
   const [displayMode, setDisplayMode] = useState<DiagramDisplayMode>('fingers');
@@ -59,18 +60,31 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   // Available keys in the current tuning
   const availableKeysInTuning = useMemo(() => {
     if (!currentTuning) return new Set<string>();
+    if (selectedCategory === 'invertido' && slashFilterMode === 'bass') {
+      const set = new Set<string>();
+      currentTuning.chords.forEach((c) => {
+        if (c.bass) set.add(c.bass);
+      });
+      return set;
+    }
     return new Set(currentTuning.chords.map((c) => c.key));
-  }, [currentTuning]);
+  }, [currentTuning, selectedCategory, slashFilterMode]);
 
   // Filtered chords list
   const filteredChords = useMemo<ChordDefinition[]>(() => {
     if (!currentTuning) return [];
     return currentTuning.chords.filter((chord) => {
-      const matchKey = selectedKey === 'ALL' || chord.key === selectedKey;
       const matchCat = selectedCategory === 'todos' || chord.category === selectedCategory;
-      return matchKey && matchCat;
+      if (!matchCat) return false;
+
+      if (selectedKey === 'ALL') return true;
+
+      if (selectedCategory === 'invertido' && slashFilterMode === 'bass') {
+        return chord.bass === selectedKey;
+      }
+      return chord.key === selectedKey;
     });
-  }, [currentTuning, selectedKey, selectedCategory]);
+  }, [currentTuning, selectedKey, selectedCategory, slashFilterMode]);
 
   // Ensure valid active chord
   const activeChord = useMemo<ChordDefinition | null>(() => {
@@ -253,6 +267,45 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
             {filteredChords.reduce((acc, c) => acc + c.positions.length, 0)} shapes
           </span>
         </div>
+
+        {/* Sub-filtro para Acordes Invertidos (Tônica vs Baixo) */}
+        {selectedCategory === 'invertido' && (
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-800/40 text-xs">
+            <span className="text-[11px] text-gray-400">
+              Visualizar acordes invertidos agrupados por:
+            </span>
+            <div className="flex items-center gap-1 bg-gray-950 p-1 rounded-xl border border-gray-800 text-[11px]">
+              <button
+                onClick={() => {
+                  setSlashFilterMode('root');
+                  setSelectedChordIndex(0);
+                  setSelectedPositionIndex(0);
+                }}
+                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                  slashFilterMode === 'root'
+                    ? 'bg-[#27ca55] text-black shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Pela Tônica (ex: D/...)
+              </button>
+              <button
+                onClick={() => {
+                  setSlashFilterMode('bass');
+                  setSelectedChordIndex(0);
+                  setSelectedPositionIndex(0);
+                }}
+                className={`px-3 py-1 rounded-lg font-bold transition-all ${
+                  slashFilterMode === 'bass'
+                    ? 'bg-amber-500 text-black shadow-sm'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Pela Nota do Baixo (ex: .../D)
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Lista de Acordes Disponíveis no Filtro */}
         {filteredChords.length > 0 ? (
