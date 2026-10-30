@@ -237,18 +237,13 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
               <Circle
                 cx={minX}
                 cy={y}
-                r={8.5}
                 r={dotRadius}
                 fill="#0369a1"
-                stroke="#38bdf8"
-                strokeWidth={1}
               />
               <SvgText
                 x={minX}
-                y={y + 3.5}
                 y={y + 7.5}
                 fill="#ffffff"
-                fontSize="10"
                 fontSize="22"
                 fontWeight="bold"
                 textAnchor="middle"
@@ -259,32 +254,18 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Finger Dots and Open/Muted symbols */}
+        {/* Top String Markers: Muted (✕), Open (○), Played (●) - Branco e Minimalista */}
         {stringDetails.map((detail, sIdx) => {
-          if (detail.status === 'open') {
-            const x = getInterpolatedStringX(sIdx, padTop - 18);
-            return (
-              <G key={`open-${sIdx}`} onPress={() => onPluckString?.(sIdx)}>
-                <Circle
-                  cx={x}
-                  cy={padTop - 18}
-                  r={6}
-                  stroke="#38bdf8"
-                  strokeWidth={1.8}
-                  fill="transparent"
-                />
-              </G>
-            );
-          }
+          const x = getInterpolatedStringX(sIdx, padTop - 18);
+
           if (detail.status === 'muted') {
-            const x = getInterpolatedStringX(sIdx, padTop - 18);
             return (
               <SvgText
                 key={`muted-${sIdx}`}
                 x={x}
                 y={padTop - 13}
-                fill="#94a3b8"
-                fontSize="13"
+                fill="#ffffff"
+                fontSize="14"
                 fontWeight="bold"
                 textAnchor="middle"
               >
@@ -293,6 +274,36 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
             );
           }
 
+          if (detail.status === 'open') {
+            return (
+              <G key={`open-${sIdx}`} onPress={() => onPluckString?.(sIdx)}>
+                <Circle
+                  cx={x}
+                  cy={padTop - 18}
+                  r={6}
+                  stroke="#ffffff"
+                  strokeWidth={2}
+                  fill="transparent"
+                />
+              </G>
+            );
+          }
+
+          // Fretted / Tocada
+          return (
+            <G key={`fretted-marker-${sIdx}`} onPress={() => onPluckString?.(sIdx)}>
+              <Circle
+                cx={x}
+                cy={padTop - 18}
+                r={5}
+                fill="#ffffff"
+              />
+            </G>
+          );
+        })}
+
+        {/* Finger Dots */}
+        {stringDetails.map((detail, sIdx) => {
           if (detail.fret > 0) {
             const cy = getFingerCenterY(detail.fret);
             const cx = getInterpolatedStringX(sIdx, cy);

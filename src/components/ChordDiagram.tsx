@@ -300,20 +300,20 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Top Markers: Muted (X) or Open (O) Strings */}
+        {/* Top Markers: Muted (✕), Open (○), Played Fretted (●) - Minimalista Branco */}
         {!hidePositions &&
           stringDetails.map((detail, idx) => {
             const x = getInterpolatedStringX(idx, padTop);
-            const markerY = padTop - 22;
+            const markerY = padTop - 20;
 
             if (detail.status === 'muted') {
               return (
-                <g key={`top-marker-${idx}`}>
+                <g key={`top-marker-${idx}`} className="select-none">
                   <text
                     x={x}
                     y={markerY + 5}
                     textAnchor="middle"
-                    className="fill-red-400/80 font-bold text-[15px] select-none"
+                    className="fill-white font-bold text-[14px]"
                   >
                     ✕
                   </text>
@@ -322,52 +322,41 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             }
 
             if (detail.status === 'open') {
-              const showInside = displayMode !== 'fingers';
-              const isOpenBass = detail.isBass && !detail.isRoot;
               return (
                 <g
                   key={`top-marker-${idx}`}
                   onClick={() => handlePluckString(idx)}
                   className="cursor-pointer"
                 >
+                  {/* Círculo furado branco para corda solta */}
                   <circle
                     cx={x}
                     cy={markerY}
-                    r={11}
-                    fill={
-                      detail.isRoot
-                        ? 'rgba(39, 202, 85, 0.18)'
-                        : isOpenBass
-                          ? 'rgba(245, 158, 11, 0.22)'
-                          : '#0f172a'
-                    }
-                    stroke={
-                      detail.isRoot
-                        ? '#27ca55'
-                        : isOpenBass
-                          ? '#f59e0b'
-                          : '#94a3b8'
-                    }
-                    strokeWidth={isOpenBass ? 2.2 : 2}
+                    r={6}
+                    fill="transparent"
+                    stroke="#ffffff"
+                    strokeWidth={2}
                   />
-                  <text
-                    x={x}
-                    y={markerY + 3.5}
-                    textAnchor="middle"
-                    className={`font-mono font-bold text-[10px] ${detail.isRoot
-                      ? 'fill-[#27ca55]'
-                      : isOpenBass
-                        ? 'fill-[#f59e0b]'
-                        : 'fill-gray-200'
-                      }`}
-                  >
-                    {showInside ? getBadgeText(detail) : '0'}
-                  </text>
                 </g>
               );
             }
 
-            return null;
+            // Corda tocada com dedo pressionado (fretted)
+            return (
+              <g
+                key={`top-marker-${idx}`}
+                onClick={() => handlePluckString(idx)}
+                className="cursor-pointer"
+              >
+                {/* Círculo preenchido branco para indicar que a corda é tocada */}
+                <circle
+                  cx={x}
+                  cy={markerY}
+                  r={5}
+                  fill="#ffffff"
+                />
+              </g>
+            );
           })}
 
         {/* Barres (Pestanas) - Barra elegante com identificador limpo do dedo */}
@@ -565,11 +554,17 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           <span className="w-3 h-3 rounded-full bg-sky-500 inline-block border border-sky-200"></span>
           <span>Notas do Acorde</span>
         </span>
-        <span className="flex items-center gap-1">
-          <span className="text-gray-300 font-bold">○</span> Solta
+        <span className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-white inline-block"></span>
+          <span>Tocada</span>
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full border-2 border-white inline-block"></span>
+          <span>Solta</span>
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-red-400 font-bold">✕</span> Abafada
+          <span className="text-white font-bold text-xs">✕</span>
+          <span>Abafada</span>
         </span>
       </div>
     </div>
