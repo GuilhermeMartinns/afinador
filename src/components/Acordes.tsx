@@ -1,8 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import chordsDatabaseRaw from '../data/chordsDatabase.json';
+import React, { useState, useMemo, useEffect } from 'react';
+import { INSTRUMENTS_METADATA, loadChordsForTuning, InstrumentMetadata, TuningMetadata } from '../data/chords';
 import ChordDiagram, { DiagramDisplayMode } from './ChordDiagram';
 import {
-  InstrumentDefinition,
   ChordDefinition,
   analyzeChordPosition,
   formatNoteName,
@@ -30,11 +29,14 @@ const CATEGORIES = [
   { id: 'outros', label: 'Power / Dim' },
 ] as const;
 
-const instruments = (chordsDatabaseRaw as { instruments: InstrumentDefinition[] }).instruments;
+const instruments = INSTRUMENTS_METADATA;
 
 const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   const [selectedInstrumentId, setSelectedInstrumentId] = useState<string>('violao');
   const [selectedTuningId, setSelectedTuningId] = useState<string>('standard');
+  const [currentChords, setCurrentChords] = useState<ChordDefinition[]>([]);
+  const [loadingChords, setLoadingChords] = useState<boolean>(true);
+
   const [selectedKey, setSelectedKey] = useState<string>('G');
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [selectedChordIndex, setSelectedChordIndex] = useState<number>(0);
@@ -47,34 +49,50 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   const [quizRevealed, setQuizRevealed] = useState<boolean>(false);
   const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
 
-  const currentInstrument = useMemo(() => {
+  const currentInstrument = useMemo<InstrumentMetadata>(() => {
     return instruments.find((inst) => inst.id === selectedInstrumentId) || instruments[0];
   }, [selectedInstrumentId]);
 
-  const currentTuning = useMemo(() => {
+  const currentTuning = useMemo<TuningMetadata>(() => {
     return (
       currentInstrument.tunings.find((t) => t.id === selectedTuningId) ||
       currentInstrument.tunings[0]
     );
   }, [currentInstrument, selectedTuningId]);
 
+  // Asynchronously load chords on instrument/tuning change
+  useEffect(() => {
+    let isCancelled = false;
+
+    loadChordsForTuning(selectedInstrumentId, selectedTuningId).then((chords) => {
+      if (!isCancelled) {
+        setCurrentChords(chords);
+        setLoadingChords(false);
+      }
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [selectedInstrumentId, selectedTuningId]);
+
   // Available keys in the current tuning
   const availableKeysInTuning = useMemo(() => {
-    if (!currentTuning) return new Set<string>();
+    if (currentChords.length === 0) return new Set<string>();
     if (selectedCategory === 'invertido' && slashFilterMode === 'bass') {
       const set = new Set<string>();
-      currentTuning.chords.forEach((c) => {
+      currentChords.forEach((c) => {
         if (c.bass) set.add(c.bass);
       });
       return set;
     }
-    return new Set(currentTuning.chords.map((c) => c.key));
-  }, [currentTuning, selectedCategory, slashFilterMode]);
+    return new Set(currentChords.map((c) => c.key));
+  }, [currentChords, selectedCategory, slashFilterMode]);
 
   // Filtered chords list
   const filteredChords = useMemo<ChordDefinition[]>(() => {
-    if (!currentTuning) return [];
-    return currentTuning.chords.filter((chord) => {
+    if (currentChords.length === 0) return [];
+    return currentChords.filter((chord) => {
       const matchCat = selectedCategory === 'todos' || chord.category === selectedCategory;
       if (!matchCat) return false;
 
@@ -85,7 +103,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
       }
       return chord.key === selectedKey;
     });
-  }, [currentTuning, selectedKey, selectedCategory, slashFilterMode]);
+  }, [currentChords, selectedKey, selectedCategory, slashFilterMode]);
 
   // Ensure valid active chord
   const activeChord = useMemo<ChordDefinition | null>(() => {
@@ -113,14 +131,8 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   }, [activePosition, currentTuning, activeChord, isFlatNote]);
 
   const handleTuningChange = (newTuningId: string) => {
+    setLoadingChords(true);
     setSelectedTuningId(newTuningId);
-    const newTuning = currentInstrument.tunings.find((t) => t.id === newTuningId);
-    if (newTuning && newTuning.chords.length > 0) {
-      const hasCurrentKey = newTuning.chords.some((c) => c.key === selectedKey);
-      if (!hasCurrentKey) {
-        setSelectedKey(newTuning.chords[0].key);
-      }
-    }
     setSelectedCategory('todos');
     setSelectedChordIndex(0);
     setSelectedPositionIndex(0);
@@ -157,11 +169,21 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
         <div className="flex flex-col gap-1">
           <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center justify-between">
             <span>Instrumento</span>
-            <span className="text-[#27ca55] font-mono">6 Cordas</span>
+            <span className="text-[#27ca55] font-mono">{currentInstrument.stringsCount} Cordas</span>
           </label>
           <select
             value={selectedInstrumentId}
-            onChange={(e) => setSelectedInstrumentId(e.target.value)}
+            onChange={(e) => {
+              const newInstId = e.target.value;
+              setLoadingChords(true);
+              setSelectedInstrumentId(newInstId);
+              const targetInst = instruments.find((i) => i.id === newInstId);
+              if (targetInst && targetInst.tunings.length > 0) {
+                setSelectedTuningId(targetInst.tunings[0].id);
+              }
+              setSelectedChordIndex(0);
+              setSelectedPositionIndex(0);
+            }}
             className="bg-gray-950/90 text-white text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 border border-gray-700/60 focus:border-[#27ca55] outline-none cursor-pointer transition-colors"
           >
             {instruments.map((inst) => (
@@ -309,7 +331,12 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
         )}
 
         {/* Lista de Acordes Disponíveis no Filtro */}
-        {filteredChords.length > 0 ? (
+        {loadingChords ? (
+          <div className="text-center py-4 text-xs text-gray-400 flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#27ca55] animate-ping"></span>
+            Carregando acordes do instrumento...
+          </div>
+        ) : filteredChords.length > 0 ? (
           <div className="flex flex-wrap items-center gap-1.5 max-h-32 overflow-y-auto pt-1.5 pr-1">
             {filteredChords.map((chord, idx) => {
               const isSelected = activeChord?.symbol === chord.symbol && activeChord?.key === chord.key;
