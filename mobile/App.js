@@ -8,6 +8,7 @@ import {
   Share,
   Modal,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as ScreenOrientation from 'expo-screen-orientation';
@@ -15,11 +16,16 @@ import { useWakeLock } from './src/hooks/useWakeLock';
 import TunerScreen from './src/screens/TunerScreen';
 import PadsScreen from './src/screens/PadsScreen';
 import SynthScreen from './src/screens/SynthScreen';
+import ChordsScreen from './src/screens/ChordsScreen';
+import HarmonyScreen from './src/screens/HarmonyScreen';
+import { AudioEngineBridge } from './src/services/AudioEngineBridge';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('afinador');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
+  const [isTunerMicOn, setIsTunerMicOn] = useState(false);
+  const [tunerBridgeCallback, setTunerBridgeCallback] = useState(null);
 
   // Mantém a tela ligada
   useWakeLock();
@@ -63,7 +69,11 @@ export default function App() {
         <Text style={styles.versionBadge}>v1.0.4 mobile</Text>
 
         {/* Abas Centrais */}
-        <View style={styles.tabsContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabsContainer}
+        >
           <Pressable
             onPress={() => setActiveTab('afinador')}
             style={[
@@ -78,6 +88,40 @@ export default function App() {
               ]}
             >
               Afinador
+            </Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('acordes')}
+            style={[
+              styles.tabButton,
+              activeTab === 'acordes' && styles.tabButtonActive,
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === 'acordes' && styles.tabTextActive,
+              ]}
+            >
+              Acordes
+            </Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => setActiveTab('harmonia')}
+            style={[
+              styles.tabButton,
+              activeTab === 'harmonia' && styles.tabButtonActive,
+            ]}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === 'harmonia' && styles.tabTextActive,
+              ]}
+            >
+              Harmonia
             </Text>
           </Pressable>
 
@@ -114,7 +158,7 @@ export default function App() {
               Sintetizador
             </Text>
           </Pressable>
-        </View>
+        </ScrollView>
 
         {/* Botão de Menu (Mais Opções) */}
         <Pressable
@@ -126,9 +170,25 @@ export default function App() {
         </Pressable>
       </View>
 
+      {/* Ponte de Áudio Global compartilhada */}
+      <AudioEngineBridge
+        onMessage={(data) => {
+          if (tunerBridgeCallback) tunerBridgeCallback(data);
+        }}
+        isMicOn={isTunerMicOn}
+      />
+
       {/* Conteúdo Principal */}
       <View style={styles.content}>
-        {activeTab === 'afinador' && <TunerScreen />}
+        {activeTab === 'afinador' && (
+          <TunerScreen
+            isMicOn={isTunerMicOn}
+            setIsMicOn={setIsTunerMicOn}
+            registerBridgeCallback={setTunerBridgeCallback}
+          />
+        )}
+        {activeTab === 'acordes' && <ChordsScreen />}
+        {activeTab === 'harmonia' && <HarmonyScreen />}
         {activeTab === 'pads' && <PadsScreen />}
         {activeTab === 'sintetizador' && <SynthScreen />}
       </View>

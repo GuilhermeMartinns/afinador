@@ -170,18 +170,89 @@ const AUDIO_BRIDGE_HTML = `
       }
     }
 
+    // Sintetizador polifônico Web Audio (para playback de acordes, notas e sintetizador)
+    function playTone(freq, duration = 1.5, type = 'triangle', gainVal = 0.2) {
+      if (!audioContext) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        audioContext = new AudioCtx();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+
+      const now = audioContext.currentTime;
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.exponentialRampToValueAtTime(gainVal, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+
+      osc.start(now);
+      osc.stop(now + duration);
+    }
+
+    function midiToFreq(midi) {
+      return 440 * Math.pow(2, (midi - 69) / 12);
+    }
+
+    function playChord(midiNotes, isArpeggio = true) {
+      if (!Array.isArray(midiNotes) || midiNotes.length === 0) return;
+      midiNotes.forEach((midi, idx) => {
+        const delay = isArpeggio ? idx * 75 : 0;
+        setTimeout(() => {
+          playTone(midiToFreq(midi), 2.2, 'triangle', 0.18);
+        }, delay);
+      });
+    }
+
     // Receptor de comandos do React Native
     window.handleCommand = function(cmd) {
       if (cmd.type === 'START_MIC') startMic();
       else if (cmd.type === 'STOP_MIC') stopMic();
+      else if (cmd.type === 'PLAY_TONE') playTone(cmd.frequency, cmd.duration, cmd.synthType, cmd.gain);
+      else if (cmd.type === 'PLAY_MIDI') playTone(midiToFreq(cmd.midi), cmd.duration || 1.8, cmd.synthType || 'triangle', cmd.gain || 0.2);
+      else if (cmd.type === 'PLAY_CHORD') playChord(cmd.midiNotes, cmd.isArpeggio !== false);
     };
   </script>
 </body>
 </html>
 `;
 
+let globalAudioBridgeRef = null;
+
+export const playAudioCommand = (cmd) => {
+  if (globalAudioBridgeRef && globalAudioBridgeRef.injectJavaScript) {
+    globalAudioBridgeRef.injectJavaScript(`
+      if (window.handleCommand) {
+        window.handleCommand(${JSON.stringify(cmd)});
+      }
+      true;
+    `);
+  }
+};
+
+export const playNoteMidi = (midi, duration = 1.8) => {
+  playAudioCommand({ type: 'PLAY_MIDI', midi, duration });
+};
+
+export const playChordMidi = (midiNotes, isArpeggio = true) => {
+  playAudioCommand({ type: 'PLAY_CHORD', midiNotes, isArpeggio });
+};
+
 export const AudioEngineBridge = ({ onMessage, isMicOn }) => {
   const webViewRef = useRef(null);
+
+  useEffect(() => {
+    globalAudioBridgeRef = webViewRef.current;
+  });
 
   useEffect(() => {
     if (!webViewRef.current) return;

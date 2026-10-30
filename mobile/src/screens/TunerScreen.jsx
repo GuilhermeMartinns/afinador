@@ -16,13 +16,22 @@ import { AudioEngineBridge } from '../services/AudioEngineBridge';
 
 const REFERENCE_OPTIONS = [440, 432, 442, 444];
 
-export const TunerScreen = () => {
-  const [isMicOn, setIsMicOn] = useState(false);
+export const TunerScreen = ({ isMicOn: externalIsMicOn, setIsMicOn: externalSetIsMicOn, registerBridgeCallback }) => {
+  const [internalIsMicOn, setInternalIsMicOn] = useState(false);
+  const isMicOn = externalIsMicOn !== undefined ? externalIsMicOn : internalIsMicOn;
+  const setIsMicOn = externalSetIsMicOn !== undefined ? externalSetIsMicOn : setInternalIsMicOn;
+
   const [micFrequency, setMicFrequency] = useState(0);
   const [audioData, setAudioData] = useState({ noteName: '-', cents: 0, frequency: 0 });
   const [isFlatNote, setIsFlatNote] = useState(false);
   const [referencePitch, setReferencePitch] = useState(440);
   const [showPitchModal, setShowPitchModal] = useState(false);
+
+  useEffect(() => {
+    if (registerBridgeCallback) {
+      registerBridgeCallback(() => handleBridgeMessage);
+    }
+  }, [registerBridgeCallback]);
 
   // Carregar preferências salvas
   useEffect(() => {
@@ -45,7 +54,7 @@ export const TunerScreen = () => {
     setIsFlatNote(next);
     try {
       await AsyncStorage.setItem('notePreference', next ? 'flat' : 'sharp');
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const selectReferencePitch = async (pitch) => {
@@ -53,7 +62,7 @@ export const TunerScreen = () => {
     setShowPitchModal(false);
     try {
       await AsyncStorage.setItem('referencePitch', pitch.toString());
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // Processa dados de frequência do áudio
@@ -96,8 +105,10 @@ export const TunerScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Ponte de Áudio com WebView em background */}
-      <AudioEngineBridge onMessage={handleBridgeMessage} isMicOn={isMicOn} />
+      {/* Ponte de Áudio local caso não seja injetada externamente */}
+      {registerBridgeCallback === undefined && (
+        <AudioEngineBridge onMessage={handleBridgeMessage} isMicOn={isMicOn} />
+      )}
 
       <ScrollView contentContainerStyle={styles.scrollContent} bounces={false}>
         {/* Mostrador de Frequência e Ponteiro */}

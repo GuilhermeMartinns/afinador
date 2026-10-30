@@ -1,0 +1,384 @@
+[
+  {
+    "key": "C",
+    "suffix": "M",
+    "name": "Dó Maior (Open G)",
+    "symbol": "C",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "M",
+    "name": "Dó Sustenido / Ré Bemol Maior (Open G)",
+    "symbol": "C#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "M",
+    "name": "Ré Maior (Open G)",
+    "symbol": "D",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "M",
+    "name": "Ré Sustenido / Mi Bemol Maior (Open G)",
+    "symbol": "D#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "M",
+    "name": "Mi Maior (Open G)",
+    "symbol": "E",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "M",
+    "name": "Fá Maior (Open G)",
+    "symbol": "F",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "M",
+    "name": "Fá Sustenido / Sol Bemol Maior (Open G)",
+    "symbol": "F#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "M",
+    "name": "Sol Maior (Open G)",
+    "symbol": "G",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Todas as Cordas Soltas (Open G)",
+        "baseFret": 1,
+        "frets": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "fingers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "M",
+    "name": "Sol Sustenido / Lá Bemol Maior (Open G)",
+    "symbol": "G#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "M",
+    "name": "Lá Maior (Open G)",
+    "symbol": "A",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "M",
+    "name": "Lá Sustenido / Si Bemol Maior (Open G)",
+    "symbol": "A#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "M",
+    "name": "Si Maior (Open G)",
+    "symbol": "B",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5 Cordas (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  }
+]

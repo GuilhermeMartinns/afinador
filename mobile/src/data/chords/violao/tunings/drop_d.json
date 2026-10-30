@@ -1,0 +1,2083 @@
+[
+  {
+    "key": "C",
+    "suffix": "M",
+    "name": "Dó Maior",
+    "symbol": "C",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Formato Aberto (5 Cordas)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          3,
+          2,
+          0,
+          1,
+          0
+        ],
+        "fingers": [
+          0,
+          3,
+          2,
+          0,
+          1,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Pestana 5ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "m",
+    "name": "Dó Menor",
+    "symbol": "Cm",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "5",
+    "name": "Dó Power Chord",
+    "symbol": "C5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C",
+    "suffix": "M",
+    "bass": "E",
+    "name": "Dó com Baixo em Mi (Drop)",
+    "symbol": "C/E",
+    "category": "invertido",
+    "positions": [
+      {
+        "label": "Drop Aberto C/E (2ª Casa no Grave)",
+        "baseFret": 1,
+        "frets": [
+          2,
+          3,
+          2,
+          0,
+          1,
+          0
+        ],
+        "fingers": [
+          1,
+          4,
+          3,
+          0,
+          2,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "M",
+    "name": "Dó Sustenido / Ré Bemol Maior",
+    "symbol": "C#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "m",
+    "name": "Dó Sustenido / Ré Bemol Menor",
+    "symbol": "C#m",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "C#",
+    "suffix": "5",
+    "name": "Dó Sustenido / Ré Bemol Power Chord",
+    "symbol": "C#5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "M",
+    "name": "Ré Maior",
+    "symbol": "D",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Drop Aberto Completo (6 Cordas)",
+        "baseFret": 1,
+        "frets": [
+          0,
+          0,
+          0,
+          2,
+          3,
+          2
+        ],
+        "fingers": [
+          0,
+          0,
+          0,
+          1,
+          3,
+          2
+        ],
+        "barres": []
+      },
+      {
+        "label": "Pestana 5ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "m",
+    "name": "Ré Menor",
+    "symbol": "Dm",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Drop Menor Aberto (6 Cordas)",
+        "baseFret": 1,
+        "frets": [
+          0,
+          0,
+          0,
+          2,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          0,
+          0,
+          2,
+          3,
+          1
+        ],
+        "barres": []
+      },
+      {
+        "label": "Pestana 5ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "5",
+    "name": "Ré Power Chord",
+    "symbol": "D5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Cordas Graves Soltas (Drop)",
+        "baseFret": 1,
+        "frets": [
+          0,
+          0,
+          0,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Power Chord 5ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D",
+    "suffix": "M",
+    "bass": "F#",
+    "name": "Ré com Baixo em Fá# (Drop)",
+    "symbol": "D/F#",
+    "category": "invertido",
+    "positions": [
+      {
+        "label": "Drop D Aberto com F# na 6ª Corda",
+        "baseFret": 1,
+        "frets": [
+          4,
+          0,
+          0,
+          2,
+          3,
+          2
+        ],
+        "fingers": [
+          3,
+          0,
+          0,
+          1,
+          4,
+          2
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "M",
+    "name": "Ré Sustenido / Mi Bemol Maior",
+    "symbol": "D#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "m",
+    "name": "Ré Sustenido / Mi Bemol Menor",
+    "symbol": "D#m",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "D#",
+    "suffix": "5",
+    "name": "Ré Sustenido / Mi Bemol Power Chord",
+    "symbol": "D#5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "M",
+    "name": "Mi Maior",
+    "symbol": "E",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "m",
+    "name": "Mi Menor",
+    "symbol": "Em",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Drop Menor (2ª Casa Graves)",
+        "baseFret": 1,
+        "frets": [
+          2,
+          2,
+          2,
+          0,
+          0,
+          0
+        ],
+        "fingers": [
+          1,
+          2,
+          3,
+          0,
+          0,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Pestana 5ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "E",
+    "suffix": "5",
+    "name": "Mi Power Chord",
+    "symbol": "E5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "M",
+    "name": "Fá Maior",
+    "symbol": "F",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "m",
+    "name": "Fá Menor",
+    "symbol": "Fm",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F",
+    "suffix": "5",
+    "name": "Fá Power Chord",
+    "symbol": "F5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (3ª Casa)",
+        "baseFret": 3,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "M",
+    "name": "Fá Sustenido / Sol Bemol Maior",
+    "symbol": "F#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "m",
+    "name": "Fá Sustenido / Sol Bemol Menor",
+    "symbol": "F#m",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "F#",
+    "suffix": "5",
+    "name": "Fá Sustenido / Sol Bemol Power Chord",
+    "symbol": "F#5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (4ª Casa)",
+        "baseFret": 4,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "M",
+    "name": "Sol Maior",
+    "symbol": "G",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Drop Aberto (6ª Corda na 5ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          5,
+          2,
+          0,
+          0,
+          3,
+          3
+        ],
+        "fingers": [
+          4,
+          1,
+          0,
+          0,
+          2,
+          3
+        ],
+        "barres": []
+      },
+      {
+        "label": "Pestana 5ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "m",
+    "name": "Sol Menor",
+    "symbol": "Gm",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "5",
+    "name": "Sol Power Chord",
+    "symbol": "G5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (5ª Casa)",
+        "baseFret": 5,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (10ª Casa)",
+        "baseFret": 10,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G",
+    "suffix": "M",
+    "bass": "B",
+    "name": "Sol com Baixo em Si (Drop)",
+    "symbol": "G/B",
+    "category": "invertido",
+    "positions": [
+      {
+        "label": "Drop Aberto G/B",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          2,
+          0,
+          0,
+          3,
+          3
+        ],
+        "fingers": [
+          0,
+          1,
+          0,
+          0,
+          3,
+          4
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "M",
+    "name": "Sol Sustenido / Lá Bemol Maior",
+    "symbol": "G#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "m",
+    "name": "Sol Sustenido / Lá Bemol Menor",
+    "symbol": "G#m",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "G#",
+    "suffix": "5",
+    "name": "Sol Sustenido / Lá Bemol Power Chord",
+    "symbol": "G#5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (6ª Casa)",
+        "baseFret": 6,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (11ª Casa)",
+        "baseFret": 11,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "M",
+    "name": "Lá Maior",
+    "symbol": "A",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Formato Aberto (5 Cordas)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          0,
+          2,
+          2,
+          2,
+          0
+        ],
+        "fingers": [
+          0,
+          0,
+          1,
+          2,
+          3,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "m",
+    "name": "Lá Menor",
+    "symbol": "Am",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Formato Aberto (5 Cordas)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          0,
+          2,
+          2,
+          1,
+          0
+        ],
+        "fingers": [
+          0,
+          0,
+          2,
+          3,
+          1,
+          0
+        ],
+        "barres": []
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A",
+    "suffix": "5",
+    "name": "Lá Power Chord",
+    "symbol": "A5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (7ª Casa)",
+        "baseFret": 7,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "M",
+    "name": "Lá Sustenido / Si Bemol Maior",
+    "symbol": "A#",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "m",
+    "name": "Lá Sustenido / Si Bemol Menor",
+    "symbol": "A#m",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "A#",
+    "suffix": "5",
+    "name": "Lá Sustenido / Si Bemol Power Chord",
+    "symbol": "A#5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (8ª Casa)",
+        "baseFret": 8,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (1ª Casa)",
+        "baseFret": 1,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "M",
+    "name": "Si Maior",
+    "symbol": "B",
+    "category": "maior",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          3,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Maior na 6ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          3,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "m",
+    "name": "Si Menor",
+    "symbol": "Bm",
+    "category": "menor",
+    "positions": [
+      {
+        "label": "Pestana 5ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          2,
+          1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          2,
+          1
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Drop Menor na 6ª Corda (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          2,
+          4,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "key": "B",
+    "suffix": "5",
+    "name": "Si Power Chord",
+    "symbol": "B5",
+    "category": "power_chord",
+    "positions": [
+      {
+        "label": "Power Chord 1 Dedo (9ª Casa)",
+        "baseFret": 9,
+        "frets": [
+          1,
+          1,
+          1,
+          -1,
+          -1,
+          -1
+        ],
+        "fingers": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "barres": [
+          1
+        ]
+      },
+      {
+        "label": "Power Chord 5ª Corda (2ª Casa)",
+        "baseFret": 2,
+        "frets": [
+          -1,
+          1,
+          3,
+          3,
+          -1,
+          -1
+        ],
+        "fingers": [
+          0,
+          1,
+          3,
+          4,
+          0,
+          0
+        ],
+        "barres": []
+      }
+    ]
+  }
+]
