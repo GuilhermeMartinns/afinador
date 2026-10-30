@@ -96,25 +96,29 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
   const getFingerCenterY = (relativeFret: number) =>
     padTop + (relativeFret - 0.5) * fretSpacing;
 
+  // Compute barres geometry
+  // Uma pestana só existe se houver pelo menos 2 cordas pressionadas pelo Dedo 1 na mesma casa
   const barresToRender = (position.barres || []).map((barreFret) => {
     const matchingIndices: number[] = [];
     position.frets.forEach((f, idx) => {
-      if (f >= barreFret && position.fingers[idx] === 1) matchingIndices.push(idx);
+      if (f === barreFret && position.fingers[idx] === 1) {
+        matchingIndices.push(idx);
+      }
     });
-    if (matchingIndices.length < 2) {
-      position.frets.forEach((f, idx) => {
-        if (f === barreFret) matchingIndices.push(idx);
-      });
+
+    if (matchingIndices.length >= 2) {
+      const fromIdx = Math.min(...matchingIndices);
+      const toIdx = Math.max(...matchingIndices);
+      const finger = position.fingers[fromIdx] || 1;
+      return {
+        fret: barreFret,
+        fromIdx,
+        toIdx,
+        finger,
+      };
     }
-    const fromIdx = matchingIndices.length ? Math.min(...matchingIndices) : 0;
-    const toIdx = matchingIndices.length ? Math.max(...matchingIndices) : numStrings - 1;
-    return {
-      fret: barreFret,
-      fromIdx,
-      toIdx,
-      finger: position.fingers[fromIdx] || 1,
-    };
-  });
+    return null;
+  }).filter((b): b is NonNullable<typeof b> => b !== null);
 
   const getBadgeText = (detail: StringNoteDetail): string => {
     if (displayMode === 'fingers') return detail.finger > 0 ? String(detail.finger) : '';

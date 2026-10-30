@@ -72,7 +72,7 @@ export const CAVAQUINHO_STANDARD_CHORDS: ChordDefinition[] = [
     symbol: 'Cdim7',
     category: 'outros',
     positions: [
-      { label: 'Formato Simétrico Tradicional', baseFret: 1, frets: [1, 2, 1, 1], fingers: [1, 3, 2, 1], barres: [1] },
+      { label: 'Formato Simétrico Tradicional', baseFret: 1, frets: [1, 2, 1, 1], fingers: [1, 2, 1, 1], barres: [1] },
       { label: 'Formato Invertido Simétrico', baseFret: 1, frets: [1, 2, 4, 1], fingers: [1, 2, 4, 1], barres: [] }
     ]
   },
@@ -85,7 +85,7 @@ export const CAVAQUINHO_STANDARD_CHORDS: ChordDefinition[] = [
     symbol: 'C#',
     category: 'maior',
     positions: [
-      { label: 'Formato Pestana 1ª Casa', baseFret: 1, frets: [3, 1, 2, 3], fingers: [2, 1, 1, 3], barres: [1] },
+      { label: 'Formato Fechado 1ª Casa', baseFret: 1, frets: [3, 1, 2, 3], fingers: [3, 1, 2, 4], barres: [] },
       { label: 'Formato Pestana 6ª Casa', baseFret: 6, frets: [1, 1, 1, 1], fingers: [1, 1, 1, 1], barres: [1] }
     ]
   },

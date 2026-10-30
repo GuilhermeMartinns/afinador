@@ -84,29 +84,31 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
   };
 
   // Compute barres geometry
+  // Uma pestana só existe entre cordas que efetivamente utilizam o dedo 1 na casa da pestana
   const barresToRender = (position.barres || []).map((barreFret) => {
     const matchingIndices: number[] = [];
     position.frets.forEach((f, idx) => {
-      if (f >= barreFret && position.fingers[idx] === 1) {
+      // Apenas cordas onde o dedo 1 está apertando aquela casa exata da pestana
+      if (f === barreFret && position.fingers[idx] === 1) {
         matchingIndices.push(idx);
       }
     });
-    // Fallback if barre uses another finger or all frets equal barreFret
-    if (matchingIndices.length < 2) {
-      position.frets.forEach((f, idx) => {
-        if (f === barreFret) matchingIndices.push(idx);
-      });
+
+    // Se houver pelo menos 2 cordas pressionadas pelo dedo 1 na mesma casa, forma-se a pestana
+    if (matchingIndices.length >= 2) {
+      const fromIdx = Math.min(...matchingIndices);
+      const toIdx = Math.max(...matchingIndices);
+      const finger = position.fingers[fromIdx] || 1;
+      return {
+        fret: barreFret,
+        fromIdx,
+        toIdx,
+        finger,
+      };
     }
-    const fromIdx = matchingIndices.length ? Math.min(...matchingIndices) : 0;
-    const toIdx = matchingIndices.length ? Math.max(...matchingIndices) : numStrings - 1;
-    const finger = position.fingers[fromIdx] || 1;
-    return {
-      fret: barreFret,
-      fromIdx,
-      toIdx,
-      finger,
-    };
-  });
+
+    return null;
+  }).filter((b): b is NonNullable<typeof b> => b !== null);
 
   const getBadgeText = (detail: StringNoteDetail): string => {
     if (displayMode === 'fingers') {
