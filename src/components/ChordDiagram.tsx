@@ -538,14 +538,14 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
               onClick={() => handlePluckString(idx)}
               className="cursor-pointer"
             >
-              {/* String Number + Open Tuning Note */}
+              {/* String Tuning Note (ex: E, A, D, G, B, E) */}
               <text
                 x={x}
                 y={bottomY}
                 textAnchor="middle"
-                className="fill-gray-500 font-mono text-[10px] font-semibold"
+                className="fill-gray-400 font-mono text-[11px] font-bold"
               >
-                {detail.stringNumber}ª({detail.openNoteName})
+                {detail.openNoteName}
               </text>
 
               {/* Resulting Sounding Note */}

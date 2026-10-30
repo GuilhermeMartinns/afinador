@@ -312,21 +312,17 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 <Circle
                   cx={cx}
                   cy={cy}
-                  r={12}
                   r={dotRadius}
                   fill={detail.isRoot ? 'url(#rootDotGrad)' : 'url(#normalDotGrad)'}
                 />
                 <SvgText
                   x={cx}
-                  y={cy + 4}
                   y={cy + (fontSize > 18 ? 7.5 : 5.5)}
                   fill="#ffffff"
-                  fontSize="10"
                   fontSize={fontSize}
                   fontWeight="bold"
                   textAnchor="middle"
                 >
-                  {getBadgeText(detail)}
                   {badgeText}
                 </SvgText>
               </G>

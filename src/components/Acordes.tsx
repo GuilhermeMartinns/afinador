@@ -769,12 +769,12 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                           >
                             <div className="flex items-center gap-3">
                               {/* Cápsula sutil em cinza fosco da corda */}
-                              <div className={`w-12 py-1 rounded-full text-center font-mono text-[11px] font-medium shrink-0 ${
+                              <div className={`w-8 py-1 rounded-full text-center font-mono text-[11px] font-bold shrink-0 ${
                                 detail.isBass && !detail.isRoot
                                   ? 'bg-amber-500/15 text-amber-300 border border-amber-500/20'
                                   : 'bg-white/[0.07] text-gray-300 border border-white/[0.05]'
                               }`}>
-                                {detail.stringNumber}ª({detail.openNoteName})
+                                {detail.openNoteName}
                               </div>
 
                               {/* Explicação de Dedo e Casa */}
