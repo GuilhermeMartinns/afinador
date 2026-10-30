@@ -266,9 +266,8 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 x={26}
                 y={y + 4}
                 textAnchor="middle"
-                className={`font-mono text-[11px] font-bold ${
-                  isBaseHighlight ? 'fill-[#27ca55]' : 'fill-gray-500'
-                }`}
+                className={`font-mono text-[11px] font-bold ${isBaseHighlight ? 'fill-[#27ca55]' : 'fill-gray-500'
+                  }`}
               >
                 {actualFret}ª
               </text>
@@ -309,10 +308,10 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   isPlucked
                     ? '#27ca55'
                     : isMuted
-                    ? '#334155'
-                    : idx < 3
-                    ? '#94a3b8'
-                    : '#cbd5e1'
+                      ? '#334155'
+                      : idx < 3
+                        ? '#94a3b8'
+                        : '#cbd5e1'
                 }
                 strokeWidth={isPlucked ? strokeWidth + 1.2 : strokeWidth}
                 strokeDasharray={isMuted ? '4 3' : undefined}
@@ -360,15 +359,15 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                       detail.isRoot
                         ? 'rgba(39, 202, 85, 0.18)'
                         : isOpenBass
-                        ? 'rgba(245, 158, 11, 0.22)'
-                        : '#0f172a'
+                          ? 'rgba(245, 158, 11, 0.22)'
+                          : '#0f172a'
                     }
                     stroke={
                       detail.isRoot
                         ? '#27ca55'
                         : isOpenBass
-                        ? '#f59e0b'
-                        : '#94a3b8'
+                          ? '#f59e0b'
+                          : '#94a3b8'
                     }
                     strokeWidth={isOpenBass ? 2.2 : 2}
                   />
@@ -376,13 +375,12 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                     x={x}
                     y={markerY + 3.5}
                     textAnchor="middle"
-                    className={`font-mono font-bold text-[10px] ${
-                      detail.isRoot
-                        ? 'fill-[#27ca55]'
-                        : isOpenBass
+                    className={`font-mono font-bold text-[10px] ${detail.isRoot
+                      ? 'fill-[#27ca55]'
+                      : isOpenBass
                         ? 'fill-[#f59e0b]'
                         : 'fill-gray-200'
-                    }`}
+                      }`}
                   >
                     {showInside ? getBadgeText(detail) : '0'}
                   </text>
@@ -437,30 +435,21 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 <circle
                   cx={cx}
                   cy={cy}
-                  r={13.5}
+                  r={18.5}
                   fill={
                     detail.isRoot
                       ? 'url(#rootDotGrad)'
                       : detail.isBass
-                      ? 'url(#bassDotGrad)'
-                      : 'url(#normalDotGrad)'
+                        ? 'url(#bassDotGrad)'
+                        : 'url(#normalDotGrad)'
                   }
-                  stroke={
-                    detail.isRoot
-                      ? '#bbf7d0'
-                      : detail.isBass
-                      ? '#fef08a'
-                      : '#bae6fd'
-                  }
-                  strokeWidth={detail.isRoot || detail.isBass ? 2 : 1.2}
                 />
                 <text
                   x={cx}
-                  y={cy + 4}
+                  y={cy + 4.5}
                   textAnchor="middle"
-                  className={`font-bold text-[11px] ${
-                    detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
-                  }`}
+                  className={`font-bold text-[34x] ${detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
+                    }`}
                 >
                   {label}
                 </text>
@@ -529,21 +518,20 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   x={x}
                   y={bottomY + 18}
                   textAnchor="middle"
-                  className={`font-mono text-[11px] font-bold ${
-                    detail.status === 'muted'
-                      ? 'fill-gray-700'
-                      : detail.isRoot
+                  className={`font-mono text-[11px] font-bold ${detail.status === 'muted'
+                    ? 'fill-gray-700'
+                    : detail.isRoot
                       ? 'fill-[#27ca55]'
                       : detail.isBass
-                      ? 'fill-amber-400'
-                      : 'fill-sky-400'
-                  }`}
+                        ? 'fill-amber-400'
+                        : 'fill-sky-400'
+                    }`}
                 >
                   {detail.status === 'muted'
                     ? '—'
                     : detail.isBass && !detail.isRoot
-                    ? `${detail.noteName}/B`
-                    : detail.noteName}
+                      ? `${detail.noteName}/B`
+                      : detail.noteName}
                 </text>
               )}
             </g>
