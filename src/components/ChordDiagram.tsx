@@ -401,36 +401,34 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             const x2 = getInterpolatedStringX(barre.toIdx, cy);
             const minX = Math.min(x1, x2);
             const maxX = Math.max(x1, x2);
-            const barHeight = 22;
+            const dotRadius = 18;
+            const barHeight = dotRadius * 2;
 
             return (
               <g key={`barre-${bIdx}`} filter="url(#dotGlow)">
                 {/* Corpo contínuo e elegante da pestana */}
                 <rect
-                  x={minX - 12}
-                  y={cy - barHeight / 2}
-                  width={maxX - minX + 24}
+                  x={minX - dotRadius}
+                  y={cy - dotRadius}
+                  width={maxX - minX + dotRadius * 2}
                   height={barHeight}
-                  rx={barHeight / 2}
+                  rx={dotRadius}
                   fill="url(#normalDotGrad)"
-                  stroke="#38bdf8"
-                  strokeWidth={1.5}
                   opacity={0.95}
                 />
                 {/* Rótulo do Dedo no início da pestana (lado grave) */}
                 <circle
                   cx={minX}
                   cy={cy}
-                  r={8.5}
+                  r={dotRadius}
                   fill="#0369a1"
-                  stroke="#38bdf8"
-                  strokeWidth={1}
                 />
                 <text
                   x={minX}
-                  y={cy + 3.5}
+                  y={cy + 10}
                   textAnchor="middle"
-                  className="font-bold text-[10px] fill-white"
+                  style={{ fontSize: '28px' }}
+                  className="font-bold fill-white"
                 >
                   {barre.finger || 1}
                 </text>
@@ -456,6 +454,10 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             const cy = getFingerCenterY(detail.relativeFret);
             const cx = getInterpolatedStringX(idx, cy);
             const label = getBadgeText(detail);
+            const dotRadius = 18;
+            // Diâmetro = 36px. 80% da altura dos dots = ~28.8px para números/dígito único.
+            // Para rótulos com 2 ou mais caracteres (notas/intervalos como C#, b5), ajustamos proporcionalmente.
+            const fontSize = label.length > 2 ? 18 : label.length === 2 ? 22 : 28;
 
             return (
               <g
@@ -467,7 +469,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 <circle
                   cx={cx}
                   cy={cy}
-                  r={15}
+                  r={dotRadius}
                   fill={
                     detail.isRoot
                       ? 'url(#rootDotGrad)'
@@ -475,14 +477,13 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                         ? 'url(#bassDotGrad)'
                         : 'url(#normalDotGrad)'
                   }
-                  stroke={detail.isRoot ? '#4ade80' : '#7dd3fc'}
-                  strokeWidth={1.2}
                 />
                 <text
                   x={cx}
-                  y={cy + 4}
+                  y={cy + (fontSize >= 28 ? 10 : fontSize >= 22 ? 8 : 6.5)}
                   textAnchor="middle"
-                  className={`font-bold text-[12px] ${
+                  style={{ fontSize: `${fontSize}px` }}
+                  className={`font-bold ${
                     detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
                   }`}
                 >

@@ -214,6 +214,8 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
           const minX = Math.min(x1, x2);
           const maxX = Math.max(x1, x2);
           const barHeight = 22;
+          const dotRadius = 14;
+          const barHeight = dotRadius * 2;
 
           return (
             <G key={`barre-${i}`}>
@@ -221,8 +223,12 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 x={minX - 12}
                 y={y - barHeight / 2}
                 width={maxX - minX + 24}
+                x={minX - dotRadius}
+                y={y - dotRadius}
+                width={maxX - minX + dotRadius * 2}
                 height={barHeight}
                 rx={barHeight / 2}
+                rx={dotRadius}
                 fill="url(#normalDotGrad)"
                 stroke="#38bdf8"
                 strokeWidth={1.5}
@@ -232,6 +238,7 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
                 cx={minX}
                 cy={y}
                 r={8.5}
+                r={dotRadius}
                 fill="#0369a1"
                 stroke="#38bdf8"
                 strokeWidth={1}
@@ -239,8 +246,10 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
               <SvgText
                 x={minX}
                 y={y + 3.5}
+                y={y + 7.5}
                 fill="#ffffff"
                 fontSize="10"
+                fontSize="22"
                 fontWeight="bold"
                 textAnchor="middle"
               >
@@ -293,23 +302,32 @@ export const ChordDiagram: React.FC<ChordDiagramProps> = ({
 
             if (isBarreCovered && detail.finger === 1) return null;
 
+            const dotRadius = 14;
+            const badgeText = getBadgeText(detail);
+            // 80% do diâmetro dos dots (28px * 0.8 ≈ 22.4px) para dedos/caracteres únicos
+            const fontSize = badgeText.length > 2 ? 14 : badgeText.length === 2 ? 17 : 22;
+
             return (
               <G key={`dot-${sIdx}`} onPress={() => onPluckString?.(sIdx)}>
                 <Circle
                   cx={cx}
                   cy={cy}
                   r={12}
+                  r={dotRadius}
                   fill={detail.isRoot ? 'url(#rootDotGrad)' : 'url(#normalDotGrad)'}
                 />
                 <SvgText
                   x={cx}
                   y={cy + 4}
+                  y={cy + (fontSize > 18 ? 7.5 : 5.5)}
                   fill="#ffffff"
                   fontSize="10"
+                  fontSize={fontSize}
                   fontWeight="bold"
                   textAnchor="middle"
                 >
                   {getBadgeText(detail)}
+                  {badgeText}
                 </SvgText>
               </G>
             );
