@@ -37,10 +37,38 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
   const gridWidth = width - padLeft - padRight;
   const gridHeight = height - padTop - padBottom;
 
-  const stringSpacing = gridWidth / (numStrings - 1);
+  // Trapezoidal neck taper (braço ligeiramente mais largo na base que no topo)
+  // taperRatio = expansão lateral em cada borda na base do braço (ex: 8px)
+  const taper = 8;
+  const topPadLeft = padLeft + taper;
+  const topGridWidth = gridWidth - taper * 2;
+  const bottomPadLeft = padLeft - taper;
+  const bottomGridWidth = gridWidth + taper * 2;
+
+  const topStringSpacing = topGridWidth / (numStrings - 1);
+  const bottomStringSpacing = bottomGridWidth / (numStrings - 1);
   const fretSpacing = gridHeight / numFrets;
 
-  const getStringX = (stringIdx: number) => padLeft + stringIdx * stringSpacing;
+  // Linear interpolation function for X position at any given Y
+  const getInterpolatedStringX = (stringIdx: number, y: number) => {
+    const topX = topPadLeft + stringIdx * topStringSpacing;
+    const bottomX = bottomPadLeft + stringIdx * bottomStringSpacing;
+    const progress = Math.max(0, Math.min(1, (y - padTop) / gridHeight));
+    return topX + (bottomX - topX) * progress;
+  };
+
+  const getFretLeftX = (y: number) => {
+    const progress = Math.max(0, Math.min(1, (y - padTop) / gridHeight));
+    return topPadLeft + (bottomPadLeft - topPadLeft) * progress;
+  };
+
+  const getFretRightX = (y: number) => {
+    const progress = Math.max(0, Math.min(1, (y - padTop) / gridHeight));
+    const topX = topPadLeft + topGridWidth;
+    const bottomX = bottomPadLeft + bottomGridWidth;
+    return topX + (bottomX - topX) * progress;
+  };
+
   const getFretY = (fretIdx: number) => padTop + fretIdx * fretSpacing;
   const getFingerCenterY = (relativeFret: number) =>
     padTop + (relativeFret - 0.5) * fretSpacing;
@@ -120,13 +148,9 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           </filter>
         </defs>
 
-        {/* Fretboard Background */}
-        <rect
-          x={padLeft}
-          y={padTop}
-          width={gridWidth}
-          height={gridHeight}
-          rx={4}
+        {/* Fretboard Background (Trapezoidal Neck) */}
+        <polygon
+          points={`${topPadLeft},${padTop} ${topPadLeft + topGridWidth},${padTop} ${bottomPadLeft + bottomGridWidth},${padTop + gridHeight} ${bottomPadLeft},${padTop + gridHeight}`}
           fill="url(#fretboardGrad)"
         />
 
@@ -136,12 +160,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           const actualFret = position.baseFret + relFret - 1;
           const singleDotFrets = [3, 5, 7, 9, 15, 17];
           const cy = getFingerCenterY(relFret);
+          const leftX = getFretLeftX(cy);
+          const rightX = getFretRightX(cy);
+          const midX = (leftX + rightX) / 2;
+          const curWidth = rightX - leftX;
 
           if (singleDotFrets.includes(actualFret)) {
             return (
               <circle
                 key={`inlay-${relFret}`}
-                cx={padLeft + gridWidth / 2}
+                cx={midX}
                 cy={cy}
                 r={4.5}
                 fill="#ffffff"
@@ -152,8 +180,8 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           if (actualFret === 12) {
             return (
               <g key={`inlay-${relFret}`} opacity={0.09}>
-                <circle cx={padLeft + gridWidth * 0.3} cy={cy} r={4} fill="#ffffff" />
-                <circle cx={padLeft + gridWidth * 0.7} cy={cy} r={4} fill="#ffffff" />
+                <circle cx={leftX + curWidth * 0.3} cy={cy} r={4} fill="#ffffff" />
+                <circle cx={leftX + curWidth * 0.7} cy={cy} r={4} fill="#ffffff" />
               </g>
             );
           }
@@ -164,12 +192,14 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
         {Array.from({ length: numFrets + 1 }, (_, fretIdx) => {
           const y = getFretY(fretIdx);
           const isTopNut = fretIdx === 0 && position.baseFret === 1;
+          const x1 = getFretLeftX(y);
+          const x2 = getFretRightX(y);
           return (
             <line
               key={`fret-${fretIdx}`}
-              x1={padLeft}
+              x1={x1}
               y1={y}
-              x2={padLeft + gridWidth}
+              x2={x2}
               y2={y}
               stroke={isTopNut ? '#e2e8f0' : '#334155'}
               strokeWidth={isTopNut ? 6 : 2}
@@ -214,9 +244,10 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Vertical Strings (Cordas) - from 6th (thickest) to 1st (thinnest) */}
+        {/* Vertical Strings (Cordas com afunilamento trapezoidal suave) */}
         {stringDetails.map((detail, idx) => {
-          const x = getStringX(idx);
+          const topX = getInterpolatedStringX(idx, padTop);
+          const bottomX = getInterpolatedStringX(idx, padTop + gridHeight);
           const isPlucked = pluckedStringIdx === idx;
           const isMuted = detail.status === 'muted';
           // String gauge thickness from 6th string (2.6px) to 1st string (1.1px)
@@ -230,17 +261,17 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             >
               {/* Invisible wider hit area for easy touch/click */}
               <line
-                x1={x}
+                x1={topX}
                 y1={padTop - 25}
-                x2={x}
+                x2={bottomX}
                 y2={padTop + gridHeight + 25}
                 stroke="transparent"
                 strokeWidth={24}
               />
               <line
-                x1={x}
+                x1={topX}
                 y1={padTop}
-                x2={x}
+                x2={bottomX}
                 y2={padTop + gridHeight}
                 stroke={
                   isPlucked
@@ -262,7 +293,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
         {/* Top Markers: Muted (X) or Open (O) Strings */}
         {!hidePositions &&
           stringDetails.map((detail, idx) => {
-            const x = getStringX(idx);
+            const x = getInterpolatedStringX(idx, padTop);
             const markerY = padTop - 22;
 
             if (detail.status === 'muted') {
@@ -333,9 +364,9 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
         {/* Barres (Pestanas) */}
         {!hidePositions &&
           barresToRender.map((barre, bIdx) => {
-            const x1 = getStringX(barre.fromIdx);
-            const x2 = getStringX(barre.toIdx);
             const cy = getFingerCenterY(barre.fret);
+            const x1 = getInterpolatedStringX(barre.fromIdx, cy);
+            const x2 = getInterpolatedStringX(barre.toIdx, cy);
             const barHeight = 22;
 
             return (
@@ -360,8 +391,8 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           stringDetails.map((detail, idx) => {
             if (detail.status !== 'fretted') return null;
 
-            const cx = getStringX(idx);
             const cy = getFingerCenterY(detail.relativeFret);
+            const cx = getInterpolatedStringX(idx, cy);
             const label = getBadgeText(detail);
 
             return (
@@ -441,7 +472,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
 
         {/* Bottom String Labels: Tuning + Played Note */}
         {stringDetails.map((detail, idx) => {
-          const x = getStringX(idx);
+          const x = getInterpolatedStringX(idx, padTop + gridHeight);
           const bottomY = padTop + gridHeight + 22;
 
           return (
