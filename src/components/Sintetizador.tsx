@@ -374,7 +374,14 @@ const Sintetizador: React.FC = () => {
         </button>
 
         <button onClick={() => setShowKeyboard(!showKeyboard)} className={`px-4 py-2 rounded-xl font-bold text-sm transition-all border-2 flex items-center gap-2 ${showKeyboard ? 'bg-gray-700 text-white border-gray-500' : 'bg-transparent text-gray-400 border-gray-600 hover:border-gray-400'}`}>
-          🎹 {showKeyboard ? 'Esconder Teclado' : 'Mostrar Teclado'}
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <path d="M6 5v8" />
+            <path d="M10 5v8" />
+            <path d="M14 5v8" />
+            <path d="M18 5v8" />
+          </svg>
+          <span>{showKeyboard ? 'Esconder Teclado' : 'Mostrar Teclado'}</span>
         </button>
 
         <button
@@ -450,8 +457,14 @@ const Sintetizador: React.FC = () => {
         {layer3Enabled && !isLandscapeCompact && (
           <div className="flex flex-col gap-2 sm:gap-3 bg-[#f59e0b]/10 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#f59e0b]/30 animate-fade-in w-full landscape-phone-hide">
             <div className="flex justify-between items-center">
-              <span className="text-white font-bold text-sm truncate">
-                🎸 Auxiliar: <span className="text-[#f59e0b] font-mono text-xs ml-1">Baixo (Split)</span>
+              <span className="text-white font-bold text-sm truncate flex items-center gap-1.5">
+                <svg className="w-4 h-4 text-[#f59e0b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                </svg>
+                <span>Auxiliar:</span>
+                <span className="text-[#f59e0b] font-mono text-xs">Baixo (Split)</span>
               </span>
             </div>
             <div className="flex justify-between items-center bg-gray-900/60 p-2 rounded-lg">

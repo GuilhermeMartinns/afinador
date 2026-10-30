@@ -446,7 +446,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
 
               {/* Paginação de Shapes (CAGED / Variações) */}
               {activeChord.positions.length > 1 && (
-                <div className="flex items-center gap-1 bg-gray-900 px-2 py-1 rounded-xl border border-gray-800">
+                <div className="flex items-center gap-1 bg-white/[0.06] px-2 py-1 rounded-full border border-white/[0.08]">
                   <button
                     onClick={() =>
                       setSelectedPositionIndex((prev) =>
@@ -455,8 +455,11 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                     }
                     className="p-1 text-gray-400 hover:text-white transition-colors"
                     title="Formato Anterior"
+                    aria-label="Formato Anterior"
                   >
-                    ◀
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
                   </button>
                   <span className="text-[11px] font-mono font-bold text-gray-300 px-1">
                     {selectedPositionIndex + 1}/{activeChord.positions.length}
@@ -469,8 +472,11 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                     }
                     className="p-1 text-gray-400 hover:text-white transition-colors"
                     title="Próximo Formato"
+                    aria-label="Próximo Formato"
                   >
-                    ▶
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
                   </button>
                 </div>
               )}
