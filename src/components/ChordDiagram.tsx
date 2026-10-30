@@ -492,41 +492,31 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           </g>
         )}
 
-        {/* Bottom String Labels: Tuning + Played Note */}
-        {stringDetails.map((detail, idx) => {
-          const x = getInterpolatedStringX(idx, padTop + gridHeight);
-          const bottomY = padTop + gridHeight + 22;
+        {/* Bottom String Labels: Played Note */}
+        {!hidePositions &&
+          stringDetails.map((detail, idx) => {
+            const x = getInterpolatedStringX(idx, padTop + gridHeight);
+            const bottomY = padTop + gridHeight + 20;
 
-          return (
-            <g
-              key={`bottom-label-${idx}`}
-              onClick={() => handlePluckString(idx)}
-              className="cursor-pointer"
-            >
-              {/* String Tuning Note (ex: E, A, D, G, B, E) */}
-              <text
-                x={x}
-                y={bottomY}
-                textAnchor="middle"
-                className="fill-gray-400 font-mono text-[11px] font-bold"
+            return (
+              <g
+                key={`bottom-label-${idx}`}
+                onClick={() => handlePluckString(idx)}
+                className="cursor-pointer select-none"
               >
-                {detail.openNoteName}
-              </text>
-
-              {/* Resulting Sounding Note */}
-              {!hidePositions && (
                 <text
                   x={x}
-                  y={bottomY + 18}
+                  y={bottomY}
                   textAnchor="middle"
-                  className={`font-mono text-[11px] font-bold ${detail.status === 'muted'
-                    ? 'fill-gray-700'
-                    : detail.isRoot
-                      ? 'fill-[#27ca55]'
-                      : detail.isBass
-                        ? 'fill-amber-400'
-                        : 'fill-sky-400'
-                    }`}
+                  className={`font-mono text-[12px] font-bold ${
+                    detail.status === 'muted'
+                      ? 'fill-gray-600'
+                      : detail.isRoot
+                        ? 'fill-[#27ca55]'
+                        : detail.isBass
+                          ? 'fill-amber-400'
+                          : 'fill-sky-400'
+                  }`}
                 >
                   {detail.status === 'muted'
                     ? '—'
@@ -534,36 +524,35 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                       ? `${detail.noteName}/B`
                       : detail.noteName}
                 </text>
-              )}
-            </g>
-          );
-        })}
+              </g>
+            );
+          })}
       </svg>
 
-      {/* Legend */}
-      <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] text-gray-400 mt-1">
+      {/* Legend - Linha única compacta e elegante */}
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-gray-400 mt-0.5">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-[#27ca55] inline-block border border-green-200"></span>
-          <span>Tônica (Raiz)</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#27ca55] inline-block"></span>
+          <span>Tônica</span>
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-amber-500 inline-block border border-amber-200"></span>
-          <span>Baixo (/)</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+          <span>Baixo</span>
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-sky-500 inline-block border border-sky-200"></span>
-          <span>Notas do Acorde</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-sky-500 inline-block"></span>
+          <span>Acorde</span>
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-white inline-block"></span>
+          <span className="w-2 h-2 rounded-full bg-white inline-block"></span>
           <span>Tocada</span>
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full border-2 border-white inline-block"></span>
+          <span className="w-2 h-2 rounded-full border border-white inline-block"></span>
           <span>Solta</span>
         </span>
         <span className="flex items-center gap-1">
-          <span className="text-white font-bold text-xs">✕</span>
+          <span className="text-white font-bold text-xs leading-none">✕</span>
           <span>Abafada</span>
         </span>
       </div>
