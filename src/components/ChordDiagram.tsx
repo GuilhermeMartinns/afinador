@@ -242,40 +242,30 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           );
         })}
 
-        {/* Fret Numbers on the Left (Indicador de Casas) */}
-        {Array.from({ length: numFrets }, (_, i) => {
-          const relFret = i + 1;
-          const actualFret = position.baseFret + relFret - 1;
-          const y = getFingerCenterY(relFret);
-          const isBaseHighlight = i === 0 && position.baseFret > 1;
-
-          return (
-            <g key={`fret-label-${relFret}`}>
-              {isBaseHighlight && (
-                <rect
-                  x={8}
-                  y={y - 11}
-                  width={36}
-                  height={22}
-                  rx={6}
-                  fill="#27ca55"
-                  fillOpacity={0.16}
-                  stroke="#27ca55"
-                  strokeOpacity={0.5}
-                />
-              )}
-              <text
-                x={26}
-                y={y + 4}
-                textAnchor="middle"
-                className={`font-mono text-[11px] font-bold ${isBaseHighlight ? 'fill-[#27ca55]' : 'fill-gray-500'
-                  }`}
-              >
-                {actualFret}ª
-              </text>
-            </g>
-          );
-        })}
+        {/* Fret Number on the Left (Mostra apenas a primeira casa do acorde se baseFret > 1) */}
+        {position.baseFret > 1 && (
+          <g key="base-fret-label">
+            <rect
+              x={8}
+              y={getFingerCenterY(1) - 11}
+              width={36}
+              height={22}
+              rx={6}
+              fill="#27ca55"
+              fillOpacity={0.16}
+              stroke="#27ca55"
+              strokeOpacity={0.5}
+            />
+            <text
+              x={26}
+              y={getFingerCenterY(1) + 4}
+              textAnchor="middle"
+              className="font-mono text-[11px] font-bold fill-[#27ca55]"
+            >
+              {position.baseFret}ª
+            </text>
+          </g>
+        )}
 
         {/* Vertical Strings (Cordas com afunilamento trapezoidal suave) */}
         {stringDetails.map((detail, idx) => {
@@ -483,9 +473,8 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   y={cy + (fontSize >= 28 ? 10 : fontSize >= 22 ? 8 : 6.5)}
                   textAnchor="middle"
                   style={{ fontSize: `${fontSize}px` }}
-                  className={`font-bold ${
-                    detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
-                  }`}
+                  className={`font-bold ${detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
+                    }`}
                 >
                   {label}
                 </text>
