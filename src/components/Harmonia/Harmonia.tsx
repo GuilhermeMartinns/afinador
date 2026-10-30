@@ -3,6 +3,7 @@ import CircleOfFifths from './CircleOfFifths';
 import HarmonicFieldTable from './HarmonicFieldTable';
 import GreekModesVisualizer from './GreekModesVisualizer';
 import ChordProgressions from './ChordProgressions';
+import { TheoryInsight } from './TheoryInsight';
 import { formatNoteName } from '../../utils/ChordHelpers';
 
 interface HarmoniaProps {
@@ -145,6 +146,9 @@ const Harmonia: React.FC<HarmoniaProps> = ({ isFlatNote = false }) => {
           <ChordProgressions rootKey={selectedKey} isFlatNote={isFlatNote} />
         )}
       </div>
+
+      {/* Cartão Didático de Teoria Harmônica e Cadências */}
+      <TheoryInsight chordKey={selectedKey} chordSuffix="M" isFlatNote={isFlatNote} />
     </div>
   );
 };

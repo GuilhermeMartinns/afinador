@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { INSTRUMENTS_METADATA, loadChordsForTuning, InstrumentMetadata, TuningMetadata } from '../data/chords';
 import ChordDiagram, { DiagramDisplayMode } from './ChordDiagram';
 import KeyboardDiagram from './KeyboardDiagram';
+import { TheoryInsight } from './Harmonia/TheoryInsight';
 import { soundFontAudio } from '../utils/SoundFontManager';
 import {
   ChordDefinition,
@@ -664,6 +665,13 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 <span>Arpejar</span>
               </button>
             </div>
+
+            {/* Dica Didática e Retrátil de Teoria Harmônica */}
+            <TheoryInsight
+              chordKey={activeChord.key}
+              chordSuffix={activeChord.suffix}
+              isFlatNote={isFlatNote}
+            />
           </div>
 
           {/* COLUNA DIREITA: Posição Detalhada de Cada Dedo */}
