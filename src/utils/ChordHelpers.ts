@@ -27,8 +27,9 @@ export interface ChordDefinition {
   key: string;       // Root note in sharp notation, e.g. "C", "C#", "D", etc.
   suffix: string;    // e.g. "M", "m", "7", "7M", "m7", "sus4", "sus2", "add9", "dim", "5"
   name: string;      // e.g. "Sol Maior"
-  symbol: string;    // e.g. "G", "Gm", "G7"
-  category: 'maior' | 'menor' | 'setima' | 'suspenso' | 'outros';
+  symbol: string;    // e.g. "G", "Gm", "G7", "G/B", "D/F#"
+  category: 'maior' | 'menor' | 'setima' | 'suspenso' | 'invertido' | 'outros';
+  bass?: string;     // Note of the bass in sharp notation, e.g. "B", "F#", "A"
   positions: ChordPosition[];
 }
 
@@ -63,6 +64,7 @@ export interface StringNoteDetail {
   interval: string | null;   // e.g. "T", "3M", "5J"
   intervalFullName: string | null; // e.g. "Tônica (1ª)", "Terça Maior (3M)"
   isRoot: boolean;
+  isBass: boolean;
 }
 
 const SEMITONE_MAP: Record<string, number> = {
@@ -159,12 +161,22 @@ export function formatNoteName(noteKey: string, isFlat: boolean = false): string
 }
 
 /**
- * Formats a chord symbol (e.g. "C#m7" -> "D♭m7" when isFlat is true)
+ * Formats a chord symbol (e.g. "C#m7" -> "D♭m7", or "D/F#" -> "D/F♯" / "D/G♭")
  */
-export function formatChordSymbol(key: string, suffix: string, isFlat: boolean = false): string {
+export function formatChordSymbol(
+  key: string,
+  suffix: string,
+  isFlat: boolean = false,
+  bass?: string
+): string {
   const formattedRoot = formatNoteName(key, isFlat);
   const displaySuffix = suffix === 'M' ? '' : suffix;
-  return `${formattedRoot}${displaySuffix}`;
+  const baseSymbol = `${formattedRoot}${displaySuffix}`;
+  if (bass) {
+    const formattedBass = formatNoteName(bass, isFlat);
+    return `${baseSymbol}/${formattedBass}`;
+  }
+  return baseSymbol;
 }
 
 /**
@@ -178,6 +190,16 @@ export function analyzeChordPosition(
 ): StringNoteDetail[] {
   const totalStrings = tuningStrings.length;
   const rootSemitone = SEMITONE_MAP[chordRootKey] ?? 0;
+
+  // Identify the lowest sounding string (o Baixo do acorde)
+  let lowestSoundingIdx = -1;
+  for (let i = 0; i < totalStrings; i++) {
+    const relFret = position.frets[i] ?? -1;
+    if (relFret >= 0) {
+      lowestSoundingIdx = i;
+      break;
+    }
+  }
 
   return tuningStrings.map((openNoteStr, idx) => {
     const stringNumber = totalStrings - idx; // 6 down to 1 for 6-string guitar
@@ -203,6 +225,7 @@ export function analyzeChordPosition(
         interval: null,
         intervalFullName: null,
         isRoot: false,
+        isBass: false,
       };
     }
 
@@ -227,6 +250,7 @@ export function analyzeChordPosition(
       interval: INTERVAL_SHORT[intervalSemitones] ?? '',
       intervalFullName: INTERVAL_FULL[intervalSemitones] ?? '',
       isRoot: intervalSemitones === 0,
+      isBass: idx === lowestSoundingIdx,
     };
   });
 }

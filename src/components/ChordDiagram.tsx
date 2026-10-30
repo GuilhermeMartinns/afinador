@@ -107,6 +107,10 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             <stop offset="0%" stopColor="#27ca55" />
             <stop offset="100%" stopColor="#16a34a" />
           </linearGradient>
+          <linearGradient id="bassDotGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#d97706" />
+          </linearGradient>
           <linearGradient id="normalDotGrad" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#38bdf8" />
             <stop offset="100%" stopColor="#0284c7" />
@@ -278,6 +282,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
 
             if (detail.status === 'open') {
               const showInside = displayMode !== 'fingers';
+              const isOpenBass = detail.isBass && !detail.isRoot;
               return (
                 <g
                   key={`top-marker-${idx}`}
@@ -288,16 +293,32 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                     cx={x}
                     cy={markerY}
                     r={11}
-                    fill={detail.isRoot ? 'rgba(39, 202, 85, 0.18)' : '#0f172a'}
-                    stroke={detail.isRoot ? '#27ca55' : '#94a3b8'}
-                    strokeWidth={2}
+                    fill={
+                      detail.isRoot
+                        ? 'rgba(39, 202, 85, 0.18)'
+                        : isOpenBass
+                        ? 'rgba(245, 158, 11, 0.22)'
+                        : '#0f172a'
+                    }
+                    stroke={
+                      detail.isRoot
+                        ? '#27ca55'
+                        : isOpenBass
+                        ? '#f59e0b'
+                        : '#94a3b8'
+                    }
+                    strokeWidth={isOpenBass ? 2.2 : 2}
                   />
                   <text
                     x={x}
                     y={markerY + 3.5}
                     textAnchor="middle"
                     className={`font-mono font-bold text-[10px] ${
-                      detail.isRoot ? 'fill-[#27ca55]' : 'fill-gray-200'
+                      detail.isRoot
+                        ? 'fill-[#27ca55]'
+                        : isOpenBass
+                        ? 'fill-[#f59e0b]'
+                        : 'fill-gray-200'
                     }`}
                   >
                     {showInside ? getBadgeText(detail) : '0'}
@@ -354,16 +375,28 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   cx={cx}
                   cy={cy}
                   r={13.5}
-                  fill={detail.isRoot ? 'url(#rootDotGrad)' : 'url(#normalDotGrad)'}
-                  stroke={detail.isRoot ? '#bbf7d0' : '#bae6fd'}
-                  strokeWidth={detail.isRoot ? 2 : 1.2}
+                  fill={
+                    detail.isRoot
+                      ? 'url(#rootDotGrad)'
+                      : detail.isBass
+                      ? 'url(#bassDotGrad)'
+                      : 'url(#normalDotGrad)'
+                  }
+                  stroke={
+                    detail.isRoot
+                      ? '#bbf7d0'
+                      : detail.isBass
+                      ? '#fef08a'
+                      : '#bae6fd'
+                  }
+                  strokeWidth={detail.isRoot || detail.isBass ? 2 : 1.2}
                 />
                 <text
                   x={cx}
                   y={cy + 4}
                   textAnchor="middle"
                   className={`font-bold text-[11px] ${
-                    detail.isRoot ? 'fill-gray-950' : 'fill-white'
+                    detail.isRoot || detail.isBass ? 'fill-gray-950' : 'fill-white'
                   }`}
                 >
                   {label}
@@ -438,10 +471,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                       ? 'fill-gray-700'
                       : detail.isRoot
                       ? 'fill-[#27ca55]'
+                      : detail.isBass
+                      ? 'fill-amber-400'
                       : 'fill-sky-400'
                   }`}
                 >
-                  {detail.status === 'muted' ? '—' : detail.noteName}
+                  {detail.status === 'muted'
+                    ? '—'
+                    : detail.isBass && !detail.isRoot
+                    ? `${detail.noteName}/B`
+                    : detail.noteName}
                 </text>
               )}
             </g>
@@ -450,10 +489,14 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
       </svg>
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-4 text-[11px] text-gray-400 mt-1">
+      <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] text-gray-400 mt-1">
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-[#27ca55] inline-block border border-green-200"></span>
           <span>Tônica (Raiz)</span>
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-full bg-amber-500 inline-block border border-amber-200"></span>
+          <span>Baixo (/)</span>
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-sky-500 inline-block border border-sky-200"></span>

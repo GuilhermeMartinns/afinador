@@ -23,6 +23,7 @@ const CATEGORIES = [
   { id: 'todos', label: 'Todos' },
   { id: 'maior', label: 'Maiores' },
   { id: 'menor', label: 'Menores' },
+  { id: 'invertido', label: 'Invertidos (Baixo /)' },
   { id: 'setima', label: 'Com 7ª' },
   { id: 'suspenso', label: 'Sus / Add9' },
   { id: 'outros', label: 'Power / Dim' },
@@ -231,35 +232,43 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
         </div>
 
         {/* Filtro por Qualidade/Categoria + Pílulas dos Acordes Encontrados */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-2 mt-1 border-t border-gray-800/60">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategorySelect(cat.id)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-colors ${
-                selectedCategory === cat.id
-                  ? 'bg-sky-500/20 text-sky-300 border border-sky-500/50'
-                  : 'bg-gray-800/50 text-gray-400 hover:text-gray-200'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center justify-between gap-1.5 pt-2 mt-1 border-t border-gray-800/60">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => handleCategorySelect(cat.id)}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-colors ${
+                  selectedCategory === cat.id
+                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/50'
+                    : 'bg-gray-800/50 text-gray-400 hover:text-gray-200'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] font-mono text-gray-400">
+            {filteredChords.length} acordes •{' '}
+            {filteredChords.reduce((acc, c) => acc + c.positions.length, 0)} shapes
+          </span>
         </div>
 
         {/* Lista de Acordes Disponíveis no Filtro */}
         {filteredChords.length > 0 ? (
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1.5">
+          <div className="flex flex-wrap items-center gap-1.5 max-h-32 overflow-y-auto pt-1.5 pr-1">
             {filteredChords.map((chord, idx) => {
               const isSelected = activeChord?.symbol === chord.symbol && activeChord?.key === chord.key;
-              const formattedSym = formatChordSymbol(chord.key, chord.suffix, isFlatNote);
+              const formattedSym = formatChordSymbol(chord.key, chord.suffix, isFlatNote, chord.bass);
               return (
                 <button
-                  key={`${chord.key}-${chord.suffix}`}
+                  key={`${chord.key}-${chord.suffix}-${chord.bass || ''}`}
                   onClick={() => handleSelectChord(idx)}
-                  className={`px-3.5 py-1.5 rounded-xl font-mono font-bold text-xs sm:text-sm shrink-0 transition-all border ${
+                  className={`px-3 py-1 rounded-xl font-mono font-bold text-xs shrink-0 transition-all border ${
                     isSelected
                       ? 'bg-[#27ca55]/15 border-[#27ca55] text-[#27ca55] shadow-sm'
+                      : chord.bass
+                      ? 'bg-amber-950/20 border-amber-900/40 text-amber-200 hover:border-amber-700'
                       : 'bg-gray-950/70 border-gray-800 text-gray-300 hover:border-gray-700'
                   }`}
                 >
@@ -294,7 +303,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               <div>
                 <div className="flex items-baseline gap-2">
                   <h2 className="text-2xl sm:text-3xl font-black text-[#27ca55] font-mono tracking-tight">
-                    {formatChordSymbol(activeChord.key, activeChord.suffix, isFlatNote)}
+                    {formatChordSymbol(activeChord.key, activeChord.suffix, isFlatNote, activeChord.bass)}
                   </h2>
                   <span className="text-xs sm:text-sm font-semibold text-gray-300">
                     {activeChord.name}
@@ -458,6 +467,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   {
     chord: activeChord.symbol,
     name: activeChord.name,
+    bass: activeChord.bass || 'Tônica',
     tuning: currentTuning.strings,
     position: {
       label: activePosition.label,
@@ -512,12 +522,18 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                             ? 'bg-gray-900/30 border-gray-800/50 opacity-60'
                             : detail.isRoot
                             ? 'bg-[#27ca55]/10 border-[#27ca55]/40 hover:bg-[#27ca55]/15 cursor-pointer'
+                            : detail.isBass
+                            ? 'bg-amber-500/10 border-amber-500/40 hover:bg-amber-500/15 cursor-pointer'
                             : 'bg-gray-900/70 border-gray-800 hover:border-gray-700 cursor-pointer'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
                           {/* Badge da Corda */}
-                          <span className="w-14 text-center py-1 rounded-lg bg-gray-950 border border-gray-800 font-mono text-[11px] font-bold text-gray-300 shrink-0">
+                          <span className={`w-14 text-center py-1 rounded-lg font-mono text-[11px] font-bold shrink-0 border ${
+                            detail.isBass && !detail.isRoot
+                              ? 'bg-amber-950/40 border-amber-700 text-amber-300'
+                              : 'bg-gray-950 border-gray-800 text-gray-300'
+                          }`}>
                             {detail.stringNumber}ª ({detail.openNoteName})
                           </span>
 
@@ -543,12 +559,19 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                             )}
 
                             {detail.status !== 'muted' && (
-                              <span className="text-[10px] text-gray-400">
-                                Soa a nota{' '}
-                                <strong className="text-gray-200">
-                                  {detail.noteName} ({ptPlayedName})
-                                </strong>{' '}
-                                • {detail.intervalFullName}
+                              <span className="text-[10px] text-gray-400 flex flex-wrap items-center gap-1">
+                                <span>
+                                  Soa a nota{' '}
+                                  <strong className="text-gray-200">
+                                    {detail.noteName} ({ptPlayedName})
+                                  </strong>{' '}
+                                  • {detail.intervalFullName}
+                                </span>
+                                {detail.isBass && !detail.isRoot && (
+                                  <span className="text-amber-400 font-bold px-1.5 py-0.2 bg-amber-500/15 border border-amber-500/30 rounded text-[9px] uppercase tracking-wider">
+                                    Baixo Invertido
+                                  </span>
+                                )}
                               </span>
                             )}
                           </div>
@@ -561,6 +584,8 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                               className={`px-2 py-0.5 rounded-md font-mono text-[11px] font-bold ${
                                 detail.isRoot
                                   ? 'bg-[#27ca55] text-black'
+                                  : detail.isBass
+                                  ? 'bg-amber-500 text-black'
                                   : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
                               }`}
                             >
