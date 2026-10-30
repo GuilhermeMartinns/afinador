@@ -1,4 +1,5 @@
 import { NOTE_NAMES, NOTE_NAMES_FLAT } from './NoteHelpers';
+import { soundFontAudio } from './SoundFontManager';
 
 export interface ChordPosition {
   baseFret: number;
@@ -270,9 +271,23 @@ function getAudioContext(): AudioContext {
 }
 
 /**
- * Synthesizes a warm acoustic guitar string pluck at a given MIDI note
+ * Synthesizes a warm acoustic guitar string pluck at a given MIDI note,
+ * or plays the high-fidelity SoundFont recorded sample if loaded.
  */
 export function playGuitarNote(midiNote: number, delaySeconds: number = 0, duration: number = 2.4): void {
+  // Se o SoundFont HD estiver ativado e carregado, usamos os samples reais gravados
+  if (soundFontAudio.isAvailable()) {
+    if (delaySeconds > 0) {
+      setTimeout(() => {
+        soundFontAudio.playNote(midiNote, 95, duration);
+      }, delaySeconds * 1000);
+    } else {
+      soundFontAudio.playNote(midiNote, 95, duration);
+    }
+    return;
+  }
+
+  // Fallback padrão: Síntese Web Audio rápida instantânea
   try {
     const ctx = getAudioContext();
     const startTime = ctx.currentTime + delaySeconds;

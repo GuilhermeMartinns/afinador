@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { INSTRUMENTS_METADATA, loadChordsForTuning, InstrumentMetadata, TuningMetadata } from '../data/chords';
 import ChordDiagram, { DiagramDisplayMode } from './ChordDiagram';
 import KeyboardDiagram from './KeyboardDiagram';
+import { soundFontAudio } from '../utils/SoundFontManager';
 import {
   ChordDefinition,
   analyzeChordPosition,
@@ -50,6 +51,11 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   const [quizMode, setQuizMode] = useState<boolean>(false);
   const [quizRevealed, setQuizRevealed] = useState<boolean>(false);
   const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
+
+  // SoundFont HD Audio Engine state
+  const [isHdAudioActive, setIsHdAudioActive] = useState<boolean>(() => soundFontAudio.isAvailable());
+  const [isDownloadingHd, setIsDownloadingHd] = useState<boolean>(false);
+  const [downloadProgress, setDownloadProgress] = useState<number>(0);
 
   const currentInstrument = useMemo<InstrumentMetadata>(() => {
     return instruments.find((inst) => inst.id === selectedInstrumentId) || instruments[0];
@@ -181,6 +187,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               const newInstId = e.target.value;
               setLoadingChords(true);
               setSelectedInstrumentId(newInstId);
+              soundFontAudio.setInstrument(newInstId);
               const targetInst = instruments.find((i) => i.id === newInstId);
               if (targetInst && targetInst.tunings.length > 0) {
                 setSelectedTuningId(targetInst.tunings[0].id);
@@ -221,10 +228,47 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
           </select>
         </div>
 
-        {/* Descrição da Afinação */}
+        {/* Descrição da Afinação e Controle de Áudio HD (SoundFont) */}
         {currentTuning && (
-          <div className="sm:col-span-2 flex items-center justify-between gap-2 pt-1 border-t border-gray-800/60 text-[11px] text-gray-400">
+          <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-800/60 text-[11px] text-gray-400">
             <span>{currentTuning.description}</span>
+
+            {/* Alternador de Áudio HD com SoundFont gravado */}
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400 text-[10px]">Timbre:</span>
+              {isDownloadingHd ? (
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.06] text-[10px] text-amber-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                  <span>Baixando HD ({downloadProgress}%)...</span>
+                </div>
+              ) : isHdAudioActive ? (
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#34C759]/15 border border-[#34C759]/30 text-[10px] text-[#34C759] font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]"></span>
+                  <span>Som Real HD Ativo</span>
+                </div>
+              ) : (
+                <button
+                  onClick={async () => {
+                    setIsDownloadingHd(true);
+                    const ok = await soundFontAudio.initOrLoad((pct) => setDownloadProgress(pct));
+                    setIsDownloadingHd(false);
+                    if (ok) {
+                      soundFontAudio.setInstrument(selectedInstrumentId);
+                      setIsHdAudioActive(true);
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.14] text-white text-[10px] font-medium border border-white/[0.08] transition-all active:scale-95"
+                  title="Baixa um banco SoundFont leve (~1.9MB) gravado para ter reprodução idêntica ao instrumento real"
+                >
+                  <svg className="w-3 h-3 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  <span>Baixar Som Real HD (1.9MB)</span>
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -526,7 +570,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               <button
                 onClick={() => {
                   if (selectedInstrumentId === 'teclado') {
-                    activePosition.frets.forEach((midi, idx) => {
+                    activePosition.frets.forEach((midi) => {
                       playGuitarNote(midi, 0, 2.5);
                     });
                   } else {

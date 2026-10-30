@@ -218,7 +218,6 @@ export function calculateMajorHarmonicField(rootKey: string, isFlat: boolean = f
     const noteName = isFlat ? NOTE_NAMES_FLAT[semitone] : NOTE_NAMES[semitone];
 
     const chordSymbol = `${noteName}${info.tetrad === 'M' ? '' : info.tetrad}`;
-    const baseMidi = 60 + semitone; // C4 octave
 
     // Montar as 4 notas da tétrade (1ª, 3ª, 5ª, 7ª)
     const tInterval = scaleSemitones[idx];

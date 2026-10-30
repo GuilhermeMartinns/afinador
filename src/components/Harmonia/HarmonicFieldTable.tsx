@@ -67,7 +67,6 @@ const HarmonicFieldTable: React.FC<HarmonicFieldTableProps> = ({ rootKey, isFlat
 
           const isTonic = deg.functionType === 'tonic';
           const isSub = deg.functionType === 'subdominant';
-          const isDom = deg.functionType === 'dominant';
 
           return (
             <div
