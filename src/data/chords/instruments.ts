@@ -98,10 +98,25 @@ export const INSTRUMENTS_METADATA: InstrumentMetadata[] = [
   },
   {
     id: 'cavaquinho',
-    name: 'Cavaquinho (Em breve)',
+    name: 'Cavaquinho',
     stringsCount: 4,
-    available: false,
-    tunings: [],
+    available: true,
+    tunings: [
+      {
+        id: 'standard',
+        name: 'Standard Tradicional (D G B D)',
+        shortName: 'Standard (D G B D)',
+        description: 'Afinação tradicional brasileira de Cavaquinho (Ré - Sol - Si - Ré) para Samba e Choro.',
+        strings: ['D4', 'G4', 'B4', 'D5'],
+      },
+      {
+        id: 'portugues',
+        name: 'Afinação Antiga / Portuguesa (D G B E)',
+        shortName: 'D G B E',
+        description: 'Afinação idêntica às 4 primeiras cordas do violão, muito usada em chorinho e solo.',
+        strings: ['D4', 'G4', 'B4', 'E5'],
+      },
+    ],
   },
   {
     id: 'viola',

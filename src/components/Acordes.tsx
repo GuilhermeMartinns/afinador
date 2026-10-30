@@ -493,31 +493,43 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
               hidePositions={hideDiagramDots}
             />
 
-            {/* Botões de Ação Sonoros e Quiz */}
-            <div className="w-full flex flex-wrap items-center justify-center gap-2 mt-3 pt-3 border-t border-gray-800/80">
+            {/* Botões de Ação Sonoros e Quiz (Apple-style pill buttons) */}
+            <div className="w-full flex flex-wrap items-center justify-center gap-2.5 mt-3 pt-3 border-t border-white/[0.06]">
               {quizMode && (
                 <button
                   onClick={() => setQuizRevealed(!quizRevealed)}
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition-all shadow-md"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-amber-500/15 hover:bg-amber-500/25 active:scale-[0.98] text-amber-300 font-medium text-xs transition-all border border-amber-500/30"
                 >
-                  {quizRevealed ? 'Ocultar Shape' : 'Revelar Shape'}
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <span>{quizRevealed ? 'Ocultar' : 'Revelar'}</span>
                 </button>
               )}
 
+              {/* Botão Primário: Tocar Acorde */}
               <button
                 onClick={() => playChordStrum(stringDetails, 'strum')}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#27ca55] hover:bg-[#22b34c] active:scale-95 text-black font-bold text-xs transition-all shadow-md shadow-[#27ca55]/20"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-gray-100 active:scale-[0.98] text-gray-950 font-semibold text-xs tracking-tight shadow-sm transition-all"
               >
-                <span>🔊</span>
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M8 5.14v14l11-7-11-7z" />
+                </svg>
                 <span>Tocar Acorde</span>
               </button>
 
+              {/* Botão Secundário: Dedilhar Cordas */}
               <button
                 onClick={() => playChordStrum(stringDetails, 'arpeggio')}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 active:scale-95 text-gray-200 font-semibold text-xs border border-gray-700 transition-all"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.12] active:scale-[0.98] text-gray-200 hover:text-white font-medium text-xs tracking-tight border border-white/[0.08] transition-all"
               >
-                <span>🎵</span>
-                <span>Dedilhar Cordas</span>
+                <svg className="w-3.5 h-3.5 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                </svg>
+                <span>Dedilhar</span>
               </button>
             </div>
           </div>

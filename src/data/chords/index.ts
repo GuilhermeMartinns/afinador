@@ -48,6 +48,9 @@ export async function loadChordsForTuning(
     } else if (instrumentId === 'ukulele') {
       const mod = await import('./ukulele/tunings/standard');
       return (mod.default || mod.UKULELE_STANDARD_CHORDS) as ChordDefinition[];
+    } else if (instrumentId === 'cavaquinho') {
+      const mod = await import('./cavaquinho/tunings/standard');
+      return (mod.default || mod.CAVAQUINHO_STANDARD_CHORDS) as ChordDefinition[];
     }
     return [];
   } catch (error) {
