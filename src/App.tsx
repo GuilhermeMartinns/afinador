@@ -211,8 +211,8 @@ function App() {
           <button
             onClick={() => setAbaAtiva('afinador')}
             className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'afinador'
-                ? 'bg-white text-gray-950 font-semibold shadow-sm'
-                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              ? 'bg-white text-gray-950 font-semibold shadow-sm'
+              : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
               }`}
           >
             Afinador
@@ -220,8 +220,8 @@ function App() {
           <button
             onClick={() => setAbaAtiva('acordes')}
             className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'acordes'
-                ? 'bg-white text-gray-950 font-semibold shadow-sm'
-                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              ? 'bg-white text-gray-950 font-semibold shadow-sm'
+              : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
               }`}
           >
             Acordes
@@ -229,8 +229,8 @@ function App() {
           <button
             onClick={() => setAbaAtiva('harmonia')}
             className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'harmonia'
-                ? 'bg-white text-gray-950 font-semibold shadow-sm'
-                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              ? 'bg-white text-gray-950 font-semibold shadow-sm'
+              : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
               }`}
           >
             Harmonia
@@ -238,8 +238,8 @@ function App() {
           <button
             onClick={() => setAbaAtiva('pads')}
             className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'pads'
-                ? 'bg-white text-gray-950 font-semibold shadow-sm'
-                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              ? 'bg-white text-gray-950 font-semibold shadow-sm'
+              : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
               }`}
           >
             Pads
@@ -247,8 +247,8 @@ function App() {
           <button
             onClick={() => setAbaAtiva('sintetizador')}
             className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'sintetizador'
-                ? 'bg-white text-gray-950 font-semibold shadow-sm'
-                : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              ? 'bg-white text-gray-950 font-semibold shadow-sm'
+              : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
               }`}
           >
             Sintetizador

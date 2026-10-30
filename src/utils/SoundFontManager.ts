@@ -1,37 +1,33 @@
-import { WorkletSynthesizer } from 'spessasynth_lib';
-import processorUrl from 'spessasynth_lib/dist/spessasynth_processor.min.js?url';
+// MIDI-JS SoundFont Audio Engine (Leve, 100% confiável, CDN de alta disponibilidade e cache IndexedDB)
+// Utiliza amostras reais gravadas (amostradas nota por nota em MP3 com volume e sustentação naturais)
 
 const SOUNDFONT_STORAGE_KEY = 'afinador_soundfont_acoustic_guitar';
 
-// MIDI Program numbers correspondentes ao padrão General MIDI:
-// 24: Acoustic Guitar (Nylon)
-// 25: Acoustic Guitar (Steel)
-// 26: Electric Guitar (Jazz)
-// 27: Electric Guitar (Clean)
-// 0: Acoustic Grand Piano
-export const INSTRUMENT_PROGRAM_MAP: Record<string, number> = {
-  violao: 24,        // Nylon
-  guitarra: 27,      // Clean Guitar
-  cavaquinho: 25,    // Steel acústico
-  ukulele: 24,       // Nylon
-  teclado: 0,        // Piano acústico
+export const INSTRUMENT_SOUNDFONT_MAP: Record<string, string> = {
+  violao: 'acoustic_guitar_nylon',
+  guitarra: 'electric_guitar_clean',
+  cavaquinho: 'banjo', // Banjo / Steel pluck clássico
+  ukulele: 'acoustic_guitar_nylon',
+  teclado: 'acoustic_grand_piano',
 };
 
+// URL principal e fallback de alta disponibilidade
+const CDN_URLS = [
+  (name: string) => `https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@gh-pages/FluidR3_GM/${name}-mp3.js`,
+  (name: string) => `https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/FluidR3_GM/${name}-mp3.js`,
+];
+
 class SoundFontManager {
-  private synth: WorkletSynthesizer | null = null;
   private audioCtx: AudioContext | null = null;
   private isLoaded: boolean = false;
   private isLoading: boolean = false;
   private loadProgress: number = 0;
   private currentInstrumentId: string = 'violao';
-
-  // URLs de SoundFonts compactas de alta qualidade em .sf3
-  // 024.sf3 = Acoustic Guitar Nylon (apenas ~1.9 MB compactado em Ogg Vorbis!)
-  // 000.sf3 = Piano GS
-  private soundFontUrl = 'https://soundfonts.pages.dev/GeneralUser_GS_v1.471/024.sf3';
+  private audioBuffers: Map<number, AudioBuffer> = new Map();
+  private base64DataMap: Map<string, Record<string, string>> = new Map();
 
   public isAvailable(): boolean {
-    return this.isLoaded && this.synth !== null;
+    return this.isLoaded && this.audioBuffers.size > 0;
   }
 
   public getIsLoading(): boolean {
@@ -49,7 +45,7 @@ class SoundFontManager {
   public async initOrLoad(
     onProgress?: (percent: number) => void
   ): Promise<boolean> {
-    if (this.isLoaded && this.synth) return true;
+    if (this.isLoaded && this.audioBuffers.size > 0) return true;
     if (this.isLoading) return false;
 
     this.isLoading = true;
@@ -57,7 +53,7 @@ class SoundFontManager {
     onProgress?.(10);
 
     try {
-      // 1. Criar contexto de áudio
+      // 1. Contexto de áudio Web Audio
       const AudioCtx =
         window.AudioContext ||
         (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
@@ -67,29 +63,25 @@ class SoundFontManager {
       this.loadProgress = 25;
       onProgress?.(25);
 
-      // 2. Tentar recuperar de IndexedDB ou fazer download
-      const buffer = await this.fetchSoundFontWithCache((pct) => {
-        const mapped = Math.round(25 + pct * 0.5); // de 25% a 75%
+      // 2. Download ou busca do cache local (IndexedDB)
+      const soundFontName = INSTRUMENT_SOUNDFONT_MAP[this.currentInstrumentId] || 'acoustic_guitar_nylon';
+      const soundFontMap = await this.fetchSoundFontWithCache(soundFontName, (pct) => {
+        const mapped = Math.round(25 + pct * 0.45); // de 25% a 70%
         this.loadProgress = mapped;
         onProgress?.(mapped);
       });
 
-      this.loadProgress = 80;
-      onProgress?.(80);
+      this.base64DataMap.set(soundFontName, soundFontMap);
 
-      // 3. Carregar Worklet e inicializar sintetizador
-      await ctx.audioWorklet.addModule(processorUrl);
-      const synth = new WorkletSynthesizer(ctx);
-      synth.connect(ctx.destination);
+      // 3. Decodificar notas essenciais para AudioBuffer
+      this.loadProgress = 75;
+      onProgress?.(75);
+      await this.decodeSamples(soundFontMap, ctx, (pct) => {
+        const mapped = Math.round(75 + pct * 0.25); // de 75% a 100%
+        this.loadProgress = mapped;
+        onProgress?.(mapped);
+      });
 
-      await synth.soundBankManager.addSoundBank(buffer, 'guitar_bank');
-
-      // Configurar canais
-      synth.controllerChange(0, 11, 127); // Expression
-      synth.controllerChange(0, 7, 120);  // Volume
-      synth.programChange(0, INSTRUMENT_PROGRAM_MAP[this.currentInstrumentId] ?? 24);
-
-      this.synth = synth;
       this.isLoaded = true;
       this.loadProgress = 100;
       onProgress?.(100);
@@ -97,7 +89,7 @@ class SoundFontManager {
       localStorage.setItem(SOUNDFONT_STORAGE_KEY, 'true');
       return true;
     } catch (err) {
-      console.warn('Não foi possível carregar o SoundFont HD:', err);
+      console.warn('Erro ao carregar o SoundFont:', err);
       this.isLoaded = false;
       return false;
     } finally {
@@ -105,57 +97,172 @@ class SoundFontManager {
     }
   }
 
-  public setInstrument(instrumentId: string): void {
+  public async setInstrument(instrumentId: string): Promise<void> {
     this.currentInstrumentId = instrumentId;
-    if (this.synth) {
-      const prog = INSTRUMENT_PROGRAM_MAP[instrumentId] ?? 24;
-      this.synth.programChange(0, prog);
+    if (!this.isLoaded || !this.audioCtx) return;
+
+    const soundFontName = INSTRUMENT_SOUNDFONT_MAP[instrumentId] || 'acoustic_guitar_nylon';
+    let soundFontMap = this.base64DataMap.get(soundFontName);
+
+    if (!soundFontMap) {
+      this.isLoading = true;
+      try {
+        soundFontMap = await this.fetchSoundFontWithCache(soundFontName, () => {});
+        this.base64DataMap.set(soundFontName, soundFontMap);
+        await this.decodeSamples(soundFontMap, this.audioCtx, () => {});
+      } catch (err) {
+        console.warn(`Erro ao trocar para timbre ${instrumentId}:`, err);
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 
-  public playNote(midiNote: number, velocity: number = 95, duration: number = 2.2): void {
-    if (!this.synth || !this.audioCtx) return;
+  public playNote(midiNote: number, velocity: number = 95, duration: number = 2.4): void {
+    if (!this.audioCtx) return;
     if (this.audioCtx.state === 'suspended') {
       this.audioCtx.resume();
     }
 
-    // Tocar nota real gravada
-    this.synth.noteOn(0, midiNote, velocity);
+    const buffer = this.audioBuffers.get(midiNote);
+    if (!buffer) return;
 
-    // Stop após a duração com decaimento suave
-    setTimeout(() => {
-      if (this.synth) {
-        this.synth.noteOff(0, midiNote);
+    const source = this.audioCtx.createBufferSource();
+    source.buffer = buffer;
+
+    const gainNode = this.audioCtx.createGain();
+    const linearGain = (velocity / 127) * 0.9;
+    gainNode.gain.setValueAtTime(linearGain, this.audioCtx.currentTime);
+
+    // Fade-out suave ao fim da duração
+    const stopTime = this.audioCtx.currentTime + duration;
+    gainNode.gain.setValueAtTime(linearGain, stopTime - 0.25);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, stopTime);
+
+    source.connect(gainNode);
+    gainNode.connect(this.audioCtx.destination);
+
+    source.start(this.audioCtx.currentTime);
+    source.stop(stopTime);
+  }
+
+  private async decodeSamples(
+    soundFontMap: Record<string, string>,
+    ctx: AudioContext,
+    onProgress: (pct: number) => void
+  ): Promise<void> {
+    this.audioBuffers.clear();
+    const entries = Object.entries(soundFontMap);
+    const total = entries.length;
+    let decodedCount = 0;
+
+    for (const [noteKey, base64Uri] of entries) {
+      const midiNote = this.noteNameToMidi(noteKey);
+      if (midiNote !== null) {
+        try {
+          const arrayBuffer = this.base64ToArrayBuffer(base64Uri);
+          const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+          this.audioBuffers.set(midiNote, audioBuffer);
+        } catch {
+          // Ignora amostras individuais com falha
+        }
       }
-    }, duration * 1000);
+      decodedCount++;
+      if (decodedCount % 8 === 0 || decodedCount === total) {
+        onProgress(Math.round((decodedCount / total) * 100));
+      }
+    }
+  }
+
+  private noteNameToMidi(noteName: string): number | null {
+    // Ex: "A0", "C4", "Fs3", "Bb2", etc.
+    const regex = /^([A-G])([b#s]?)([0-8])$/;
+    const match = noteName.match(regex);
+    if (!match) return null;
+
+    const letter = match[1];
+    const acc = match[2];
+    const octave = parseInt(match[3], 10);
+
+    const baseOffsets: Record<string, number> = {
+      C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11
+    };
+
+    let semitone = baseOffsets[letter] ?? 0;
+    if (acc === '#' || acc === 's') semitone += 1;
+    if (acc === 'b') semitone -= 1;
+
+    return (octave + 1) * 12 + semitone;
+  }
+
+  private base64ToArrayBuffer(dataUri: string): ArrayBuffer {
+    const base64 = dataUri.split(',')[1] || dataUri;
+    const binary = atob(base64);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes.buffer;
   }
 
   private async fetchSoundFontWithCache(
+    soundFontName: string,
     onProgress: (pct: number) => void
-  ): Promise<ArrayBuffer> {
+  ): Promise<Record<string, string>> {
     const db = await this.openDB();
-    const cached = await this.getFromDB(db, 'acoustic_guitar_sf3');
+    const cached = await this.getFromDB(db, soundFontName);
     if (cached) {
       onProgress(100);
       return cached;
     }
 
-    const response = await fetch(this.soundFontUrl);
-    if (!response.ok) throw new Error(`Falha no download: ${response.status}`);
+    let rawText = '';
+    let success = false;
 
-    const buffer = await response.arrayBuffer();
-    await this.saveToDB(db, 'acoustic_guitar_sf3', buffer);
+    for (const makeUrl of CDN_URLS) {
+      try {
+        const url = makeUrl(soundFontName);
+        const res = await fetch(url);
+        if (res.ok) {
+          rawText = await res.text();
+          success = true;
+          break;
+        }
+      } catch {
+        // Tenta o próximo CDN
+      }
+    }
+
+    if (!success || !rawText) {
+      throw new Error(`Não foi possível baixar os dados do SoundFont (${soundFontName})`);
+    }
+
+    onProgress(60);
+
+    // Extrair o dicionário JSON de dentro do arquivo JS
+    // O arquivo é estruturado como: MIDI.Soundfont.instrument = { "A0": "data:audio/mp3;base64,...", ... }
+    const firstBrace = rawText.indexOf('{');
+    const lastBrace = rawText.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1) {
+      throw new Error('Formato do SoundFont inválido');
+    }
+
+    const jsonStr = rawText.slice(firstBrace, lastBrace + 1);
+    const soundFontMap = JSON.parse(jsonStr) as Record<string, string>;
+
+    await this.saveToDB(db, soundFontName, soundFontMap);
     onProgress(100);
-    return buffer;
+    return soundFontMap;
   }
 
   private openDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('AfinadorSoundFontsDB', 1);
+      const request = indexedDB.open('AfinadorSoundFontsMapDB', 1);
       request.onupgradeneeded = () => {
         const db = request.result;
-        if (!db.objectStoreNames.contains('soundfonts')) {
-          db.createObjectStore('soundfonts');
+        if (!db.objectStoreNames.contains('soundfonts_json')) {
+          db.createObjectStore('soundfonts_json');
         }
       };
       request.onsuccess = () => resolve(request.result);
@@ -163,20 +270,20 @@ class SoundFontManager {
     });
   }
 
-  private getFromDB(db: IDBDatabase, key: string): Promise<ArrayBuffer | null> {
+  private getFromDB(db: IDBDatabase, key: string): Promise<Record<string, string> | null> {
     return new Promise((resolve) => {
-      const tx = db.transaction('soundfonts', 'readonly');
-      const store = tx.objectStore('soundfonts');
+      const tx = db.transaction('soundfonts_json', 'readonly');
+      const store = tx.objectStore('soundfonts_json');
       const req = store.get(key);
       req.onsuccess = () => resolve(req.result || null);
       req.onerror = () => resolve(null);
     });
   }
 
-  private saveToDB(db: IDBDatabase, key: string, data: ArrayBuffer): Promise<void> {
+  private saveToDB(db: IDBDatabase, key: string, data: Record<string, string>): Promise<void> {
     return new Promise((resolve) => {
-      const tx = db.transaction('soundfonts', 'readwrite');
-      const store = tx.objectStore('soundfonts');
+      const tx = db.transaction('soundfonts_json', 'readwrite');
+      const store = tx.objectStore('soundfonts_json');
       store.put(data, key);
       tx.oncomplete = () => resolve();
       tx.onerror = () => resolve();
@@ -185,4 +292,3 @@ class SoundFontManager {
 }
 
 export const soundFontAudio = new SoundFontManager();
-
