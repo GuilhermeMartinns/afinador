@@ -8,8 +8,9 @@ import { useWakeLock } from './hooks/useWakeLock';
 
 const Pads = lazy(() => import('./components/Pads'));
 const Sintetizador = lazy(() => import('./components/Sintetizador'));
+const Acordes = lazy(() => import('./components/Acordes'));
 
-type TabType = 'afinador' | 'pads' | 'sintetizador';
+type TabType = 'afinador' | 'acordes' | 'pads' | 'sintetizador';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -212,6 +213,7 @@ function App() {
       <header className="w-full relative flex justify-center items-center p-3 sm:p-4 shrink-0 z-40 bg-gray-950/50 backdrop-blur-sm border-b border-gray-800/50 landscape-phone-header landscape-tablet-header">
         <div className="flex gap-1.5 sm:gap-4 px-2 no-scrollbar landscape-phone-toolbar">
           <button onClick={() => setAbaAtiva('afinador')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'afinador' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Afinador</button>
+          <button onClick={() => setAbaAtiva('acordes')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'acordes' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Acordes</button>
           <button onClick={() => setAbaAtiva('pads')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base ${abaAtiva === 'pads' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Pads</button>
           <button onClick={() => setAbaAtiva('sintetizador')} className={`px-3 sm:px-6 py-1.5 rounded-full font-semibold transition-all duration-300 text-xs sm:text-base whitespace-nowrap ${abaAtiva === 'sintetizador' ? 'bg-[#27ca55] text-black shadow-lg shadow-[#27ca55]/30' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'}`}>Sintetizador</button>
         </div>
@@ -264,7 +266,7 @@ function App() {
       </header>
 
       {/* Conteúdo Principal */}
-      <main className="flex-1 flex flex-col items-center justify-start sm:justify-center gap-4 sm:gap-12 w-full max-w-xl lg:max-w-2xl px-3 py-2 relative z-10 overflow-y-auto no-scrollbar landscape-phone-main landscape-tablet-main landscape-safe">
+      <main className={`flex-1 flex flex-col items-center ${abaAtiva === 'acordes' ? 'justify-start max-w-xl lg:max-w-4xl' : 'justify-start sm:justify-center max-w-xl lg:max-w-2xl'} gap-4 sm:gap-12 w-full px-3 py-2 relative z-10 overflow-y-auto no-scrollbar landscape-phone-main landscape-tablet-main landscape-safe`}>
         {abaAtiva === 'afinador' && (
           <div className="w-full flex flex-col items-center gap-4 sm:gap-10 animate-fade-in landscape-phone-row landscape-tablet-row">
             <div className="landscape-phone-col-left landscape-tablet-col-left w-full flex items-center justify-center">
@@ -307,6 +309,14 @@ function App() {
               </div>
             </div>
           </div>
+        )}
+
+        {abaAtiva === 'acordes' && (
+          <Suspense fallback={<LoadingFallback text="Carregando dicionário de acordes..." />}>
+            <div className="w-full flex flex-col items-center animate-fade-in">
+              <Acordes isFlatNote={isFlatNote} />
+            </div>
+          </Suspense>
         )}
 
         {abaAtiva === 'pads' && (
