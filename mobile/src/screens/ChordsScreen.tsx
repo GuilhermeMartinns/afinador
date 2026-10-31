@@ -72,10 +72,26 @@ export default function ChordsScreen() {
 
   // Filtra por tom e categoria
   const chordsForSelectedKey = useMemo(() => {
-    const list = chordsDatabase.chords?.[selectedKey] || [];
-    if (selectedCategory === 'todos') return list;
+    const rawList: any[] = Array.isArray(chordsDatabase)
+      ? chordsDatabase
+      : ((chordsDatabase as any)?.chords || []);
 
-    return list.filter((c: any) => {
+    const keyList = rawList.filter((c: any) => {
+      if (!selectedKey || selectedKey === 'ALL') return true;
+      if (c.key === selectedKey) return true;
+      // Compatibilidade enarmônica (ex: Eb com D#, Ab com G#, Bb com A#)
+      if (selectedKey === 'Eb' && c.key === 'D#') return true;
+      if (selectedKey === 'D#' && c.key === 'Eb') return true;
+      if (selectedKey === 'Ab' && c.key === 'G#') return true;
+      if (selectedKey === 'G#' && c.key === 'Ab') return true;
+      if (selectedKey === 'Bb' && c.key === 'A#') return true;
+      if (selectedKey === 'A#' && c.key === 'Bb') return true;
+      return false;
+    });
+
+    if (selectedCategory === 'todos') return keyList;
+
+    return keyList.filter((c: any) => {
       const cat = c.category?.toLowerCase() || '';
       const suf = c.suffix?.toLowerCase() || '';
       if (selectedCategory === 'maior') {

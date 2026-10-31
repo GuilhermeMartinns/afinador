@@ -28,11 +28,11 @@ const CATEGORIES = [
   { id: 'todos', label: 'Todos' },
   { id: 'maior', label: 'Maiores' },
   { id: 'menor', label: 'Menores' },
-  { id: 'power_chord', label: 'Power Chords (5ª)' },
-  { id: 'invertido', label: 'Invertidos (Baixo /)' },
-  { id: 'jazz_bossa', label: 'Jazz & Bossa' },
   { id: 'setima', label: 'Com 7ª' },
-  { id: 'suspenso', label: 'Sus / Add9' },
+  { id: 'suspenso', label: 'Suspensos' },
+  { id: 'invertido', label: 'Invertidos (/)' },
+  { id: 'jazz_bossa', label: 'Jazz & 9ª/13ª' },
+  { id: 'power_chord', label: 'Power (5)' },
   { id: 'outros', label: 'Dim / Aug' },
 ] as const;
 
@@ -55,6 +55,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   const [quizMode, setQuizMode] = useState<boolean>(false);
   const [quizRevealed, setQuizRevealed] = useState<boolean>(false);
   const [capoFret, setCapoFret] = useState<number>(0);
+  const [showAdvancedChords, setShowAdvancedChords] = useState<boolean>(false);
 
   // SoundFont HD Audio Engine state
   const [isHdAudioActive, setIsHdAudioActive] = useState<boolean>(() => soundFontAudio.isAvailable());
@@ -91,29 +92,100 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
   // Available keys in the current tuning
   const availableKeysInTuning = useMemo(() => {
     if (currentChords.length === 0) return new Set<string>();
+    const semiSet = new Set<number>();
+
     if (selectedCategory === 'invertido' && slashFilterMode === 'bass') {
-      const set = new Set<string>();
       currentChords.forEach((c) => {
-        if (c.bass) set.add(c.bass);
+        if (c.bass && SEMITONE_MAP[c.bass] !== undefined) {
+          semiSet.add(SEMITONE_MAP[c.bass]);
+        }
       });
-      return set;
+    } else {
+      currentChords.forEach((c) => {
+        if (SEMITONE_MAP[c.key] !== undefined) {
+          semiSet.add(SEMITONE_MAP[c.key]);
+        }
+      });
     }
-    return new Set(currentChords.map((c) => c.key));
+
+    const keysPresent = new Set<string>();
+    ALL_KEYS.forEach((k) => {
+      if (semiSet.has(SEMITONE_MAP[k])) {
+        keysPresent.add(k);
+      }
+    });
+    return keysPresent;
   }, [currentChords, selectedCategory, slashFilterMode]);
 
-  // Filtered chords list
+  // Filtered and deduplicated chords list
   const filteredChords = useMemo<ChordDefinition[]>(() => {
     if (currentChords.length === 0) return [];
-    return currentChords.filter((chord) => {
-      const matchCat = selectedCategory === 'todos' || chord.category === selectedCategory;
-      if (!matchCat) return false;
 
+    // 1. Filtrar pelo Tom (Root Note) ou Baixo (Invertidos)
+    const keyFiltered = currentChords.filter((chord) => {
       if (selectedKey === 'ALL') return true;
 
+      // Filtro especial quando em visualização de invertidos agrupados por baixo
       if (selectedCategory === 'invertido' && slashFilterMode === 'bass') {
-        return chord.bass === selectedKey;
+        if (!chord.bass) return false;
+        const bassSemi = SEMITONE_MAP[chord.bass];
+        const targetSemi = SEMITONE_MAP[selectedKey];
+        return bassSemi !== undefined && bassSemi === targetSemi;
       }
-      return chord.key === selectedKey;
+
+      // Comparação estrita por semitom musical (garante compatibilidade D# == Eb, etc.)
+      const chordSemi = SEMITONE_MAP[chord.key];
+      const targetSemi = SEMITONE_MAP[selectedKey];
+      return chordSemi !== undefined && chordSemi === targetSemi;
+    });
+
+    // 2. Filtrar pela Categoria
+    const categoryFiltered = keyFiltered.filter((chord) => {
+      if (selectedCategory === 'todos') return true;
+      return chord.category === selectedCategory;
+    });
+
+    // 3. Deduplicar acordes com mesmo símbolo e baixo, agrupando seus shapes
+    const chordMap = new Map<string, ChordDefinition>();
+    for (const chord of categoryFiltered) {
+      const uniqueKey = `${chord.key}_${chord.suffix}_${chord.bass || ''}`;
+      if (chordMap.has(uniqueKey)) {
+        const existing = chordMap.get(uniqueKey)!;
+        const existingLabels = new Set(existing.positions.map((p) => p.label));
+        for (const pos of chord.positions) {
+          if (!existingLabels.has(pos.label)) {
+            existing.positions.push(pos);
+            existingLabels.add(pos.label);
+          }
+        }
+      } else {
+        chordMap.set(uniqueKey, {
+          ...chord,
+          positions: [...chord.positions],
+        });
+      }
+    }
+
+    const deduplicated = Array.from(chordMap.values());
+
+    // 4. Ordenação musical lógica:
+    // Maiores -> Menores -> Com 7ª -> Suspensos -> Jazz/Extensões -> Power Chords -> Dim/Aug -> Invertidos
+    const categoryOrder: Record<string, number> = {
+      maior: 1,
+      menor: 2,
+      setima: 3,
+      suspenso: 4,
+      jazz_bossa: 5,
+      power_chord: 6,
+      outros: 7,
+      invertido: 8,
+    };
+
+    return deduplicated.sort((a, b) => {
+      const orderA = categoryOrder[a.category] ?? 99;
+      const orderB = categoryOrder[b.category] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
+      return a.symbol.localeCompare(b.symbol);
     });
   }, [currentChords, selectedKey, selectedCategory, slashFilterMode]);
 
@@ -185,122 +257,96 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
 
   return (
     <div className="w-full max-w-4xl flex flex-col gap-3 sm:gap-4 pb-6 text-white">
-      {/* BARRA SUPERIOR: Instrumento e Afinação lado a lado (Apple Inset Glass Card) */}
-      <div className="flex flex-col gap-3 bg-white/[0.03] border border-white/[0.06] rounded-3xl p-3.5 sm:p-4 shadow-xl backdrop-blur-sm">
-        <div className="flex flex-row items-center gap-2.5 sm:gap-3 w-full">
+      {/* BARRA SUPERIOR INTEGRADA: Instrumento, Afinação e Status de Áudio */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white/[0.03] border border-white/[0.06] rounded-2xl p-3 shadow-lg backdrop-blur-sm">
+        <div className="flex flex-row items-center gap-2 flex-1 min-w-0">
           {/* Seletor de Instrumento */}
-          <div className="flex-1 flex flex-col gap-1 min-w-0">
-            <label className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between truncate">
-              <span>Instrumento</span>
-              <span className="text-[#34C759] font-mono text-[10px] sm:text-[11px]">
-                {currentInstrument.id === 'teclado' ? 'Teclas' : `${currentInstrument.stringsCount}C`}
-              </span>
-            </label>
-            <div className="relative w-full">
-              <select
-                value={selectedInstrumentId}
-                onChange={(e) => {
-                  const newInstId = e.target.value;
-                  setLoadingChords(true);
-                  setSelectedInstrumentId(newInstId);
-                  soundFontAudio.setInstrument(newInstId);
-                  const targetInst = instruments.find((i) => i.id === newInstId);
-                  if (targetInst && targetInst.tunings.length > 0) {
-                    setSelectedTuningId(targetInst.tunings[0].id);
-                  }
-                  setSelectedChordIndex(0);
-                  setSelectedPositionIndex(0);
-                }}
-                className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-white text-xs sm:text-sm font-medium rounded-2xl px-3 py-2 sm:px-3.5 sm:py-2.5 pr-7 sm:pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99] truncate"
-              >
-                {instruments.map((inst) => (
-                  <option key={inst.id} value={inst.id} disabled={!inst.available} className="bg-gray-900 text-white">
-                    {inst.name}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 sm:px-3 text-gray-400">
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </div>
+          <div className="relative flex-1 min-w-0">
+            <select
+              value={selectedInstrumentId}
+              onChange={(e) => {
+                const newInstId = e.target.value;
+                setLoadingChords(true);
+                setSelectedInstrumentId(newInstId);
+                soundFontAudio.setInstrument(newInstId);
+                const targetInst = instruments.find((i) => i.id === newInstId);
+                if (targetInst && targetInst.tunings.length > 0) {
+                  setSelectedTuningId(targetInst.tunings[0].id);
+                }
+                setSelectedChordIndex(0);
+                setSelectedPositionIndex(0);
+              }}
+              className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-white text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 pr-7 border border-white/[0.08] outline-none cursor-pointer transition-all truncate"
+            >
+              {instruments.map((inst) => (
+                <option key={inst.id} value={inst.id} disabled={!inst.available} className="bg-gray-900 text-white">
+                  {inst.name}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </div>
           </div>
 
           {/* Seletor de Afinação */}
-          <div className="flex-1 flex flex-col gap-1 min-w-0">
-            <label className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-gray-400 flex items-center justify-between truncate">
-              <span>Afinação</span>
-              {currentTuning && (
-                <span className="text-sky-400 font-mono text-[9px] sm:text-[10px] hidden sm:inline truncate">
-                  {currentTuning.strings.join('·')}
-                </span>
-              )}
-            </label>
-            <div className="relative w-full">
-              <select
-                value={selectedTuningId}
-                onChange={(e) => handleTuningChange(e.target.value)}
-                className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-[#34C759] text-xs sm:text-sm font-semibold rounded-2xl px-3 py-2 sm:px-3.5 sm:py-2.5 pr-7 sm:pr-8 border border-white/[0.08] outline-none cursor-pointer transition-all active:scale-[0.99] truncate"
-              >
-                {currentInstrument.tunings.map((tuning) => (
-                  <option key={tuning.id} value={tuning.id} className="bg-gray-900 text-white">
-                    {tuning.name}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 sm:px-3 text-gray-400">
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </div>
+          <div className="relative flex-1 min-w-0">
+            <select
+              value={selectedTuningId}
+              onChange={(e) => handleTuningChange(e.target.value)}
+              className="w-full appearance-none bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.1] text-[#34C759] text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 pr-7 border border-white/[0.08] outline-none cursor-pointer transition-all truncate"
+            >
+              {currentInstrument.tunings.map((tuning) => (
+                <option key={tuning.id} value={tuning.id} className="bg-gray-900 text-white">
+                  {tuning.name}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </div>
           </div>
         </div>
 
-        {/* Descrição da Afinação e Controle de Áudio HD (SoundFont) */}
-        {currentTuning && (
-          <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-white/[0.06] text-[11px] text-gray-400">
-            <span className="text-gray-400 font-normal">{currentTuning.description}</span>
-
-            {/* Alternador de Áudio HD com SoundFont gravado */}
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 text-[10px]">Timbre:</span>
-              {isDownloadingHd ? (
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.06] text-[10px] text-amber-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
-                  <span>Baixando HD ({downloadProgress}%)...</span>
-                </div>
-              ) : isHdAudioActive ? (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#34C759]/15 border border-[#34C759]/30 text-[10px] text-[#34C759] font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]"></span>
-                  <span>Som Real HD Ativo</span>
-                </div>
-              ) : (
-                <button
-                  onClick={async () => {
-                    setIsDownloadingHd(true);
-                    const ok = await soundFontAudio.initOrLoad((pct) => setDownloadProgress(pct));
-                    setIsDownloadingHd(false);
-                    if (ok) {
-                      soundFontAudio.setInstrument(selectedInstrumentId);
-                      setIsHdAudioActive(true);
-                    }
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.14] active:scale-[0.97] text-white text-[10px] font-medium border border-white/[0.08] transition-all"
-                  title="Baixa um banco SoundFont leve (~1.9MB) gravado para ter reprodução idêntica ao instrumento real"
-                >
-                  <svg className="w-3 h-3 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                  <span>Baixar Som Real HD (1.9MB)</span>
-                </button>
-              )}
+        {/* Status de Áudio Real HD */}
+        <div className="flex items-center justify-end shrink-0">
+          {isDownloadingHd ? (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.06] text-[10px] text-amber-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+              <span>Baixando HD ({downloadProgress}%)...</span>
             </div>
-          </div>
-        )}
+          ) : isHdAudioActive ? (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#34C759]/15 border border-[#34C759]/30 text-[10px] text-[#34C759] font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]"></span>
+              <span>Som Real HD</span>
+            </div>
+          ) : (
+            <button
+              onClick={async () => {
+                setIsDownloadingHd(true);
+                const ok = await soundFontAudio.initOrLoad((pct) => setDownloadProgress(pct));
+                setIsDownloadingHd(false);
+                if (ok) {
+                  soundFontAudio.setInstrument(selectedInstrumentId);
+                  setIsHdAudioActive(true);
+                }
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] active:scale-[0.97] text-white text-[10px] font-medium border border-white/[0.08] transition-all"
+              title="Baixar amostras reais de estúdio gravadas (~1.9MB)"
+            >
+              <svg className="w-3 h-3 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              <span>Ativar Som Real HD (1.9MB)</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* SELETOR DE TOM (TÔNICA) */}
@@ -415,20 +461,27 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
             Carregando acordes do instrumento...
           </div>
         ) : filteredChords.length > 0 ? (
-          <div className="flex flex-wrap items-center gap-1.5 max-h-32 overflow-y-auto pt-1.5 pr-1">
+          <div className="flex flex-wrap items-center gap-1.5 max-h-36 overflow-y-auto pt-1.5 pr-1">
             {filteredChords.map((chord, idx) => {
-              const isSelected = activeChord?.symbol === chord.symbol && activeChord?.key === chord.key;
+              const isSelected =
+                activeChord?.symbol === chord.symbol &&
+                activeChord?.key === chord.key &&
+                (activeChord?.bass || '') === (chord.bass || '');
               const formattedSym = formatChordSymbol(chord.key, chord.suffix, isFlatNote, chord.bass);
               return (
                 <button
-                  key={`${chord.key}-${chord.suffix}-${chord.bass || ''}`}
+                  key={`${chord.key}-${chord.suffix}-${chord.bass || ''}-${idx}`}
                   onClick={() => handleSelectChord(idx)}
-                  className={`px-3 py-1 rounded-xl font-mono font-bold text-xs shrink-0 transition-all border ${
+                  className={`px-3 py-1.5 rounded-xl font-mono font-bold text-xs shrink-0 transition-all border ${
                     isSelected
-                      ? 'bg-[#27ca55]/15 border-[#27ca55] text-[#27ca55] shadow-sm'
+                      ? 'bg-[#27ca55]/20 border-[#27ca55] text-[#27ca55] shadow-md scale-[1.03]'
                       : chord.bass
-                      ? 'bg-amber-950/20 border-amber-900/40 text-amber-200 hover:border-amber-700'
-                      : 'bg-gray-950/70 border-gray-800 text-gray-300 hover:border-gray-700'
+                      ? 'bg-amber-950/25 border-amber-800/40 text-amber-200 hover:border-amber-600'
+                      : chord.category === 'jazz_bossa'
+                      ? 'bg-indigo-950/25 border-indigo-800/40 text-indigo-200 hover:border-indigo-600'
+                      : chord.category === 'power_chord'
+                      ? 'bg-purple-950/25 border-purple-800/40 text-purple-200 hover:border-purple-600'
+                      : 'bg-white/[0.04] border-white/[0.08] text-gray-200 hover:bg-white/[0.08] hover:border-white/[0.15]'
                   }`}
                 >
                   {formattedSym}

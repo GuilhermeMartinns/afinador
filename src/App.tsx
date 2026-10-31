@@ -10,8 +10,9 @@ const Pads = lazy(() => import('./components/Pads'));
 const Sintetizador = lazy(() => import('./components/Sintetizador'));
 const Acordes = lazy(() => import('./components/Acordes'));
 const Harmonia = lazy(() => import('./components/Harmonia/Harmonia'));
+const Metronomo = lazy(() => import('./components/Metronomo'));
 
-type TabType = 'afinador' | 'acordes' | 'harmonia' | 'pads' | 'sintetizador';
+type TabType = 'afinador' | 'metronomo' | 'acordes' | 'harmonia' | 'pads' | 'sintetizador';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -218,6 +219,15 @@ function App() {
             Afinador
           </button>
           <button
+            onClick={() => setAbaAtiva('metronomo')}
+            className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'metronomo'
+              ? 'bg-white text-gray-950 font-semibold shadow-sm'
+              : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+              }`}
+          >
+            Metrônomo
+          </button>
+          <button
             onClick={() => setAbaAtiva('acordes')}
             className={`px-3.5 sm:px-5 py-1.5 rounded-full font-medium transition-all duration-200 text-xs sm:text-sm active:scale-[0.97] whitespace-nowrap ${abaAtiva === 'acordes'
               ? 'bg-white text-gray-950 font-semibold shadow-sm'
@@ -347,6 +357,14 @@ function App() {
               </div>
             </div>
           </div>
+        )}
+
+        {abaAtiva === 'metronomo' && (
+          <Suspense fallback={<LoadingFallback text="Carregando metrônomo..." />}>
+            <div className="w-full flex flex-col items-center animate-fade-in">
+              <Metronomo />
+            </div>
+          </Suspense>
         )}
 
         {abaAtiva === 'acordes' && (
