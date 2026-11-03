@@ -39,7 +39,11 @@ class SoundFontManager {
   }
 
   public isSavedLocally(): boolean {
-    return localStorage.getItem(SOUNDFONT_STORAGE_KEY) === 'true';
+    try {
+      return localStorage.getItem(SOUNDFONT_STORAGE_KEY) === 'true';
+    } catch {
+      return false;
+    }
   }
 
   public async initOrLoad(
@@ -54,11 +58,16 @@ class SoundFontManager {
 
     try {
       // 1. Contexto de áudio Web Audio
-      const AudioCtx =
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      const ctx = new AudioCtx();
-      this.audioCtx = ctx;
+      if (!this.audioCtx) {
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        this.audioCtx = new AudioCtx();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        await this.audioCtx.resume();
+      }
+      const ctx = this.audioCtx;
 
       this.loadProgress = 25;
       onProgress?.(25);
@@ -73,7 +82,7 @@ class SoundFontManager {
 
       this.base64DataMap.set(soundFontName, soundFontMap);
 
-      // 3. Decodificar notas essenciais para AudioBuffer
+      // 3. Decodificar notas essenciais para AudioBuffer em lotes paralelos
       this.loadProgress = 75;
       onProgress?.(75);
       await this.decodeSamples(soundFontMap, ctx, (pct) => {
@@ -86,10 +95,12 @@ class SoundFontManager {
       this.loadProgress = 100;
       onProgress?.(100);
 
-      localStorage.setItem(SOUNDFONT_STORAGE_KEY, 'true');
+      try {
+        localStorage.setItem(SOUNDFONT_STORAGE_KEY, 'true');
+      } catch {}
       return true;
     } catch (err) {
-      console.warn('Erro ao carregar o SoundFont:', err);
+      console.error('Erro ao carregar o SoundFont HD:', err);
       this.isLoaded = false;
       return false;
     } finally {
@@ -115,6 +126,8 @@ class SoundFontManager {
       } finally {
         this.isLoading = false;
       }
+    } else {
+      await this.decodeSamples(soundFontMap, this.audioCtx, () => {});
     }
   }
 
@@ -156,21 +169,26 @@ class SoundFontManager {
     const total = entries.length;
     let decodedCount = 0;
 
-    for (const [noteKey, base64Uri] of entries) {
-      const midiNote = this.noteNameToMidi(noteKey);
-      if (midiNote !== null) {
-        try {
-          const arrayBuffer = this.base64ToArrayBuffer(base64Uri);
-          const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
-          this.audioBuffers.set(midiNote, audioBuffer);
-        } catch {
-          // Ignora amostras individuais com falha
-        }
-      }
-      decodedCount++;
-      if (decodedCount % 8 === 0 || decodedCount === total) {
-        onProgress(Math.round((decodedCount / total) * 100));
-      }
+    // Processa em lotes paralelos de 8 amostras simultâneas para decodificação rápida
+    const BATCH_SIZE = 8;
+    for (let i = 0; i < entries.length; i += BATCH_SIZE) {
+      const batch = entries.slice(i, i + BATCH_SIZE);
+      await Promise.all(
+        batch.map(async ([noteKey, base64Uri]) => {
+          const midiNote = this.noteNameToMidi(noteKey);
+          if (midiNote !== null) {
+            try {
+              const arrayBuffer = this.base64ToArrayBuffer(base64Uri);
+              const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+              this.audioBuffers.set(midiNote, audioBuffer);
+            } catch {
+              // Ignora amostras individuais corrompidas sem travar o processo
+            }
+          }
+        })
+      );
+      decodedCount += batch.length;
+      onProgress(Math.min(100, Math.round((decodedCount / total) * 100)));
     }
   }
 
@@ -210,11 +228,16 @@ class SoundFontManager {
     soundFontName: string,
     onProgress: (pct: number) => void
   ): Promise<Record<string, string>> {
-    const db = await this.openDB();
-    const cached = await this.getFromDB(db, soundFontName);
-    if (cached) {
-      onProgress(100);
-      return cached;
+    let db: IDBDatabase | null = null;
+    try {
+      db = await this.openDB();
+      const cached = await this.getFromDB(db, soundFontName);
+      if (cached && Object.keys(cached).length > 0) {
+        onProgress(100);
+        return cached;
+      }
+    } catch (e) {
+      console.warn('Cache IndexedDB inacessível, prosseguindo com download CDN:', e);
     }
 
     let rawText = '';
@@ -226,11 +249,13 @@ class SoundFontManager {
         const res = await fetch(url);
         if (res.ok) {
           rawText = await res.text();
-          success = true;
-          break;
+          if (rawText && rawText.length > 1000) {
+            success = true;
+            break;
+          }
         }
-      } catch {
-        // Tenta o próximo CDN
+      } catch (err) {
+        console.warn(`Tentativa de CDN falhou para (${soundFontName}):`, err);
       }
     }
 
@@ -240,53 +265,95 @@ class SoundFontManager {
 
     onProgress(60);
 
-    // Extrair o dicionário JSON de dentro do arquivo JS
-    // O arquivo é estruturado como: MIDI.Soundfont.instrument = { "A0": "data:audio/mp3;base64,...", ... }
-    const firstBrace = rawText.indexOf('{');
-    const lastBrace = rawText.lastIndexOf('}');
-    if (firstBrace === -1 || lastBrace === -1) {
-      throw new Error('Formato do SoundFont inválido');
+    // O arquivo JS define: MIDI.Soundfont[instrumentName] = { "A0": "data:audio/mp3;base64,...", ... }
+    // Avaliamos com new Function num escopo isolado e seguro:
+    let soundFontMap: Record<string, string> | null = null;
+    try {
+      const fn = new Function('MIDI', `${rawText}\nreturn MIDI.Soundfont;`);
+      const soundfontObj = fn({});
+      soundFontMap =
+        (soundfontObj && soundfontObj[soundFontName]) ||
+        (soundfontObj && (Object.values(soundfontObj)[0] as Record<string, string>)) ||
+        null;
+    } catch (err) {
+      console.warn('Erro ao avaliar script do SoundFont via Function:', err);
     }
 
-    const jsonStr = rawText.slice(firstBrace, lastBrace + 1);
-    const soundFontMap = JSON.parse(jsonStr) as Record<string, string>;
+    // Fallback caso CSP proíba new Function
+    if (!soundFontMap) {
+      const assignIdx = rawText.indexOf(soundFontName);
+      const eqIdx = rawText.indexOf('=', assignIdx > 0 ? assignIdx : 0);
+      const firstBrace = rawText.indexOf('{', eqIdx > 0 ? eqIdx : 0);
+      const lastBrace = rawText.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        let jsonStr = rawText.slice(firstBrace, lastBrace + 1);
+        jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1');
+        soundFontMap = JSON.parse(jsonStr) as Record<string, string>;
+      }
+    }
 
-    await this.saveToDB(db, soundFontName, soundFontMap);
+    if (!soundFontMap || Object.keys(soundFontMap).length === 0) {
+      throw new Error(`Formato do SoundFont inválido para (${soundFontName})`);
+    }
+
+    if (db) {
+      try {
+        await this.saveToDB(db, soundFontName, soundFontMap);
+      } catch (e) {
+        console.warn('Erro ao persistir no IndexedDB:', e);
+      }
+    }
+
     onProgress(100);
     return soundFontMap;
   }
 
   private openDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open('AfinadorSoundFontsMapDB', 1);
-      request.onupgradeneeded = () => {
-        const db = request.result;
-        if (!db.objectStoreNames.contains('soundfonts_json')) {
-          db.createObjectStore('soundfonts_json');
-        }
-      };
-      request.onsuccess = () => resolve(request.result);
-      request.onerror = () => reject(request.error);
+      if (typeof indexedDB === 'undefined') {
+        return reject(new Error('IndexedDB não suportado'));
+      }
+      try {
+        const request = indexedDB.open('AfinadorSoundFontsMapDB', 1);
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          if (!db.objectStoreNames.contains('soundfonts_json')) {
+            db.createObjectStore('soundfonts_json');
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
   private getFromDB(db: IDBDatabase, key: string): Promise<Record<string, string> | null> {
     return new Promise((resolve) => {
-      const tx = db.transaction('soundfonts_json', 'readonly');
-      const store = tx.objectStore('soundfonts_json');
-      const req = store.get(key);
-      req.onsuccess = () => resolve(req.result || null);
-      req.onerror = () => resolve(null);
+      try {
+        const tx = db.transaction('soundfonts_json', 'readonly');
+        const store = tx.objectStore('soundfonts_json');
+        const req = store.get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      } catch {
+        resolve(null);
+      }
     });
   }
 
   private saveToDB(db: IDBDatabase, key: string, data: Record<string, string>): Promise<void> {
     return new Promise((resolve) => {
-      const tx = db.transaction('soundfonts_json', 'readwrite');
-      const store = tx.objectStore('soundfonts_json');
-      store.put(data, key);
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => resolve();
+      try {
+        const tx = db.transaction('soundfonts_json', 'readwrite');
+        const store = tx.objectStore('soundfonts_json');
+        store.put(data, key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      } catch {
+        resolve();
+      }
     });
   }
 }

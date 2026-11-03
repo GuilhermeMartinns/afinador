@@ -28,11 +28,11 @@ const CATEGORIES = [
   { id: 'todos', label: 'Todos' },
   { id: 'maior', label: 'Maiores' },
   { id: 'menor', label: 'Menores' },
+  { id: 'power_chord', label: 'Power Chords (5ª)' },
+  { id: 'invertido', label: 'Invertidos (Baixo /)' },
+  { id: 'jazz_bossa', label: 'Jazz & Bossa' },
   { id: 'setima', label: 'Com 7ª' },
-  { id: 'suspenso', label: 'Suspensos' },
-  { id: 'invertido', label: 'Invertidos (/)' },
-  { id: 'jazz_bossa', label: 'Jazz & 9ª/13ª' },
-  { id: 'power_chord', label: 'Power (5)' },
+  { id: 'suspenso', label: 'Sus / Add9' },
   { id: 'outros', label: 'Dim / Aug' },
 ] as const;
 
@@ -168,25 +168,17 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
 
     const deduplicated = Array.from(chordMap.values());
 
-    // 4. Ordenação musical lógica:
-    // Maiores -> Menores -> Com 7ª -> Suspensos -> Jazz/Extensões -> Power Chords -> Dim/Aug -> Invertidos
-    const categoryOrder: Record<string, number> = {
-      maior: 1,
-      menor: 2,
-      setima: 3,
-      suspenso: 4,
-      jazz_bossa: 5,
-      power_chord: 6,
-      outros: 7,
-      invertido: 8,
-    };
+    // Se "Ver Todos os Tons" estiver ativo, ordena por semitom cromático (C, C#, D...)
+    if (selectedKey === 'ALL') {
+      return deduplicated.sort((a, b) => {
+        const semiA = SEMITONE_MAP[a.key] ?? 99;
+        const semiB = SEMITONE_MAP[b.key] ?? 99;
+        return semiA - semiB;
+      });
+    }
 
-    return deduplicated.sort((a, b) => {
-      const orderA = categoryOrder[a.category] ?? 99;
-      const orderB = categoryOrder[b.category] ?? 99;
-      if (orderA !== orderB) return orderA - orderB;
-      return a.symbol.localeCompare(b.symbol);
-    });
+    // Para o tom selecionado, preserva a sequência musical harmônica natural do cadastro
+    return deduplicated;
   }, [currentChords, selectedKey, selectedCategory, slashFilterMode]);
 
   // Ensure valid active chord
@@ -461,7 +453,7 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
             Carregando acordes do instrumento...
           </div>
         ) : filteredChords.length > 0 ? (
-          <div className="flex flex-wrap items-center gap-1.5 max-h-36 overflow-y-auto pt-1.5 pr-1">
+          <div className="flex flex-wrap items-center gap-1.5 max-h-48 overflow-y-auto pt-1.5 pr-1">
             {filteredChords.map((chord, idx) => {
               const isSelected =
                 activeChord?.symbol === chord.symbol &&
@@ -472,16 +464,12 @@ const Acordes: React.FC<AcordesProps> = ({ isFlatNote = false }) => {
                 <button
                   key={`${chord.key}-${chord.suffix}-${chord.bass || ''}-${idx}`}
                   onClick={() => handleSelectChord(idx)}
-                  className={`px-3 py-1.5 rounded-xl font-mono font-bold text-xs shrink-0 transition-all border ${
+                  className={`px-3 py-1 rounded-xl font-mono font-bold text-xs shrink-0 transition-all border ${
                     isSelected
-                      ? 'bg-[#27ca55]/20 border-[#27ca55] text-[#27ca55] shadow-md scale-[1.03]'
+                      ? 'bg-[#27ca55]/15 border-[#27ca55] text-[#27ca55] shadow-sm'
                       : chord.bass
-                      ? 'bg-amber-950/25 border-amber-800/40 text-amber-200 hover:border-amber-600'
-                      : chord.category === 'jazz_bossa'
-                      ? 'bg-indigo-950/25 border-indigo-800/40 text-indigo-200 hover:border-indigo-600'
-                      : chord.category === 'power_chord'
-                      ? 'bg-purple-950/25 border-purple-800/40 text-purple-200 hover:border-purple-600'
-                      : 'bg-white/[0.04] border-white/[0.08] text-gray-200 hover:bg-white/[0.08] hover:border-white/[0.15]'
+                      ? 'bg-amber-950/20 border-amber-900/40 text-amber-200 hover:border-amber-700'
+                      : 'bg-gray-950/70 border-gray-800 text-gray-300 hover:border-gray-700'
                   }`}
                 >
                   {formattedSym}
