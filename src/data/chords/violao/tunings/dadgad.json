@@ -7,12 +7,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 10ª Casa",
         "baseFret": 10,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -20,14 +19,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (10ª Casa)"
       }
     ]
   },
@@ -39,12 +39,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 11ª Casa",
         "baseFret": 11,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -52,14 +51,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (11ª Casa)"
       }
     ]
   },
@@ -71,28 +71,6 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato Aberto Ressonante",
-        "baseFret": 1,
-        "frets": [
-          0,
-          0,
-          0,
-          2,
-          0,
-          0
-        ],
-        "fingers": [
-          0,
-          0,
-          0,
-          1,
-          0,
-          0
-        ],
-        "barres": []
-      },
-      {
-        "label": "Formato Completo (4ª casa na 4ª corda)",
         "baseFret": 1,
         "frets": [
           0,
@@ -110,7 +88,8 @@
           0,
           0
         ],
-        "barres": []
+        "barres": [],
+        "label": "Formato Aberto Ressonante DADGAD"
       }
     ]
   },
@@ -122,12 +101,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 1ª Casa",
         "baseFret": 1,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -135,14 +113,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (1ª Casa)"
       }
     ]
   },
@@ -154,12 +133,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 2ª Casa",
         "baseFret": 2,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -167,14 +145,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (2ª Casa)"
       }
     ]
   },
@@ -186,12 +165,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 3ª Casa",
         "baseFret": 3,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -199,14 +177,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (3ª Casa)"
       }
     ]
   },
@@ -218,12 +197,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 4ª Casa",
         "baseFret": 4,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -231,14 +209,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (4ª Casa)"
       }
     ]
   },
@@ -250,54 +229,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato Aberto DADGAD",
-        "baseFret": 1,
-        "frets": [
-          5,
-          2,
-          0,
-          0,
-          2,
-          0
-        ],
-        "fingers": [
-          4,
-          1,
-          0,
-          0,
-          2,
-          0
-        ],
-        "barres": []
-      },
-      {
-        "label": "Formato Folk Celta (5ª Casa)",
-        "baseFret": 1,
-        "frets": [
-          5,
-          5,
-          0,
-          0,
-          0,
-          0
-        ],
-        "fingers": [
-          2,
-          3,
-          0,
-          0,
-          0,
-          0
-        ],
-        "barres": []
-      },
-      {
-        "label": "Formato DADGAD na 5ª Casa",
         "baseFret": 5,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -305,14 +241,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (5ª Casa)"
       }
     ]
   },
@@ -324,12 +261,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 6ª Casa",
         "baseFret": 6,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -337,14 +273,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (6ª Casa)"
       }
     ]
   },
@@ -356,33 +293,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato Aberto DADGAD",
-        "baseFret": 1,
-        "frets": [
-          -1,
-          0,
-          2,
-          2,
-          4,
-          0
-        ],
-        "fingers": [
-          0,
-          0,
-          1,
-          2,
-          4,
-          0
-        ],
-        "barres": []
-      },
-      {
-        "label": "Formato DADGAD na 7ª Casa",
         "baseFret": 7,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -390,14 +305,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (7ª Casa)"
       }
     ]
   },
@@ -409,12 +325,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 8ª Casa",
         "baseFret": 8,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -422,14 +337,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (8ª Casa)"
       }
     ]
   },
@@ -441,12 +357,11 @@
     "category": "maior",
     "positions": [
       {
-        "label": "Formato DADGAD na 9ª Casa",
         "baseFret": 9,
         "frets": [
           1,
           1,
-          1,
+          5,
           3,
           1,
           1
@@ -454,14 +369,15 @@
         "fingers": [
           1,
           1,
-          1,
+          4,
           3,
           1,
           1
         ],
         "barres": [
           1
-        ]
+        ],
+        "label": "Formato DADGAD (9ª Casa)"
       }
     ]
   }
